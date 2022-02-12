@@ -1,2 +1,5 @@
-static/avatar.jpg1
-static/background.jpg1
+_site
+.sass-cache
+Gemfile.lock
+*.gem
+.jekyll-cache
