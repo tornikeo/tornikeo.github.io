@@ -1,0 +1,6 @@
+_site
+.jekyll-cache
+.tweet-cache
+Gemfile.lock
+.DS_Store
+.git
