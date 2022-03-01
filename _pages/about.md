@@ -15,10 +15,18 @@ social: true # includes social icons at the bottom of the page
 ---
 
 I am a full-stack AI specialist. Teaching, researching, deploying - you name it. 
-I initially worked as a numerical analyst 
-Tornike is a data scientist with a solid academic and mathematical background. He specializes in Python TensorFlow 2.0, currently learning reinforcement learning, and is planning to contribute to this field in the near future. Tornike is also regularly busy mentoring aspiring data scientists on their path to greatness.
 
+In 2015, I successfully applied to the faculty of Electrical and Computer Engineering at [Free University of Tbilisi](https://freeuni.edu.ge/en). I graduated [with honours]() in 2019.
 
-Put your address / P.O. box / other info right below your picture. You can also disable any of these elements by editing `profile` property of the YAML header of your `_pages/about.md`. Edit `_bibliography/papers.bib` and Jekyll will render your [publications page](/al-folio/publications/) automatically.
+In 2018, as an undergraduate research scientist, I worked on waveguide [simulations](https://en.wikipedia.org/wiki/Finite-difference_time-domain_method) in MatLab, co-authored two papers and presented them in [Toyama](https://www.piers.org/piers2018Toyama/reg.php) and [Rome](https://www.piers.org/piers2019Rome/) research symposia.
+In 2019, after graduating, I began working as a data scientist, first for [Orient Logic](https://www.ol.ge/en), and later for [ACT Inc.](https://act-global.com/en/main/georgia). Designed a Credit Card Fraud detection system and created collaborative filtering system for pharmaceutical retail stores. 
 
-Link to your social media connections, too. This theme is set up to use [Font Awesome icons](https://fontawesome.com/) and [Academicons](https://jpswalsh.github.io/academicons/), like the ones below. Add your Facebook, Twitter, LinkedIn, Google Scholar, or just disable all of them.
+In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c). Some of the best projects I've worked on are:
+
+- [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/stylize-website-js/)
+- Toxicity prediction from molecular graph data
+- Stock market portfolio constructor
+- Stress level prediction in VR games for automating difficulty settings
+  ... and more
+
+I have an extensive experience in Python, I know my way around git, and docker, and have comprehensive experiene with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
