@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='https://www.upwork.com/freelancers/~01a3aea673f4f7db6c'>Freelance Data Scientist at UpWork Inc.</a>.
+subtitle: <a href='https://www.upwork.com/freelancers/~01a3aea673f4f7db6c'>Freelance Data Scientist at UpWork Inc</a>.
 
 profile:
   align: right
@@ -14,6 +14,8 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
 ---
 
+I am a full-stack AI specialist. Teaching, researching, deploying - you name it. 
+I initially worked as a numerical analyst 
 Tornike is a data scientist with a solid academic and mathematical background. He specializes in Python TensorFlow 2.0, currently learning reinforcement learning, and is planning to contribute to this field in the near future. Tornike is also regularly busy mentoring aspiring data scientists on their path to greatness.
 
 
