@@ -1,8 +1,8 @@
 ---
 layout: page
-title: project 3
-description: a project that redirects to another website
-img: assets/img/7.jpg
+title: Stress estimation with pupil diameter
+description: Human pupils are most sensitive to light. In a controlled-lighting environment, we can use the pupil diameter information to predict user stress level. 
+img: assets/img/vr-headset.jpg
 redirect: https://unsplash.com
 importance: 3
 category: work
