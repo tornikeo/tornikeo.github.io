@@ -1,8 +1,8 @@
 ---
 layout: page
-title: project 5
-description: a project with a background image
-img: assets/img/1.jpg
+title: Deep Dream with TFJS
+description: Why pay $5 subscription fee when you can deepdream images in your browser?
+img: assets/img/deepdream-monke.png
 importance: 3
 category: fun
 ---
