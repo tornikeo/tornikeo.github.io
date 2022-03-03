@@ -8,9 +8,8 @@ profile:
   align: right
   image: prof_pic.jpg
   address: >
-    <a href="tel:+18888677001" rel="noopener noreferrer"> 
+    <a href="tel:+995579118583" rel="noopener noreferrer"> 
     <span class="phone-label">Contact me: </span>+995.579.118583</a>
-    <p>Tbilisi, Georgia</p>
 
 news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
