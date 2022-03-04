@@ -10,7 +10,13 @@ profile:
   address: >
     <a href="tel:+995579118583" rel="noopener noreferrer"> 
     <span class="phone-label">Contact me: </span>+995.579.118583</a>
-    
+  skills:
+    - Python: 5
+    - Data science: 4
+    - Machine learning: 4
+    - TensorFlow: 4
+    - PyTorch: 1
+    - Google AI Platform: 2
 
 news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
