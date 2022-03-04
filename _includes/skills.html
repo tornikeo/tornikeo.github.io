@@ -1,0 +1,22 @@
+
+
+
+<div class="resume_details-item_inner for-experience">
+  <h2 class="resume_details-title">Experience</h2>
+  <ul class="resume_details-list js-experience_section">
+    {% for skill in site.skills limit: 6 %}
+
+      {%   assign today = site.time | date: '%s'      %}
+      {%   assign start = skill.date | date: '%s'  %}
+      {%   assign secondsSince = today | minus: start     %}
+      {%   assign hoursSince = secondsSince | divided_by: 60 | divided_by: 60     %}
+      {%   assign daysSince = hoursSince | divided_by: 24  %}
+      {%   assign monthsSince = daysSince | divided_by: 31  %}
+      {%   assign yearsSince = daysSince | divided_by: 365  %}
+
+      <li class="resume_details-list_item" data-gql-id="VjEtU2tpbGxTZXQtMzEyNDYxOA"><a
+        class="resume_details-list_item_name is-link" href="{{ skill.url | relative_url }}">{{ skill.name }}</a><span
+        class="muted"> {{ yearsSince }}y {{ monthsSince | | modulo: 12 }}m </span></li>
+    {%- endfor %}
+  </ul>
+</div>

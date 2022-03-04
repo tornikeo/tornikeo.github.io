@@ -108,6 +108,9 @@ collections:
   projects:
     output: true
     permalink: /projects/:path/
+  skills:
+    output: true
+    permalink: /sklls/:path/
 
 news_limit: 5
 
