@@ -10,6 +10,7 @@ profile:
   address: >
     <a href="tel:+995579118583" rel="noopener noreferrer"> 
     <span class="phone-label">Contact me: </span>+995.579.118583</a>
+    
 
 news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
@@ -31,6 +32,7 @@ In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork
 - Toxicity prediction from molecular graph data
 - Stock market portfolio constructor
 - Stress level prediction in VR games for automating difficulty settings
+
   ... and more
 
 I have an extensive experience in Python, I know my way around git, and docker, and have comprehensive experiene with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
