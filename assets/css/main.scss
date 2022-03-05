@@ -13,3 +13,35 @@ $max-content-width: {{ site.max_width }};
   "base",
   "distill"
 ;
+
+.btn.skill-bubble {
+   color: #fff !important;
+   border: 1px solid #fff !important;
+   border-radius: 100px;
+   font-size: 12px;
+   font-weight: 400;
+   line-height: .5;
+  //  padding-left: 15%;
+  //  padding-right: 15%;
+  //  padding: .84rem 2.14rem;
+   white-space: nowrap;
+   text-decoration: none;
+  //  fint-size: ;
+   // font-family: Proxima Nova,Arial,"sans-serif";
+  
+}
+
+// .skill-bubble:hover {
+//   // color: #455065;
+//   border: 1px solid;
+//   border-radius: 100px;
+//   // font-size: 13px;
+//   // font-weight: 400;
+//   // line-height: 20px;
+//   // padding: 6px 6px;
+//   padding: 0px 0px;
+//   white-space: nowrap;
+//   text-decoration: none;
+//   // font-family: Proxima Nova,Arial,"sans-serif";
+  
+// }
