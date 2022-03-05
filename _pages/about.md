@@ -8,8 +8,17 @@ profile:
   align: right
   image: prof_pic.jpg
   address: >
+    <div class="row justify-content-center">
+    <div class="col-3">
     <a href="tel:+995579118583" rel="noopener noreferrer"> 
-    <span class="phone-label">Contact me: </span>+995.579.118583</a>
+    <i class="fa fa-phone fa-2x"></i></a>
+    </div>
+    <div class="col-3">
+    </div>
+    <div class="col-3">
+    <a href="mailto:tornikeonoprishvili@gmail.com" title="email"><i class="fa fa-envelope fa-2x"></i></a>
+    </div>
+    </div>
     
 
 news: true  # includes a list of news items
