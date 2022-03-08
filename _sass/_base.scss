@@ -12,6 +12,10 @@ hr {
   border-top: 1px solid var(--global-divider-color);
 }
 
+.table {
+  color: var(--global-text-color);
+}
+
 a, table.table a {
   color: var(--global-theme-color);
   &:hover {
