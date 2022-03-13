@@ -37,11 +37,10 @@ In 2019, after graduating, I began working as a data scientist, first for [Orien
 
 In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c). Some of the best projects I've worked on are:
 
+- [Facemesh with mediapipe](https://tornikeo.github.io/facemesh/)
 - [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/stylize-website-js/)
-- Toxicity prediction from molecular graph data
+- [Toxicity prediction from molecular graph data](https://tornikeo.github.io/projects/2_project/)
 - Stock market portfolio constructor
-- Stress level prediction in VR games for automating difficulty settings
-
   ... and more
 
-I have an extensive experience in Python, I know my way around git, and docker, and have comprehensive experiene with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
+I have extensive experience in Python, I know my way around git, and docker, and have comprehensive experience with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
