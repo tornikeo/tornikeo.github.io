@@ -14,9 +14,10 @@ profile:
     <i class="fa fa-phone fa-2x"></i></a>
     </div>
     <div class="col-3">
+    <a href="mailto:tornikeonoprishvili@gmail.com" title="email"><i class="fa fa-envelope fa-2x"></i></a>
     </div>
     <div class="col-3">
-    <a href="mailto:tornikeonoprishvili@gmail.com" title="email"><i class="fa fa-envelope fa-2x"></i></a>
+    <a href="./assets/pdf/TornikeO_CV.pdf" title="email"><i class="fa fa-file fa-2x"></i></a>
     </div>
     </div>
     
