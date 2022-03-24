@@ -40,6 +40,7 @@ In 2019, after graduating, I began working as a data scientist, first for [Orien
 
 In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c). Some of the best projects I've worked on are:
 
+- [Automatic scientific blog writer](https://tornikeo.github.io/projects/7_project/)
 - [Facemesh with mediapipe](https://tornikeo.github.io/facemesh/)
 - [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/stylize-website-js/)
 - [Toxicity prediction from molecular graph data](https://tornikeo.github.io/projects/2_project/)
