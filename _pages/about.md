@@ -42,7 +42,7 @@ In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork
 
 - [Automatic scientific blog writer](https://tornikeo.github.io/projects/7_project/)
 - [Facemesh with mediapipe](https://tornikeo.github.io/facemesh/)
-- [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/stylize-website-js/)
+- [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/projects/1_project/)
 - [Toxicity prediction from molecular graph data](https://tornikeo.github.io/projects/2_project/)
 - Stock market portfolio constructor  
   ... and more
