@@ -19,7 +19,7 @@ profile:
     <a href="mailto:tornikeonoprishvili@gmail.com" title="email"><i class="fa fa-envelope fa-2x"></i>Email</a>
     </div>
     <div class="col-3">
-    <a href="./assets/pdf/TornikeO_CV.pdf" title="resume"><i class="fa fa-file fa-2x"></i>Résumé</a>
+    <a href="./assets/pdf/TornikeO.pdf" title="resume"><i class="fa fa-file fa-2x"></i>Résumé</a>
     </div>
     </div>
     
