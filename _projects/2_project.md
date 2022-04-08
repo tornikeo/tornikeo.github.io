@@ -57,7 +57,7 @@ That last part is what the `Tox21` dataset is all about. As you might have alrea
 
 Usually, the toxicity tests are first done on tissue samples under the microscope, these being called *in vitro* tests, and then on some unlucky lab animals -- called *in vivo* tests. Huge ethical problems aside, this process is *very* expensive. So, much so that many companies are now considering implementing a third kind of testing, aptly called *in silico* testing.
 
-*In silico* tests (meaning in silicon, or in computer chip) are computer programs that take into account thousands of paramters about a given chemical in order to predict its toxicity. 
+*In silico* tests (meaning in silicon, or in computer chip) are computer programs that take into account thousands of parameters about a given chemical in order to predict its toxicity. 
 
 > "Robots are taking our jobs!"  
 > -- Unemployed laboratory rats (circa 2030)
