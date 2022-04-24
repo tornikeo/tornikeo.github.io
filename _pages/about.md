@@ -33,7 +33,7 @@ I am a full-stack AI specialist. Teaching, researching, deploying - you name it.
 
 Here's my a summary of my experience so far:
 
-In 2015, I successfully applied to the faculty of Electrical and Computer Engineering at [Free University of Tbilisi](https://freeuni.edu.ge/en). I graduated [with honours]({{site.baseurl}}/assets/pdf/score-transcript.pdf) in 2019.
+In 2015, I successfully applied to the faculty of Electrical and Computer Engineering at [Free University of Tbilisi](https://freeuni.edu.ge/en). I graduated with honours in 2019. [**Here**]({{site.baseurl}}/assets/pdf/score-transcript.pdf) are my grades.
 
 In 2018, as an undergraduate research scientist, I worked on waveguide [simulations](https://en.wikipedia.org/wiki/Finite-difference_time-domain_method) in MatLab, co-authored two papers and presented them in [Toyama](https://www.piers.org/piers2018Toyama/reg.php) and [Rome](https://www.piers.org/piers2019Rome/) research symposia.
 In 2019, after graduating, I began working as a data scientist, first for [Orient Logic](https://www.ol.ge/en), and later for [ACT Inc.](https://act-global.com/en/main/georgia). Designed a Credit Card Fraud detection system and created collaborative filtering system for pharmaceutical retail stores. 
