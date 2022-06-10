@@ -79,3 +79,51 @@ The entire thing I am solving here can be represented as a neat, 3 column table,
 {:.table}
 
 In this *grossly* incorrect sample table, we have two chemicals (aspirin and adrenaline), two possible effects (cell death and DNA damage) and two possible results (YES and NO). The first two columns are given, the last column has to be predicted. 
+
+The problem is, most of these interactions are missing. In fact, out of the possible 13.9 million interactions, we only have access to 3.7 (a mere 25.5% coverage!).
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0" >
+        {% include figure.html path="https://i.imgur.com/AluU5Um.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+
+    </div>
+</div>        
+<div class="caption">
+    Ratio of known and unknown chemical-assay pairs. Total - 13.9 Mln. pairs. 
+</div>
+
+## Too many sparse features
+
+Initally I was handed a dataset of interactions (described above) and another dataset for chemical descriptions. The latter was supposed to contain the information about the chemicals -- in a machine-friendly format. As it turned out later, this was not at all helpful for the deep learning approach. 
+
+| index     | V1         |       V2 |       V3 |     V4 |     V5 |   V1071 |   V1072 |   V1073 |   V1074 |   V1075 |
+|-----:|:-----------|---------:|---------:|-------:|-------:|--------:|--------:|--------:|--------:|--------:|
+|    0 | 60-35-5    |      178 |  59.0371 | -0.808 |  43.09 |       0 |       0 |       0 |       0 |       0 |
+|    1 | 103-90-2   |     1983 | 151.063  |  0.87  |  49.33 |       0 |       0 |       0 |       0 |       0 |
+|...|
+| 8829 | 541-85-5   |     7822 | 128.12   |  2.337 |  17.07 |       0 |       0 |       0 |       0 |       0 |
+| 8830 | 61949-76-6 |    40326 | 390.079  |  6.13  |  35.53 |       0 |       0 |       0 |       0 |       0 |
+{:.table}
+
+<div class="caption">
+    This 8.8k row dataset contains a chemical-id (CAS Number, to be precise) and a whole lot of chemical features (including moleclar weight and various sparse fingerprint columns). 
+</div>
+
+The V1 to V1075 column names are not helpful at all. To make sense of these columns, a separate csv file was provided, `features_id_name_mappings.csv`. The file contains readable descriptions for what the columns describe. 
+
+| ID      | DESC             |
+|:------|:--------------|
+| FeaID | FeaName       |
+| V1    | casn          |
+| V2    | PubChem_CID   |
+|...|
+| V1074 | ClC1C(Br)CCC1 |
+| V1075 | BrC1C(Br)CCC1 |
+{:.table}
+<div class="caption">
+    First 10 columns contain various chemical IDs (PubChemID, CASN), macro-molecular descriptors (Molecular weight, Chemical XLogP, etc.). The rest 1000+ columns are fully sparse does-pattern-occur-in-the-chemical kind of binary values. 
+</div>
+
+So, now, we have a yet another problem to tackle - the dataset is sparse and requires special handling to work. 
+
+To be continued ...
