@@ -121,9 +121,17 @@ The V1 to V1075 column names are not helpful at all. To make sense of these colu
 | V1075 | BrC1C(Br)CCC1 |
 {:.table}
 <div class="caption">
-    First 10 columns contain various chemical IDs (PubChemID, CASN), macro-molecular descriptors (Molecular weight, Chemical XLogP, etc.). The rest 1000+ columns are fully sparse does-pattern-occur-in-the-chemical kind of binary values. 
+    First 10 columns contain various chemical IDs (PubChemID, CASN), macro-molecular descriptors (Molecular weight, Chemical XLogP, etc.). The rest 1000+ columns are fully sparse *does-this-specific-pattern-occur-in-the-chemical* kind of binary values. 
 </div>
 
-So, now, we have a yet another problem to tackle - the dataset is sparse and requires special handling to work. 
+So, now, we have yet another problem to tackle - the dataset is sparse and requires special handling to work with. 
+
+## So what do we do?
+
+Two words: *Embeddings*, and *Masking*.
+
+The issue with sparse data is apparent - neural networks need a huge amount of compute to crunch down the truly enormous - and mostly empty - vectors into the hidden dense representations. In our case, using a simple linear layer would have to have a shape of $$O(M_{sparse} N_{hidden})$$. With $$ N_{hidden} $$ being at least 100, this nets us a $$1000 \times 100$$ elements just for the first layer alone. 
+
+Luckily, a 2017 paper, ['Mol2vec: Unsupervised Machine Learning Approach with Chemical Intuition'](https://doi.org/10.1021/acs.jcim.7b00616) privded just the right tools for fixing this issue. The Mol2Vec authors trained a large Node2Vec-style model but on molecular graph data. 
 
 To be continued ...
