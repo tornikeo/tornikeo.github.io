@@ -132,6 +132,9 @@ Two words: *Embeddings*, and *Masking*.
 
 The issue with sparse data is apparent - neural networks need a huge amount of compute to crunch down the truly enormous - and mostly empty - vectors into the hidden dense representations. In our case, using a simple linear layer would have to have a shape of $$O(M_{sparse} N_{hidden})$$. With $$ N_{hidden} $$ being at least 100, this nets us a $$1000 \times 100$$ elements just for the first layer alone. 
 
-Luckily, a 2017 paper, ['Mol2vec: Unsupervised Machine Learning Approach with Chemical Intuition'](https://doi.org/10.1021/acs.jcim.7b00616) privded just the right tools for fixing this issue. The Mol2Vec authors trained a large Node2Vec-style model but on molecular graph data. 
+Luckily, a 2017 paper, ['Mol2vec: Unsupervised Machine Learning Approach with Chemical Intuition'](https://doi.org/10.1021/acs.jcim.7b00616) provded just the right tools for fixing this issue. The Mol2Vec authors trained a large Node2Vec-style model on raw molecular graph data. My blog on the "[DeepWalk: Online Learning of Social Representations:](https://medium.com/@tonop15/deepwalk-online-learning-of-social-representations-e67625e0abe0)" explains a related, but slightly different method of how to train neural networks on graph data. The core concept is still the same - Create an auto-encoder style network and train it to predict the graph patterns. After the network converges, use the encoder part of the network as a graph-to-dense transformation tool: you input raw graph data - out comes an $$N$$-dimensional vector that contains a useful representation of the input. In contrast to the classical fingerprinting approaches, this approach has two major benefits: 
+
+- It is much less biased (i.e. it only depends on the data and, as such, is less suseptible to human error).
+- Requires much less compute due to dense representation (300 "float32" entries, vs 1100 sparse "float32" entries.)
 
 To be continued ...
