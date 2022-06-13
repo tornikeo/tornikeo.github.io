@@ -137,4 +137,17 @@ Luckily, a 2017 paper, ['Mol2vec: Unsupervised Machine Learning Approach with Ch
 - It is much less biased (i.e. it only depends on the data and, as such, is less suseptible to human error).
 - Requires much less compute due to dense representation (300 "float32" entries, vs 1100 sparse "float32" entries.)
 
+The second word, *masking*, refers to our unique solution to the overwhelming amount of missing data, along with the need assay encoding. The latter problem of encoding assays comes from the fact that there are over 1500 different assays and we need to somehow input all 1500 into the network with as little computational burden as possible. Recall also, that we are given a very long list of chemical-assay pairs and a corresponding binary result *active* or *inactive*. So, how do we solve all these issues with a single modification?
+
+TODO: Show pivot matrix here
+
+It's simple: 
+- Create a pivot matrix - Chemicals go into rows, assays go into columns. 
+- Each intersection of the pivot matrix is either a 0 or a 1, corresponding to the *inactive* and *active* labels.
+- To encode missing values, create a separate binary matrix of the same size, where 0 refers to a missing chemical-assay interaction, and 1 otherwise.
+
+There you have it. Assay encoding is taken care of, since each column will be predicted by a separate output neuron (and GPU acceleration makes training *a breeze*). But what about the missing data?
+
+Well, for that, we modify the binary cross-entropy loss function. 
+
 To be continued ...
