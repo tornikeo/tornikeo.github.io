@@ -8,6 +8,10 @@ category: fun
 ---
 
 Well, since I'm working on making attentional style transfer [model](https://github.com/GlebSBrykin/SANET/tree/master/style) smaller and faster by replacing the VGGs with much faster MobileNets, I thought it would make it easier to avoid potential bugs by first doing a similar replacement in a much easier task - deep dream.
+<div class="row mt-3" style="justify-content:center;">
+
+<iframe src="https://tornikeo.github.io/embed-deepdream" height="1000px" width="900px" frameborder="0" allowfullscreen></iframe>
+</div>
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
@@ -56,6 +60,9 @@ The hint to the "why?" is the fact that the layer choice matters a **lot**. Earl
 
 ## The problems at hand
 
-Somehow, MobileNet architectures don't work for deep dreams. Concretely, an 
+We a load of problems. First off, we need an autgrad library, for Javascript. The only well-rounded libraary to do that is the `Tensorflow.JS`. Second, we need a way to extract intermediate representations from that a network (that maybe doable with the as a builtin tfjs feature -- hopefully including tfhub models). Third, we need adjust the network input-output size. We need higher definition, and MobileNet, which is a convnet, should easily allow that. 
 
-To be continued...
+Last, but not least, it is important that we carefully replicate every single line of code we have within the original kaggle notebook. NNs have a huge error surface and postpartum NN bugfixing is never fun. 
+
+The project is hosted at [a public repository](https://github.com/tornikeo/embed-deepdream/tree/master).
+
