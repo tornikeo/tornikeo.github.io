@@ -8,18 +8,15 @@ category: fun
 ---
 
 Well, since I'm working on making attentional style transfer [model](https://github.com/GlebSBrykin/SANET/tree/master/style) smaller and faster by replacing the VGGs with much faster MobileNets, I thought it would make it easier to avoid potential bugs by first doing a similar replacement in a much easier task - deep dream.
-<div class="row mt-3" style="justify-content:center;">
 
-<iframe src="https://tornikeo.github.io/embed-deepdream" height="1000px" width="900px" frameborder="0" allowfullscreen></iframe>
-</div>
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="/assets/img/model-arch.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        <iframe src="https://tornikeo.github.io/embed-deepdream" height="805px" width="550px" frameborder="0" allowfullscreen></iframe>
     </div>
 </div>
 <div class="caption" >
-    Model architecture from original <a href="https://arxiv.org/abs/1812.02342">paper</a>
+    Interactive deepdream (Based on MobileNetV2's deep features)
 </div>
 
 [DeepDream](https://en.wikipedia.org/wiki/DeepDream) works by performing a gradient *ascent* on an image, using a pre-trained network activations as loss. Something like this:
@@ -65,4 +62,35 @@ We a load of problems. First off, we need an autgrad library, for Javascript. Th
 Last, but not least, it is important that we carefully replicate every single line of code we have within the original kaggle notebook. NNs have a huge error surface and postpartum NN bugfixing is never fun. 
 
 The project is hosted at [a public repository](https://github.com/tornikeo/embed-deepdream/tree/master).
+
+## Dev logbook
+
+### 2022 Jun 18, 23:40 TornikeO
+
+In order to use more feature layers from the base model (MobileNetV2), and to also have more control over model parameters, I opted for generating a custom TFJS model. 
+
+Inferene speed is of paramount importance, so, I compared the following promising model architectures for speed on CPU:
+
+- MobileNetV3Small (62.2 ms)
+- MobileNetV2 (**61.1 ms**)
+- EfficientNetV2B0 (111 ms)
+- EfficientNetB0 (112 ms)
+
+I finally went with MobileNetV2. 
+
+
+### 2022 Jun 19, 01:10 TornikeO
+
+Including the rescaling layer into the model isn't going to be easy, since Lambda layers are not supported within TFJS converter. Instead chose to leave that task to the JS codebase. So, **scaling is required** (input has to be in -1 to 1 range)!.
+
+The Deep Dream requires feature vectors (or hidden activations, as they call it). I don't know how to get intermediate outputs from loaded TFJS models, so, instead that task goes to Python part: The conversion-ready model already outputs 5 feature vectors from `block_n_add` layers. In th end, the `n` should be a tweakable UI input. 
+
+Model also doesn't input Batch size, that's handled by the signature function. Output is also batch-less. Also, fp16 quantization happens to all nodes. Had to double check that there are no int nodes within the model (Learned the hard way what reckless quantization can do to a model with int nodes). 
+
+### 2022 Jun 19, 18:10 TornikeO
+
+Fixed the issue with model path. Turns out, `webpack.comon.js` redirects all queries from `'assets/models/*'` to the `public/models` directory. Also tweaked the learning rate and updated the `getGradient` function to gather gradients from multiple hidden layers. 
+
+Seems like higher learning rates (0.1,0.05) are more unstable for shallower layers like `block_1_add` but not deeper ones. 
+
 
