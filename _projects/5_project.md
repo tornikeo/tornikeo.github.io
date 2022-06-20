@@ -63,6 +63,12 @@ Last, but not least, it is important that we carefully replicate every single li
 
 The project is hosted at [a public repository](https://github.com/tornikeo/embed-deepdream/tree/master).
 
+## Rudimentary implementation
+
+Following in the footsteps of the [popular tensorflow implementation](https://www.tensorflow.org/tutorials/generative/deepdream) of the DeepDream algorithm, I set up a training loop using the TFJS library, backed by common JS tools, such as [Webpack](https://webpack.js.org/), [NPM](https://www.npmjs.com/) and [NodeJS](https://nodejs.org/en/). 
+
+Webpack is known to be quite verbose and requires a non-trivial amount of boilerplate in order to function. To avoid this and focus more on the ML aspect of the project, I start off my work with the [webpack boilerplate](https://github.com/taniarascia/webpack-boilerplate), while making sure that all [the contributors](https://github.com/taniarascia/webpack-boilerplate/graphs/contributors) get their authorship, by carefully preserving the commit history within a [new repository](https://github.com/tornikeo/embed-deepdream). 
+
 ## Dev logbook
 
 ### 2022 Jun 18, 23:40 TornikeO
