@@ -12,7 +12,7 @@ categories: day-to-day
 
 ### The issue of creating samples
 
-Here's a quick tip: Sharing a simple link to an impressive ML [showcase website](https://tornikeo.github.io/projects/5_project/) you built from scratch, will increase the chances of you getting hired. Great. So, you want to get a website up and running right away. That's also great, however, unless you have a steady stream of disposable income, you wouldn't want to have a **permanent** **dedicated** **highcpu** **VM** running all the time in the cloud, when typically, you only need to run the sample *once* or *twice* in a week!
+Here's a quick tip: Sharing a simple link to an impressive ML [showcase website]({{site.baseurl}}/projects/5_project/) you built from scratch, will increase the chances of you getting hired. Great. So, you want to get a website up and running right away. That's also great, however, unless you have a steady stream of disposable income, you wouldn't want to have a **permanent** **dedicated** **highcpu** **VM** running all the time in the cloud, when typically, you only need to run the sample *once* or *twice* in a week!
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >

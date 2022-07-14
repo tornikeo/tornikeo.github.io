@@ -33,18 +33,22 @@ I am a full-stack AI specialist. Teaching, researching, deploying - you name it.
 
 Here's my a summary of my experience so far:
 
+## Education
+
 In 2015, I successfully applied to the faculty of Electrical and Computer Engineering at [Free University of Tbilisi](https://freeuni.edu.ge/en). I graduated with honours in 2019. [**Here**]({{site.baseurl}}/assets/pdf/score-transcript.pdf) are my grades.
 
 In 2018, as an undergraduate research scientist, I worked on waveguide [simulations](https://en.wikipedia.org/wiki/Finite-difference_time-domain_method) in MatLab, co-authored two papers and presented them in [Toyama](https://www.piers.org/piers2018Toyama/reg.php) and [Rome](https://www.piers.org/piers2019Rome/) research symposia.
+
+## Employment
+
 In 2019, after graduating, I began working as a data scientist, first for [Orient Logic](https://www.ol.ge/en), and later for [ACT Inc.](https://act-global.com/en/main/georgia). Designed a Credit Card Fraud detection system and created collaborative filtering system for pharmaceutical retail stores. 
 
 In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c). Some of the best projects I've worked on are:
 
-- [Automatic scientific blog writer](https://tornikeo.github.io/projects/7_project/)
-- [Facemesh with mediapipe](https://tornikeo.github.io/facemesh/)
-- [Attentional Style Transfer with TensorflowJS](https://tornikeo.github.io/projects/1_project/)
-- [Toxicity prediction from molecular graph data](https://tornikeo.github.io/projects/2_project/)
-- Stock market portfolio constructor  
-  ... and more
+- [Lightweight pose estimation]({{site.baseurl}}/projects/6_project/)
+- [Automatic scientific blog writer]({{site.baseurl}}/projects/7_project/)
+- [Attentional Style Transfer with TensorflowJS]({{site.baseurl}}/projects/1_project/)
+- [Toxicity prediction from molecular graph data]({{site.baseurl}}/projects/2_project/)  
+  ... [and more]({{site.baseurl}}/projects/)
 
 I have extensive experience in Python, I know my way around git, and docker, and have comprehensive experience with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
