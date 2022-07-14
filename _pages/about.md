@@ -29,9 +29,9 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I am a full-stack AI specialist. Teaching, researching, deploying - you name it. 
+I'm a full-stack AI specialist. Teaching, researching, deploying - you name it. 
 
-Here's my a summary of my experience so far:
+Here's a summary of my experience so far:
 
 ## Education
 
@@ -43,12 +43,15 @@ In 2018, as an undergraduate research scientist, I worked on waveguide [simulati
 
 In 2019, after graduating, I began working as a data scientist, first for [Orient Logic](https://www.ol.ge/en), and later for [ACT Inc.](https://act-global.com/en/main/georgia). Designed a Credit Card Fraud detection system and created collaborative filtering system for pharmaceutical retail stores. 
 
-In early 2021, I joined UpWork as a Freelance [AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c). Some of the best projects I've worked on are:
+In January 2021, I joined UpWork as a [Freelance AI specialist](https://www.upwork.com/freelancers/~01a3aea673f4f7db6c).  
+
+Some of the best projects I've worked on are:
 
 - [Lightweight pose estimation]({{site.baseurl}}/projects/6_project/)
 - [Automatic scientific blog writer]({{site.baseurl}}/projects/7_project/)
 - [Attentional Style Transfer with TensorflowJS]({{site.baseurl}}/projects/1_project/)
 - [Toxicity prediction from molecular graph data]({{site.baseurl}}/projects/2_project/)  
-  ... [and more]({{site.baseurl}}/projects/)
 
-I have extensive experience in Python, I know my way around git, and docker, and have comprehensive experience with both Tensorflow, and PyTorch. Last but not least, I have a solid knowledge of statistics and linear algebra.  
+... [and more]({{site.baseurl}}/projects/)
+
+I have extensive experience in Python, I know my way around git, and docker, and have comprehensive experience with both Tensorflow, and PyTorch. Last but not least, I have solid knowledge of statistics and linear algebra.  
