@@ -25,6 +25,3 @@ Shown below is a ready-to-use writer. Here are some basic instructions if you ha
 *tip: click anywhere within the box and press `tab` to get started*
 
 <iframe width="100%" height="315" src="https://tornikeo.github.io/blogs-for-the-blog-god/" frameborder="0" allowfullscreen></iframe>
-
-
-To be continued ... 

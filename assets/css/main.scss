@@ -13,3 +13,10 @@ $max-content-width: {{ site.max_width }};
   "base",
   "distill"
 ;
+
+.center-role-form {
+  width: fit-content;
+  text-align: center;
+  margin: 1em auto;
+  display: table;
+}
