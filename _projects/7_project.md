@@ -22,6 +22,6 @@ Shown below is a ready-to-use writer. Here are some basic instructions if you ha
 - Press <kbd>enter</kbd> to paste the suggestion
 - To ignore suggestion, press <kbd>esc</kbd>
 
-*tip: click anywhere within the box and press `tab` to get started*
+**tip: click anywhere within the box and press `tab` to get predictions!**
 
 <iframe width="100%" height="315" src="https://tornikeo.github.io/blogs-for-the-blog-god/" frameborder="0" allowfullscreen></iframe>
