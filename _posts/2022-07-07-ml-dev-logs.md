@@ -141,3 +141,136 @@ Several things to try out tomorrow:
 - Omit faulty line and instead manually run `nvidia-smi` within the container. Does this output the expected summary?
 - Start from Ubuntu base image. Install everything by hand. Commit as a new image. Yeah, this sounds exhausting. 
 
+[x] Docker image for both OpenPose
+[ ] Docker image for SHAPY 
+
+## 2022, Jul 28th, 19:41 - TornikeO
+
+Today I had to concentrate on *proving* that SHAPY has accurate measurements. So, I was given a sample video of one of remote colleagues moving around within a video. All I had to do, is extract some frames from the video, run them through first OpenPose and then through SHAPY and then present the results.
+
+So, that's what I did. I was given a 2000px by 1600px video, which, let's be real, is of too high a resolution. I needed an easily automatized way of extracting the frames from the video as well as resizing the resulting frame's *longest* size to the default 600px (that's what the sample SHAPY images already come with). Here's an FFMPEG command that does all that in one go:
+
+```bash
+ffmpeg -i inp.avi -filter:v scale=300:-1 -r 1 images/img_%03d.png
+```
+
+In case you also need to flip the frames around, you can use this
+
+```bash
+ffmpeg -i inp.avi -vf transpose=1 -r 5 images/img_%03d.png
+```
+
+You also can combine all these flags that make sense together. Giving you the ability to easily define preprocessing pipeline.
+
+Second, I forgot that OpenPose in a headless server (docker), requires special args to not fail (the error  logs are not that helpful, although it does mention word "display" at some point).
+
+First, we instantiate the container
+```bash
+# Note that in my case the main repo rests in /home/jupyter/shapy2 path
+# Your's might be different
+# Also, --gpus all is important!
+
+docker run --gpus all -it --rm \
+    -v /home/jupyter/shapy2:/workdir \
+    tornikeo/openpose /bin/bash
+```
+
+Enter the docker env and run the following command (assuming you do have images )
+
+```bash
+# Within tornikeo/openpose, with --gpus all arg
+# --write_images is optional. I like to keep it to sanity check keypoints
+# Make sure that that all the limbs are actually there!
+./build/examples/openpose/openpose.bin \
+    --display 0 --render_pose 0 \
+    --image_dir /workdir/samples/custom/images/ \
+    --write_json /workdir/samples/custom/openpose/ \
+    --write_images /workdir/samples/custom/openpose/keypoint_sanity_check
+```
+
+
+The above command will create json keypoint files. However, it's not ideal. Here's why: Each created file will have an extra '_keypoints' at the end of the file name. To remove it efficiently, **install the `rename` apt package**. I did it outside the docker env, since that doesn't concern openpose. 
+
+```bash
+# OUTSIDE of the docker container, in the keypoints folder.
+# To rename the results to match starter files
+# You might need to install this package!
+# sudo apt install rename
+rename  's/_keypoints//' *
+```
+
+Now we have everything we need for SHAPY to run. We have images and keypoints. Let's run it. I have created a folder `custom` and arranged it to fully mimic the original SHAPY folder structure. That way, you only have to add `custom/` to three places to avoid overwriting SHAPY's included stuff.
+
+```bash
+# You are at SHAPY/
+export PYTHONPATH=$PYTHONPATH:$(pwd)/attributes/
+cd regression
+python demo.py --save-vis true \
+    --save-params true \
+    --save-mesh true \
+    --split test \
+    --datasets openpose \
+    --output-folder ../samples/custom/shapy_fit/ \
+    --exp-cfg configs/b2a_expose_hrnet_demo.yaml \
+    --exp-opts output_folder=../data/trained_models/shapy/SHAPY_A \
+        part_key=pose \
+        datasets.pose.openpose.data_folder=../samples/custom/ \
+        datasets.pose.openpose.img_folder=images  \
+        datasets.pose.openpose.keyp_folder=openpose \
+        datasets.batch_size=1  \
+        datasets.pose_shape_ratio=1.0
+```
+
+Now let's do measurements:
+
+```bash
+# You are at SHAPY/
+export PYTHONPATH=$PYTHONPATH:$(pwd)/attributes/
+cd measurements
+python virtual_measurements.py \
+    --input-folder ../samples/custom/shapy_fit/ \
+    --output-folder=../samples/custom/virtual_measurements/
+```
+Now, the default image outputs are not going to be helpful. You will need to somehow aggreage the N frames you get (each frame gets it's own shapy estimate).
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0" >
+        {% include figure.html path="https://i.imgur.com/b9fn695.png" class="img-fluid rounded z-depth-1" zoomable=false %}
+    </div>
+</div>
+<div class="caption" >
+    Default image that is generated isn't too helpful, when you have many frames.
+</div>
+
+For that, we modify the `measurements/virtual_measurements.py` file a little. We import pickle and add the following lines starting at line 83:
+
+```python
+    # print result <-- this is line 83
+    mmts_str = '    Virtual measurements: '
+    mmts_dict = {}
+    for k, v in measurements.items():
+        value = v['tensor'].item()
+        unit = 'kg' if k == 'mass' else 'm'
+        mmts_str += f'    {k}: {value:.2f} {unit}'
+        mmts_dict[k] = value
+        
+    with open(osp.join(demo_output_folder, 
+                        npz_file.replace('npz', 'pickle')), 'wb') as handle:
+        pickle.dump(mmts_dict, handle)
+```
+
+We save measurements with `mmts_dict[k] = value` and export it as a pickle. This is done for each frame. So, we need another script, which does the following:
+
+```python
+import pickle
+import os
+import glob
+import pandas as pd
+meas = []
+for file in glob.glob('*.pickle'):
+    meas.append(pickle.load(open(file,'rb')))
+meas = pd.DataFrame(meas)
+print(meas.describe())
+```
+
+That's it for today. We have an estimate and we have statistics. 
