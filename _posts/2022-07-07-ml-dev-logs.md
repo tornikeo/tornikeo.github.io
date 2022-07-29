@@ -274,3 +274,110 @@ print(meas.describe())
 ```
 
 That's it for today. We have an estimate and we have statistics. 
+
+## 2022, Jul 29th, 22:05 - TornikeO
+We have little in the way of discoveries today. However, I did manage to make an **end-to-end** jupyter notebook that inputs a video and outputs a measurement, based on the $$N$$ evenly-spaced frames from it.
+
+Some issues were definitely encountered, though. Let's go over the major ones.
+
+First off, the design. It is tempting to try to write the most general program for the given task, and just the thought of every possiblity might make you a *very* inefficient programmer. So, instead, what I think about is the functonality that 95% of the usecases are going to be happy with? Bonus points if you try to write the code so that it's easy to extend and modify (depends on as little as possible and is as easy to understand as possible). I went with the good 'ol main for loop design. After all, we will be given a list of videos, and we gotta measure the whole lot of 'em. So, the the pseudo-code looks like this:
+
+```python
+for video in videos:
+    frames = ffmpeg_extract_frames(video, num_frames)
+    keypoints = openpose_keypoints(frames)
+    shapes_3d = shapy_estimate_shape(frames, keypoints)
+    all_meas = virtual_meas_tool(shapes_3d)
+    print('Video: ', video, 'Final meas: ', mean(all_meas))
+```
+
+Easy, right? Well, almost. The FFMPEG is easy enough:
+
+```bash
+ffmpeg -i {input_video} \
+    -hide_banner \
+    -filter:v scale=300:-1 \
+    -vframes {num_frames} \
+    {img_dir}/img_%03d.jpg
+```
+
+OpenPose lives inside a docker container, so its a bit verbose:
+
+```bash
+docker run --gpus all \
+    -it --rm \
+    -v {output_dir/'images'}:/workdir/input \
+    -v {output_dir/'openpose'}:/workdir/json \
+    -v {output_dir/'openpose'/'pose'}:/workdir/pose \
+    tornikeo/openpose:latest \
+        ./build/examples/openpose/openpose.bin \
+            --display 0 \
+            --image_dir /workdir/input \
+            --write_json /workdir/json/ \
+            --write_images /workdir/pose
+```
+
+There is a potential bug source here - sometimes openpose doesn't detect all keypoints, leading to weird final measurements in SHAPY. To prevent that, we'll have to filter the outputs, making sure this doesn't happen.
+
+We also need to replace the the extra `_keypoints` suffix in file names like so:
+
+```py
+for kpt in (output_dir/'openpose').glob('*.json'):
+    kpt.rename(str(kpt).replace('_keypoints',''))
+```
+
+Now comes the hard part. I have to different conda environment in the following cell, since, at the time, I didn't know how to change notebook kernel in jupyterlab without restarting it. Here's the trick to do it:
+
+```bash
+%%bash -s "$output_dir" #<-- more about this below!
+eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+export PYTHONPATH=$PYTHONPATH:$(pwd)/attributes/
+conda activate shapy2
+cd regressor
+python demo.py --save-vis true \
+    --save-params true \
+    --save-mesh true \
+    --split test \
+    --datasets openpose \
+    --output-folder $1/shapy_fit \
+    --exp-cfg configs/b2a_expose_hrnet_demo.yaml \
+    --exp-opts output_folder=../data/trained_models/shapy/SHAPY_A \
+        part_key=pose datasets.pose.openpose.data_folder=$1 \
+        datasets.pose.openpose.img_folder=images  \
+        datasets.pose.openpose.keyp_folder=openpose \
+        datasets.batch_size=3  \
+        datasets.pose_shape_ratio=1.0
+```
+
+I copied this from a StackOverflow answer, saw that it worked (`which python` showed the correct path) and never looked back :smiley:. The rest is just the same as in the base repository. Except for one caveat! You see, I'm using a IPython environment. And I need to somehow communicate python variables to `%%bash` cells. Inline bash calls, with `!` operator, is easy, you just wrap your variable in `{curly_brackets}` and it just works. This fails, however, in bash cells. So, you have to use the above approach add `-s "$var_name"` after the `%%bash` line. You can then access that variable as a `$1` temporary variable within the cell. Neat.
+
+Next comes the measurements tool:
+
+```bash
+%%bash -s "$output_dir"
+eval "$(command conda 'shell.bash' 'hook' 2> /dev/null)"
+export PYTHONPATH=$PYTHONPATH:$(pwd)/attributes/
+conda activate shapy2
+cd measurements
+python virtual_measurements.py \
+    --input-folder=$1/shapy_fit/ \
+    --output-folder=$1/virtual_measurements/
+```
+
+Finally, we do the measurements aggregation, like so:
+
+```py
+import pandas as pd
+import pickle
+meas = []
+for file in (output_dir/'virtual_measurements').glob('*.pickle'):
+    meas.append(pickle.load(open(file,'rb')))
+meas = pd.DataFrame(meas)
+meas.describe()
+```
+
+Remember, I modified the `virtual_measurements.py` to pickle the useful vars and save the separately. So, there you have it, the whole pipeline, end to end!
+
+The next step would be to also dockerize the SHAPY and reduce the complexity and fragility of this pipeline. 
+
+  
