@@ -380,4 +380,100 @@ Remember, I modified the `virtual_measurements.py` to pickle the useful vars and
 
 The next step would be to also dockerize the SHAPY and reduce the complexity and fragility of this pipeline. 
 
-  
+## 2022, Jul 31th, 22:24 - TornikeO
+I finally managed to dockerize [SHAPY](https://github.com/muelea/shapy/). Tough task. Here's what I learned.
+
+There are apps that need to access nvidia drivers during the docker build phase. Usually, these apps come with CUDA or C++ source code, and dockerizing them the usual way is not going to work. You will get errors like `No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'`. This error in my case was solved by [this stackoverflow answer](https://stackoverflow.com/a/61737404/14142345). A summary is [provided here as well](https://github.com/NVIDIA/nvidia-docker/wiki/Advanced-topics#default-runtime). In a nutshell, you will need to edit the `/etc/docker/daemon.json` to look like:
+
+```json
+{
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    },
+    "default-runtime": "nvidia"
+}
+```
+
+You have to edit this manually into the `daemon.json` file and then do `sudo systemctl restart docker` and, then just re-run your `docker build` commands. The error will be resolved.
+
+Second, by viewing error logs (you can do that by using `docker build -t myimage . 2>&1 | tee logs.text` to both view progress in-terminal and also output a log file). 
+
+Next, I needed to use `nvcc` during the build process. I was using the `cuda:11.7.0-base-ubuntu20.04` image for the build. Turns out that this image doesn't have `nvcc` (and is thus only 0.6GB in size). Changed the first line into:
+
+```dockerfile
+from nvidia/cuda:11.7.0-devel-ubuntu20.04
+```
+
+And the error was resolved.
+
+Then, I encountered several more errors for missing libraries. For example:
+
+Python Open3D import error:
+
+```python
+>>> import open3d
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.8/dist-packages/open3d/__init__.py", line 56, in <module>
+    _CDLL(str(next((_Path(__file__).parent / 'cpu').glob('pybind*'))))
+  File "/usr/lib/python3.8/ctypes/__init__.py", line 373, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: libGL.so.1: cannot open shared object file: No such file or directory
+```
+Can be solved with 
+
+```bash
+apt-get install -y libgl1-mesa-glx
+```
+
+EGL library error:
+
+```python
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/dist-packages/OpenGL/platform/egl.py", line 67, in EGL
+    return ctypesloader.loadLibrary(
+  File "/usr/local/lib/python3.8/dist-packages/OpenGL/platform/ctypesloader.py", line 45, in loadLibrary
+    return dllType( name, mode )
+  File "/usr/lib/python3.8/ctypes/__init__.py", line 373, in __init__
+    self._handle = _dlopen(self._name, mode)
+OSError: ('EGL: cannot open shared object file: No such file or directory', 'EGL', None)
+```
+        
+Can be solved with:
+
+```bash
+apt-get install -y libglfw3-dev libgles2-mesa-dev
+```
+
+And, finally, `pyglet` error:
+
+```python
+>>> import pyglet
+>>> 
+>>> lib = pyglet.lib.load_library('GLU')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "/usr/local/lib/python3.8/dist-packages/pyglet/lib.py", line 168, in load_library
+    raise ImportError('Library "%s" not found.' % names[0])
+ImportError: Library "GLU" not found.
+```
+        
+Can be solved with 
+
+```bash
+apt install freeglut3-dev
+```
+
+Afterwards:
+
+```python
+>>> import pyglet
+>>> lib = pyglet.lib.load_library('GLU')
+>>> lib
+<CDLL 'libGLU.so.1', handle cc2360 at 0x7faa081d3460>
+>>>
+```
+With these, I assembled a working, ready-to-use docker image at [`tornikeo/shapy`](https://hub.docker.com/repository/docker/tornikeo/shapy). Image is **10GB** (!) in size. So, beware. It also doesn't contain model's weights. Those have to be downloaded from the [website](https://shapy.is.tue.mpg.de/). 
