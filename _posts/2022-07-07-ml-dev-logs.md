@@ -477,3 +477,37 @@ Afterwards:
 >>>
 ```
 With these, I assembled a working, ready-to-use docker image at [`tornikeo/shapy`](https://hub.docker.com/repository/docker/tornikeo/shapy). Image is **10GB** (!) in size. So, beware. It also doesn't contain model's weights. Those have to be downloaded from the [website](https://shapy.is.tue.mpg.de/). 
+
+## 2022, Aug 9th, 12:24 - TornikeO
+
+In case you get the following error while doing a `docker run --gpus`: 
+
+```bash
+docker: Error response from daemon: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error running hook #0: error running hook: exit status 1, stdout: , stderr: Auto-detected mode as 'legacy'
+nvidia-container-cli: requirement error: unsatisfied condition: cuda>=11.7, please update your driver to a newer version, or use an earlier cuda container: unknown.
+```
+
+Change the command to run the docker to the following:
+
+```bash
+docker run --gpus all --env NVIDIA_DISABLE_REQUIRE=1 ...
+```
+
+Make sure that within the container, `nvidia-smi` is still accessible.
+
+
+If for some reason, a GCloud GPU-enabled VM, where you did run the initial driver installation script, can't access GPU,
+when trying to start `docker run --gpus` instance, you will get an error:
+
+```bash
+nvidia-container-cli: initialization error: nvml error: driver not loaded: unknown.
+```
+
+If this VM also can't execute `nvidia-smi` on host as well, you will have to do the following ([cocumented on GCLOUD](https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#installation_scripts)):
+
+```bash
+curl https://raw.githubusercontent.com/GoogleCloudPlatform/compute-gpu-installation/main/linux/install_gpu_driver.py --output install_gpu_driver.py
+sudo python3 install_gpu_driver.py
+sudo nvidia-smi
+```
+
