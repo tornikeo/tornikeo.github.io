@@ -3,7 +3,7 @@ layout: page
 title: Style Attentional Networks in JS
 description: Attentional neural networks are a powerful tool for building language models. But we can also use attention mechanism to stylize images efficiently enough for <b>within</b> the web-browser. 
 img: assets/img/sanet.jpg
-importance: 1
+importance: 2
 category: work
 ---
 
