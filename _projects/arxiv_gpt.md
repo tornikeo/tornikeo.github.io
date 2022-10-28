@@ -23,4 +23,4 @@ Shown below is a ready-to-use writer. Here are some basic instructions if you ha
 
 **tip: click anywhere within the box and press `tab` to get predictions!**
 
-<iframe width="100%" height="315" src="https://tornikeo.github.io/blogs-for-the-blog-god/" frameborder="0" allowfullscreen></iframe>
+<iframe width="100%" height="315"  frameborder="0" allowfullscreen src="https://tornikeo.github.io/blogs-for-the-blog-god/"></iframe>

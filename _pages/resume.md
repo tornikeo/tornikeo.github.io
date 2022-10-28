@@ -5,7 +5,5 @@ title: résumé
 nav: true
 ---
 
-Here's my resume. Keep in mind that it might not be up to date. **[You can also view it full-screen]({{site.baseurl}}/assets/pdf/TornikeO.pdf)**. 
 
-{% include iframe.html path="assets/pdf/TornikeO.pdf" width=800 height=1220 style="right:120px; position:relative;" %}
-
+<iframe width="100%" height="2000"  frameborder="0" allowfullscreen src="https://docs.google.com/document/d/e/2PACX-1vQDQjpCZIFdbZaVg-GIKruQAA_Da02bM7MGgJ7R2_-mt1P2bcXZqz3tqzfUlmB09QLkCbC-eCHssKeA/pub?embedded=true"></iframe>
