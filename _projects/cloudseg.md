@@ -3,7 +3,7 @@ layout: page
 title: 3D mesh segmentation
 description: Analyze and partition indoor 3D spaces into 200 different classes, using transformers!
 video: https://i.imgur.com/TV10o0g.mp4
-importance: 1
+importance: 5
 category: work
 ---
 
