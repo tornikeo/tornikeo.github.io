@@ -11,6 +11,10 @@
         {%- include figure.html
           path=project.img
           alt="project thumbnail" -%}
+        {%- elsif project.video %}
+          {%- include video.html
+            path=project.video
+            alt="project thumbnail" -%}
         {%- endif %}
         <div class="card-body">
           <h2 class="card-title text-lowercase">{{ project.title }}</h2>

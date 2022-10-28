@@ -27,7 +27,7 @@ a, table.table a {
   }
 }
 
-figure, img {
+figure, img, video {
   max-width: 90vw;
 }
 
@@ -61,6 +61,10 @@ blockquote {
   background-color: var(--global-card-bg-color);
   
   img {
+    width: 100%;
+  }
+
+  video {
     width: 100%;
   }
 
