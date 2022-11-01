@@ -1,13 +1,15 @@
 {%- assign path = include.path -%}
 
 <div class="container">
-  <div class='loader loader--snake'></div>
+  <div class="container iframe-with-spinner">
+    <div class='loader loader--snake'></div>
+    <iframe
+    src="{{ include.src }}" 
+    height="{{ include.height | default: 1200}}"
+    width="{{ include.width | default: "100%"}}" 
+    allow="{{ include.allow }}" 
+    frameborder="0" 
+    hidden
+    style="{{ inlude.style }}"></iframe>
+  </div>
 </div>
-
-<!-- <iframe src="{{ include.path }}" 
-height="{{ include.height | default: 900}}"
-width="{{ include.width | default: "100%"}}" 
-allow="{{ include.allow }}" 
-frameborder="0" 
-{{ include.extra_properties }} 
-style="{{ inlude.style }}"></iframe> -->
