@@ -35,4 +35,15 @@ Let's get to the example of a living room. The first stage - class label - assig
 
 {% include yt_video.html src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" caption="A small, investor-focused showcase of Mask3D segmentation (a small living room)" %}
 
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col" >
+        {% include figure.html path="https://i.imgur.com/dGiiSdo.png" class="img-fluid rounded z-depth-1" zoomable=false %}
+    </div>
+</div>
+<div class="caption" >
+    The core of the model - Sparse convnet (Minkowski engine) + Decoder transformer.
+</div>
+
+
 Work-in-progress: enjoy the illustrations, the full description is coming soon...
