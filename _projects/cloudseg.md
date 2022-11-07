@@ -33,13 +33,6 @@ Let's get to the example of a living room. The first stage - class label - assig
 </div>
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col" >
-        <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" title="YouTube video player" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen></iframe>
-    </div>
-</div>
-<div class="caption" >
-    A small, investor-focused showcase of Mask3D in action (Segment a small living room)
-</div>
+{% include yt_video.html src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" caption="A small, investor-focused showcase of Mask3D segmentation (a small living room)" %}
 
 Work-in-progress: enjoy the illustrations, the full description is coming soon...
