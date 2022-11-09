@@ -8,8 +8,7 @@ category: work
 ---
 
 
-Work-in-progress: enjoy the illustrations, the full description is coming soon...
-
+# Intro
 
 <div class="row mt-3">
     <div class="col">
@@ -22,6 +21,23 @@ Work-in-progress: enjoy the illustrations, the full description is coming soon..
 <div class="caption" >
     Per-frame 3D body shape estimation results - right: video from <a href="https://www.pexels.com/@vlada-karpovich">Vlada Karpovich</a>, left: video from <a href="https://www.pexels.com/@polina-tankilevitch/">Polina Tankilevitch</a> on Pexels.
 </div>
+
+The very first project at [Luxolis](http://luxolis.ai/) was concerned with using AI to estimate person's 3D *mesh* from a video stream. And, I mean an accurate, bodyshape aware estimation. 
+
+To make absolutely clear what I mean by "bodyshape aware", here's an excerpt from the abstract of [SHAPY paper](https://ps.is.mpg.de/uploads_file/attachment/attachment/691/00928.pdf):
+
+> *While methods that regress 3D human meshes from im-
+ages have progressed rapidly, the estimated body shapes of-
+ten do not capture the true human shape. This is problematic since, for many applications, accurate body shape is as
+important as pose. The key reason that body shape accuracy
+lags pose accuracy is the lack of data*
+
+In fact, SHAPY allows to actually predict the standard measurements for chest, waist, hips (CWH), in addition to height, weight and a whole other body measurement parameters. While many other methods in 3D mesh estimation use just a default human mesh, SHAPY creates an accurate human body mesh, in addition to an accurate 3D posture of the said mesh. 
+
+
+{% include yt_video.html src="https://www.youtube-nocookie.com/embed/7TzXrL4eV9g" caption="The authors of the paper explain how the model works." %}
+
+
 
 <div class="row mt-3" class="center-role-form">
     <div class="col-12" >
@@ -51,3 +67,4 @@ Work-in-progress: enjoy the illustrations, the full description is coming soon..
 <div class="caption" >
     This 3D body shape is in an usual pose, leaning against a wall. 
 </div>
+
