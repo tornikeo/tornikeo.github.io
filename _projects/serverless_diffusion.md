@@ -2,7 +2,7 @@
 layout: page
 title: Stable diffusion in serverless mode
 description: AI apps require renting an expensive GPU server. Serverless GPUs can provide a cheap alternative!
-img: https://i.imgur.com/ZMVsoEJ.png
+video: https://i.imgur.com/07ylZV6.mp4
 importance: 3
 category: work
 ---
@@ -12,7 +12,7 @@ The Stable-Diffusion-v1-4 checkpoint was initialized with the weights of the Sta
 
 <div class="row" style="justify-content:center;">
     <div class="col" >
-        {% include video.html path="https://i.imgur.com/G4IwsV1.mp4"%}
+        {% include video.html path="https://i.imgur.com/07ylZV6.mp4"%}
     </div>
 </div>
 <div class="caption" >
