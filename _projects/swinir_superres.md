@@ -23,7 +23,7 @@ In this demo, I showcase a working online super-resolution tool, based on [SwinI
 
 <div class="row" style="justify-content:center;">
     <div class="col" >
-        {% include figure.html path="https://github.com/JingyunLiang/SwinIR/raw/main/figs/SwinIR_archi.png"%}
+        {% include figure.html path="https://i.imgur.com/MzUbXIp.png"%}
     </div>
 </div>
 <div class="caption" >
