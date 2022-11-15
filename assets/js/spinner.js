@@ -12,12 +12,13 @@ $(document).ready(function() {
     //         console.log('Nope');
     //     }
     // }, 500)
-    
-    $("#spinner").show()
-    function spinner_swap() {
-        $("#spinner").hide()
-        $("#iframe").removeAttr('hidden')
-    }
-    $("#iframe").ready(spinner_swap)
-    setTimeout(spinner_swap, 20000)
+    $("#spinner").ready(function() {
+        $("#spinner").show()
+        function spinner_swap() {
+            $("#spinner").hide()
+            $("#iframe").removeAttr('hidden')
+        }
+        $("#iframe").ready(spinner_swap)
+        setTimeout(spinner_swap, 20000)
+    })
 })
