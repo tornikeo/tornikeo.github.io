@@ -44,10 +44,10 @@ In January 2021, I joined UpWork as a [Freelance AI specialist](https://www.upwo
 
 Some of the best projects I've worked on are:
 
-- [Lightweight pose estimation]({{site.baseurl}}/projects/6_project/)
-- [Automatic scientific blog writer]({{site.baseurl}}/projects/7_project/)
-- [Attentional Style Transfer with TensorflowJS]({{site.baseurl}}/projects/1_project/)
-- [Toxicity prediction from molecular graph data]({{site.baseurl}}/projects/2_project/)  
+- [Lightweight pose estimation]({{site.baseurl}}/projects/pose_estim/)
+- [Serverless stable diffusion]({{site.baseurl}}/projects/serverless_diffusion/)
+- [Image super-resolution]({{site.baseurl}}/projects/swinir_superres/)
+- [Body shape estimation from a video]({{site.baseurl}}/projects/shapy/)  
 
 ... [and more]({{site.baseurl}}/projects/)
 
