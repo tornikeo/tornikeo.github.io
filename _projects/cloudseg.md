@@ -46,4 +46,9 @@ Let's get to the example of a living room. The first stage - class label - assig
 </div>
 
 
-Work-in-progress: enjoy the illustrations, the full description is coming soon...
+# A Live demo
+
+Follow the instructions down below in order to generate 3D point cloud segmentation, works both indoors and outdoors!
+
+{% include iframe_with_spinner.html src="https://mix3d-demo.nekrasov.dev/mask3d/" height="1000" %}
+
