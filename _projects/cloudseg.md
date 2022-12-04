@@ -48,7 +48,7 @@ Let's get to the example of a living room. The first stage - class label - assig
 
 # A Live demo
 
-Follow the instructions down below in order to generate 3D point cloud segmentation, works both indoors and outdoors!
+Follow the instructions down below in order to generate 3D point cloud segmentation, works both indoors and outdoors. Make sure to use the supported 3D point cloud formats, and to orient the cloud correctly (z-axis points towards positive vertical direction). 
 
 {% include iframe_with_spinner.html src="https://mix3d-demo.nekrasov.dev/mask3d/" height="1000" %}
 
