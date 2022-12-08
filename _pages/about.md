@@ -32,7 +32,7 @@ Here's a summary of my experience so far:
 
 ## Education
 
-In 2015, I successfully applied to the faculty of Electrical and Computer Engineering at [Free University of Tbilisi](https://freeuni.edu.ge/en). I graduated with honours in 2019. [**Here**]({{site.baseurl}}/assets/pdf/score-transcript.pdf) are my grades.
+I graduated from [Free University of Tbilisi](https://freeuni.edu.ge/en) with B.Eng. in 2015 ([score transcript]({{site.baseurl}}/assets/pdf/score-transcript.pdf)).
 
 In 2018, as an undergraduate research scientist, I worked on waveguide [simulations](https://en.wikipedia.org/wiki/Finite-difference_time-domain_method) in MatLab, co-authored two papers and presented them in [Toyama](https://www.piers.org/piers2018Toyama/reg.php) and [Rome](https://www.piers.org/piers2019Rome/) research symposia.
 
