@@ -43,15 +43,15 @@ In addition, there were other, purely business-driven restrictions in place:
 
 ## Live showcase
 
+### Depth estimation
+
+{% include iframe_with_spinner.html src="https://radames-dpt-depth-estimation-3d-voxels.hf.space" height="1050px" %}
+
+### Background removal
+
 Below you can see the background removal tool in action. It is **free to use**:
 
-<iframe
-	src="https://eugenesiow-remove-bg.hf.space"
-	frameborder="0"
-	width="100%"
-	height="850px"
-></iframe>
-
+{% include iframe_with_spinner.html src="https://tornikeo-dis-background-removal.hf.space" height="850px" %}
 
 ## Implementation
 Coming soon...
