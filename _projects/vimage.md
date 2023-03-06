@@ -5,14 +5,24 @@ description: Dev story of building a scalable GPU-backed solution on google clou
 video: https://i.imgur.com/mem0FPB.mp4
 category: work
 ---
-<video loop="loop" autoplay="" playsinline="" muted="" id="mejs_6833802707345928_html5" preload="none" src="https://storage.cloud.google.com/tornikeo-portfolio-cdn/website_diffloop.mp4" style="margin: 0px; width: 100%; height: 500px;">
-				<source type="video/mp4" src="https://storage.cloud.google.com/tornikeo-portfolio-cdn/website_diffloop.mp4">				
-</video>
+
+<figure>
+    <div class="row" class="center-role-form">
+        <div class="col">
+            <video loop="loop" autoplay="" playsinline="" muted="" id="mejs_6833802707345928_html5" preload="none" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/website_diffloop.mp4" style="margin: 0px; width: 100%; height: 100%;">
+            </video>
+        </div>
+        <div class="col">
+            <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </div>
+    <figcaption class="caption">
+        Promotional video from <a href="https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US">VIMAGE</a>, highlighting the main features of the app. 
+    </figcaption>
+</figure>
 
 [VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an award-winning photo-editing software, with over **10 million** total downloads on google play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app's capabilities is shown in this promotional video:
 
-
-<iframe width="100%" height="400" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
 The results look nice and, if you have a keen eye for the ML tech, you will have noticed that the core of the project's success rests on decomposing the image into fore- and background parts, to allow for seamless modification of both parts.
@@ -33,13 +43,11 @@ The core of the project consists of the following three parts:
     Creating an accurate depth map from an RGB image is a very important step in background separation
 </div>
 
-
 In addition, there were other, purely business-driven restrictions in place:
 - Prioritize cost saving
 - Ensure the app can scale up smoothly
 - Optimize code, reduce end-user lag
 - Everything should be hosted on [google cloud platform](https://console.cloud.google.com/)
-
 
 ## Live showcase
 
@@ -51,7 +59,12 @@ In addition, there were other, purely business-driven restrictions in place:
 
 Below you can see the background removal tool in action. It is **free to use**:
 
-{% include iframe_with_spinner.html src="https://tornikeo-dis-background-removal.hf.space" height="850px" %}
+<iframe
+	src="https://eccv2022-dis-background-removal.hf.space"
+	frameborder="0"
+	width="100%"
+	height="450"
+></iframe>
 
 ## Implementation
 Coming soon...
