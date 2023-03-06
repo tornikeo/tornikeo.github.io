@@ -33,11 +33,24 @@ The core of the project consists of the following three parts:
     Creating an accurate depth map from an RGB image is a very important step in background separation
 </div>
 
-In addition, there were additional, purely business-driven restrictions in place:
+
+In addition, there were other, purely business-driven restrictions in place:
 - Prioritize cost saving
 - Ensure the app can scale up smoothly
 - Optimize code, reduce end-user lag
 - Everything should be hosted on [google cloud platform](https://console.cloud.google.com/)
+
+
+## Live showcase
+
+Below you can see the background removal tool in action. It is **free to use**:
+
+<iframe
+	src="https://eugenesiow-remove-bg.hf.space"
+	frameborder="0"
+	width="100%"
+	height="850px"
+></iframe>
 
 
 ## Implementation
