@@ -26,9 +26,11 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm a full-stack AI specialist. Teaching, researching, deploying - you name it. 
+I’m a full-stack machine learning engineer. My work is researching :microscope:, deploying :robot: and explaining :bar_chart:, as quickly as possible.
 
-Here's a summary of my experience so far:
+I'm especially skilled in independently creating AI-based web-services from scratch, using low-cost GPU providers. This is especially helpful for startups and small-to-mid-sized companies looking for PoC AI tools.
+
+Learn more about my past projects at: https://tornikeo.github.io/projects/
 
 ## Education
 
