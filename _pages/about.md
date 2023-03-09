@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: Full-stack AI specialist.
+subtitle: Full-stack Machine Learning Engineer.
 
 profile:
   align: right
