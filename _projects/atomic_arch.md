@@ -39,6 +39,84 @@ The downside to all this, is that it is the underpaid and overworked ~~grad stud
 
 This is why it is incredibly important to automate this process using robotics, and AI. Specifically, this project was fully implemented using Computer Vision (i.e. edge detection, filtration, etc.). 
 
-## Details
+## Set-up
 
-This blog is currently under development. Stay tuned!
+The simplest way to define the ML problem is:
+- In comes a high FPS video feed, depicting the above process, from the point of view of a microscope. For example, this:
+
+
+{% include video.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-raw-compressed.mp4" caption="Excerpt from the input video sample, in the above video, the crystal flake is being transferred to the substrate." width="70%" %}
+
+In the above video, initially the crystal is very blurry, and comes into the focus plane of the microscope, as the PVC it being lowered to the substrate, which lies directly in the focus plane. At some point, the PVC touches the substrate, and the crystal sticks to the substrate. 
+
+
+
+{% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/Screenshot%20from%202023-03-13%2016-47-06.png" class="center-role-form" caption="At this point, the crystal fully touches the substrate, and the plastic/substrate contact line (thick, dark line, in the top left), is fully beyond the crystal." zoomable=true %}
+
+- The goal of the CV application is to is to rapidly dump the following a JSON-ized information to a specified output file:
+    1. Per-frame list of:
+        * unique IDs of all detected crystals
+        * All points of the substrate/plastic contact line
+        * Distances from each detected crystal to the contact line
+    2. Additionally, we have to identify the marker symbol and orientation only once per run. More about that below. 
+    3. Finally, all the processing has to be done in near-real-time performance. And, the processing has to be causal (i.e. no looking into the future frames).
+
+
+{% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-symbol.jpg" class="center-role-form" caption="A sample marker denoting a sector 'D-10' on the substrate. This 'D-10' symbol has to be predicted indepenently of the orientation of the marker." zoomable=true %}
+
+
+
+
+## Implementation
+
+{% include video.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-processed-compressed.webm" caption="Result of CV processsing the video feed (notice how the color of the crystal's ID 'ID09-08' turns to black when the contact line is fully covering it). Green lines from the crystal denote the closest distance to the contact line (also shown as a green curve)" width="70%" %}
+
+In essence, the implementation of this project is separated in following steps:
+1. Use initial 10-20 frames to identify, orient and classify the marker and its symbols.
+2. Use the initial frames to detect the "background" (i.e. the set of pixels on the screen that belong neither to the crystals, nor the symbols.).
+3. Detect crystals by performing canny edge detection, and finding closed contours (except the marker)
+4. Detect the polymer contact *area*, by subtracting the background from current frame and joining all large *bright* areas.
+5. Draw a line between contact and non-contact areas, and that is the **contact line**.
+6. Each crystal is assigned an ID based on its centroid position.
+7. Calculate minimum distances from each crystal to the contact line.
+8. Dump all the required information in the form of a simple JSON, like:
+
+```json
+{
+    "timestamp_ms": 00002131,
+    "frame_num": 239,
+    "crystals": [
+        {
+            "id": "ID09-08",
+            "crystal_contour":[
+                [132, 920],
+                ...
+            ],
+            "is_covered": false,
+            "polymer_distance": 322,
+        }
+        ...
+    ],
+    "polymer": {
+        "polymer_contour": [
+            [10, 123],
+            ...
+        ]
+    },
+    "marker": {
+        "id": "D10",
+        "rotation": -57,
+        "oriented_bounding_box": [[560, 502], [382, 485], ...]
+    }
+}
+```
+
+9. Finally, for visualization purposes, this JSON is loaded into another python script, which makes all the visualizations, and creates a video as shown above.
+
+### Challenges
+
+To be complete...
+
+## Conclusion
+
+To be complete...
