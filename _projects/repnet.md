@@ -2,7 +2,7 @@
 layout: page
 title: Repetition counting - for fitness!
 description: Automatically enumerate reps and sets from a video!
-img: https://i.imgur.com/N9opu9d.gif
+img: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/N9opu9d.gif
 importance: 6
 category: work
 ---
@@ -17,7 +17,7 @@ After a while, I arrived at [this wonderful article by google](https://ai.google
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="https://i.imgur.com/9pZ9XHs.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs.png" class="img-fluid rounded z-depth-1" zoomable=true %}
     </div>
 </div>
 <div class="caption" >

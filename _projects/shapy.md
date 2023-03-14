@@ -2,7 +2,7 @@
 layout: page
 title: 3D body shape estimation from video
 description: Use your smartphone camera to estimate person's precise body shape from a video.
-video: https://i.imgur.com/eLcAtDA.mp4
+video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/eLcAtDA.mp4
 importance: 5
 category: work
 ---
@@ -12,10 +12,10 @@ category: work
 
 <div class="row mt-3">
     <div class="col">
-        {% include figure.html path="https://i.imgur.com/IirfLVw.gif" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/IirfLVw.gif" class="img-fluid rounded z-depth-1" zoomable=true %}
     </div>
     <div class="col">
-        {% include figure.html path="https://i.imgur.com/DsfbqwK.gif" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/DsfbqwK.gif" class="img-fluid rounded z-depth-1" zoomable=true %}
     </div>
 </div>
 <div class="caption" >
@@ -72,7 +72,7 @@ Life isn't simple, and business usually isn't happy with just the given outputs 
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="https://i.imgur.com/8NWyAwQ.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/8NWyAwQ.png" class="img-fluid rounded z-depth-1" zoomable=true %}
     </div>
 </div>
 <div class="caption" >

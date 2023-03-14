@@ -2,7 +2,7 @@
 layout: page
 title: Image super-resolution (live showcase)
 description: 4x your image in both dimensions, for free!
-video: https://i.imgur.com/ahwKchR.mp4
+video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4
 importance: 3
 category: work
 ---
@@ -11,7 +11,7 @@ category: work
 
 <div class="row" style="justify-content:center;">
     <div class="col" >
-        {% include video.html  height="200px" width="50%" class="img-fluid rounded z-depth-1" path="https://i.imgur.com/ahwKchR.mp4"%}
+        {% include video.html  height="200px" width="50%" class="img-fluid rounded z-depth-1" path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4"%}
     </div>
 </div>
 <div class="caption" >
@@ -23,7 +23,7 @@ In this demo, I showcase a working online super-resolution tool, based on [SwinI
 
 <div class="row" style="justify-content:center;">
     <div class="col" >
-        {% include figure.html path="https://i.imgur.com/MzUbXIp.png"%}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/MzUbXIp.png"%}
     </div>
 </div>
 <div class="caption" >

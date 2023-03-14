@@ -17,7 +17,7 @@ When a pharmaceutical company announces a groundbreaking new drug, usually peopl
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://i.imgur.com/OeCjQCn.jpeg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/OeCjQCn.jpeg" class="img-fluid rounded z-depth-1" zoomable=true %}
         <div class="caption">
             The network gradually learns complex molecular patterns by combining basic shapes (from deeptox)
         </div>
@@ -84,7 +84,7 @@ The problem is, most of these interactions are missing. In fact, out of the poss
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="https://i.imgur.com/AluU5Um.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/AluU5Um.png" class="img-fluid rounded z-depth-1" zoomable=true %}
 
     </div>
 </div>        

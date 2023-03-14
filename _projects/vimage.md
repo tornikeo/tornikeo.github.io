@@ -36,7 +36,7 @@ The core of the project consists of the following three parts:
 
 <div class="row">
     <div class="col" >
-        {% include image_comparison.html style="width: 500px;" src_before="https://i.imgur.com/4r6AxEC.png" label_before="Depth map" src_after="https://i.imgur.com/Z78wJUV.png" label_after="Raw image" %}
+        {% include image_comparison.html style="width: 500px;" src_before="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/4r6AxEC.png" label_before="Depth map" src_after="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Z78wJUV.png" label_after="Raw image" %}
     </div>
 </div>
 <div class="caption" >

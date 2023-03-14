@@ -37,7 +37,7 @@ The end-result is a `1,512,512,3` tensor that excites `VGG19` `relu4_1` and `rel
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://i.imgur.com/Vv9MkE6.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6.png" class="img-fluid rounded z-depth-1" zoomable=true %}
         <div class="caption">
             Original image
         </div>

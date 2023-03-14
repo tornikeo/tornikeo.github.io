@@ -2,7 +2,7 @@
 layout: page
 title: 3D mesh segmentation
 description: Analyze and partition indoor 3D spaces into 200 different classes, using transformers!
-video: https://i.imgur.com/TV10o0g.mp4
+video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/TV10o0g.mp4
 importance: 5
 category: work
 ---
@@ -15,7 +15,7 @@ Let's get to the example of a living room. The first stage - class label - assig
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col" >
-        {% include figure.html path="https://i.imgur.com/5ArYydI.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
     </div>
 </div>
 <div class="caption" >
@@ -25,7 +25,7 @@ Let's get to the example of a living room. The first stage - class label - assig
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col" >
-        {% include image_comparison.html src_before="https://i.imgur.com/BlWeOP8.jpg" label_before="SoftGroup segmentation" src_after="https://i.imgur.com/vdXtHTB.jpg" label_after="Mask3D segmentation" %}
+        {% include image_comparison.html src_before="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/BlWeOP8.jpg" label_before="SoftGroup segmentation" src_after="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/vdXtHTB.jpg" label_after="Mask3D segmentation" %}
     </div>
 </div>
 <div class="caption" >
@@ -38,7 +38,7 @@ Let's get to the example of a living room. The first stage - class label - assig
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col" >
-        {% include figure.html path="https://i.imgur.com/dGiiSdo.png" class="img-fluid rounded z-depth-1" zoomable=false %}
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo.png" class="img-fluid rounded z-depth-1" zoomable=false %}
     </div>
 </div>
 <div class="caption" >
