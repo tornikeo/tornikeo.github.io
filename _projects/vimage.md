@@ -2,7 +2,7 @@
 layout: page
 title: VIMAGE - Accelerate, Simplify, Deploy
 description: Dev story of building a scalable GPU-backed solution on google cloud platform
-video: https://i.imgur.com/mem0FPB.mp4
+video: https://storage.googleapis.com/tornikeo-portfolio-cdn/vimage-promo.webm
 category: work
 ---
 
