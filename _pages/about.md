@@ -30,7 +30,7 @@ I’m a full-stack machine learning engineer. My work is researching, deploying 
 
 I'm especially skilled in independently creating AI-based web-services from scratch, using low-cost GPU providers. This is especially helpful for startups and small-to-mid-sized companies looking for PoC AI tools.
 
-Learn more about my past projects at: https://tornikeo.github.io/projects/
+Learn more about my past projects at: [https://tornikeo.github.io/projects/](https://tornikeo.github.io/projects/)
 
 ## Education
 
