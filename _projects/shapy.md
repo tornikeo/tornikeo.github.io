@@ -61,7 +61,7 @@ Life isn't simple, and business usually isn't happy with just the given outputs 
 
 <div class="row mt-3" class="center-role-form">
     <div class="col-12" >
-        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/tornikeo/tornikeo.github.io/b629c25ae52fe44cff6fd3d238d60f956b835dc4/assets/img/8_project/mean_beta_tpose.ply"></iframe>
+        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://storage.googleapis.com/tornikeo-portfolio-cdn/assets/img/8_project/mean_beta_tpose.ply"></iframe>
     </div>
 </div>
 <div class="caption" >

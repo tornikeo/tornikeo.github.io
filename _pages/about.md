@@ -6,7 +6,7 @@ subtitle: Full-stack Machine Learning Engineer.
 
 profile:
   align: right
-  image: prof_pic.jpg
+  image: jpeg-optimizer_prof_pic.jpg
   address: >
     <div class="row justify-content-center">
     <div class="col-3">
