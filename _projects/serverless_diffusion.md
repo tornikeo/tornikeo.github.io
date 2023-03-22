@@ -18,9 +18,11 @@ The Stable-Diffusion-v1-4 checkpoint was initialized with the weights of the Sta
 # A live showcase
 Below, you will see a sample *free* implementation of stable diffusion model, deployed on a serverless GPU backend. **Note that it might take up to 10-15 seconds to load**. While the boot-up delay can be frustrating, where it is tolerable, server cost savings can be huge. This is especially important for showcase projects and services with occasional demand spikes every now and then. 
 
-Try out the serverless diffusion - it's *nearly* free. *Nearly*, because each invocation takes around 15-20 seconds to finish, and, each *second* costs around $0.00025996. 
+Try out the serverless diffusion - it's *nearly* free. *Nearly*, because each invocation takes around 15-20 seconds to finish, and, each *second* costs around $0.00025996.  **Click the below image to open up the website for it (requires google auth, since it still costs a bit of money to run).**
 
-{% include iframe_with_spinner.html src="https://backend-6uu265amkq-uc.a.run.app/serverless_diffusion/" height="1400" %}
+<a href="https://tornikeo.web.app/login">
+    <img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/Screenshot%20from%202023-03-23%2001-14-02.png">
+</a>
 
 ## How it works
 
