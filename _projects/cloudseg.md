@@ -4,7 +4,7 @@ title: 3D mesh segmentation
 description: Analyze and partition indoor 3D spaces into 200 different classes, using transformers!
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/TV10o0g.mp4
 importance: 5
-category: work
+category: large projects
 ---
 
 Point-cloud segmentation, or "cloudseg" for short, was one of the more challenging projects at Luxolis. The idea was relatively simple though. 

@@ -3,7 +3,8 @@ layout: page
 title: VIMAGE - Accelerate, Simplify, Deploy
 description: Dev story of building a scalable GPU-backed solution on google cloud platform
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/vimage-promo.webm
-category: work
+importance: 4
+category: large projects
 ---
 
 <figure>

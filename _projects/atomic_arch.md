@@ -3,8 +3,8 @@ layout: page
 title: 2D material detection for robotic control
 description: 2D materials are the future of computing. Building them, however requires huge human labor - can we automate this?
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-sample.webm
-importance: 1
-category: work
+importance: 2
+category: large projects
 ---
 
 ## Introduction

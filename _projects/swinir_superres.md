@@ -4,7 +4,7 @@ title: Image super-resolution (live showcase)
 description: 4x your image in both dimensions, for free!
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4
 importance: 3
-category: work
+category: personal
 ---
 
 # Intro on image super-resolution

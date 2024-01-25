@@ -4,7 +4,7 @@ title: Deep Dream with TFJS
 description: Why pay $5 subscription fee when you can deepdream images in your browser?
 img: assets/img/deepdream-monke.png
 importance: 20
-category: fun
+category: personal
 ---
 
 Well, since I'm working on making attentional style transfer [model](https://github.com/GlebSBrykin/SANET/tree/master/style) smaller and faster by replacing the VGGs with much faster MobileNets, I thought it would make it easier to avoid potential bugs by first doing a similar replacement in a much easier task - deep dream.

@@ -4,7 +4,7 @@ title: Lightweight pose estimation with Mediapipe
 description: Ever wondered how do those fancy whatsapp filters work? Here I will use holistic mediapipe for creating full-body meshing.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/gvVCAmX.mp4
 importance: 1
-category: work
+category: projects
 ---
 
 

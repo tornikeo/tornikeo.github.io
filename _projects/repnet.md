@@ -4,7 +4,7 @@ title: Repetition counting - for fitness!
 description: Automatically enumerate reps and sets from a video!
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/N9opu9d.gif
 importance: 6
-category: work
+category: projects
 ---
 
 The "repnet", or "repetition counter network" was a bit of an oddball right from the start. The business wanted to create a "universal workout couting and calorie estimation app, from a video". A task, which, after some careful consideration of recent research and the maximum allowed error rate, I carefully laid out was *impossible*. 

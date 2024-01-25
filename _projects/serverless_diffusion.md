@@ -4,7 +4,7 @@ title: Stable diffusion in serverless mode
 description: AI apps require renting an expensive GPU server. Serverless GPUs can provide a cheap alternative!
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/07ylZV6.mp4
 importance: 3
-category: work
+category: personal
 ---
 
 # Intro on stable diffusion
