@@ -68,7 +68,28 @@ Matchms heavily relies on `numba`, an important [python library](https://numba.r
 
 Unfortunately, matchms, even with using JIT-compiled optimized routines, is unbearably slow for even a modest of chemical pairs (10_000 chemicals compared with 10_000 other chemicals takes a bit over 2 days). We need to compare around 100_000 chemicals with 1_500_000 chemicals. This is completely intractable for `matchms`.
 
-## First steps
+## Why a custom kernel?
+
+Usually in my field, when a job involves writing a custom kernel, the main benefit of doing so is the possible performance gain. Also the performance gain depends on knowing your hardware-specific optimizations really well.
+
+In our case though, a custom kernel was necessary given the nature of the algorithm and size of the problem. The core issue that prevents such an easy solution is that the algorithm fundamentally requires an `O(len(spetra))` disk space to accumulate unfiltered results before reducing these resuls to a single similarity number. ML GPU libraries do not have kernels that can selectively allocate temporary VRAM space per single GPU thread. This means that for every pair, the full memory has to be allocated, which makes even small batch sizes (100 x 100) infeasible to run. More on this in `Experiments` secion.
+
+## The kernel
+
+The kernel was written fully using `numba.cuda` [API](https://numba.pydata.org/numba-doc/latest/cuda/index.html). 
+
+## Results
+
+The `numba.cuda` implementation of the greedy cosine algorithm can run the required 100_000 x 1_500_000 pairwise comparisons in 3-4hrs, using the default parameters in the notebook (`tolerance = 0.1, num_matches=1024, mz_pow = 1, int_pow = 0`).
+
+## Experiments
+
+## Python + joblib
+
+### OpenMP and C++
+
+### Tensorflow
+
 
 
 
