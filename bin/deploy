@@ -94,6 +94,7 @@ git checkout -b $DEPLOY_BRANCH
 # Build site
 # bundle add webrick
 bundle clean --force
+gem update --system
 bundle exec jekyll build
 
 # Delete and move files
