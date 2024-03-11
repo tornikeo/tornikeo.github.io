@@ -9,10 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | blog</title>
+    <title>Tornike  Onoprishvili | 3D mesh segmentation</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
-" />
+    <meta name="description" content="Analyze and partition indoor 3D spaces into 200 different classes, using transformers!" />
     <meta name="keywords" content="tornike, ai, data-scientist, portfolio-website" />
 
 
@@ -33,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.github.io/blog/">
+    <link rel="canonical" href="https://tornikeo.github.io/projects/cloudseg/">
     
     <!-- Dark Mode -->
     
@@ -73,8 +72,8 @@
               </li>
               
               <!-- Blog -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
               </li>
 
               <!-- Other pages -->
@@ -90,8 +89,8 @@
               
 
               <!-- Toggle theme mode -->
-              <div class = "toggle-container">
-                <a id = "light-toggle">
+              <div class="toggle-container">
+                <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
                 </a>
@@ -104,139 +103,127 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <div class="post">
+      <!-- page.html -->
+        <div class="post">
 
-  <div class="header-bar">
-    <h1>AI in the wild</h1>
-    <h2>Supplying AI tools to the masses</h2>
-  </div>
+          <header class="post-header">
+            <h1 class="post-title">3D mesh segmentation</h1>
+            <p class="post-description">Analyze and partition indoor 3D spaces into 200 different classes, using transformers!</p>
+          </header>
 
+          <article>
+            <p>Point-cloud segmentation, or “cloudseg” for short, was one of the more challenging projects at Luxolis. The idea was relatively simple though.</p>
 
-  <ul class="post-list">
-    
+<p>You are given a colored 3D mesh reconstruction of an indoor space (e.g. a living room). You are to assign each vertex the following labels: class label, instance label, and part label.</p>
 
-    
-    
-    
-    
+<p>Let’s get to the example of a living room. The first stage - class label - assigns each vertex (a point in space), one of the predetermined classes (wall, floor, ceiling, chair, etc.). The second stage is actually determining which two points sharing the same <em>class</em>, actually are two different <em>objects</em>.</p>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2022/ml-dev-logs/">Ml Dev Logs</a>
-        
-      </h3>
-      <p></p>
-      <p class="post-meta"> 1 min read &nbsp; &middot; &nbsp;
-        July 7, 2022
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2022">
-          <i class="fas fa-calendar fa-sm"></i> 2022 </a>
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <figure>
 
-          
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-1400.webp" />
+    -->
 
-          
-    </p>
-    </li>
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI.jpg" data-zoomable="">
 
-    
+  </picture>
 
-    
-    
-    
-    
+</figure>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2022/phd-logs/">Research logs - PhD day-to-day log</a>
-        
-      </h3>
-      <p>Arguably honest logs made during my PhD struggles</p>
-      <p class="post-meta"> 13 min read &nbsp; &middot; &nbsp;
-        June 29, 2022
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2022">
-          <i class="fas fa-calendar fa-sm"></i> 2022 </a>
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/tag/research">
-              <i class="fas fa-hashtag fa-sm"></i> research</a> &nbsp;
-              
-            <a href="/blog/tag/logs">
-              <i class="fas fa-hashtag fa-sm"></i> logs</a> &nbsp;
-              
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/day-to-day">
-              <i class="fas fa-tag fa-sm"></i> day-to-day</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2022/correct-mindset/">The correct mindset</a>
-        
-      </h3>
-      <p>How I keep myself sane within AI</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        March 2, 2022
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2022">
-          <i class="fas fa-calendar fa-sm"></i> 2022 </a>
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/tag/mindset">
-              <i class="fas fa-hashtag fa-sm"></i> mindset</a> &nbsp;
-              
-            <a href="/blog/tag/motivation">
-              <i class="fas fa-hashtag fa-sm"></i> motivation</a> &nbsp;
-              
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/day-to-day">
-              <i class="fas fa-tag fa-sm"></i> day-to-day</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-  </ul>
-
-  
-
+    </div>
 </div>
+<div class="caption">
+    Various stages of the Mask3D segmentation. Notice that on the right-hand panel the two instances of the same class ("sofa") are separated.
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <div class="container">
+
+    <figure class="cd-image-container" style="">
+        <img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/BlWeOP8.jpg" alt="Original Image">
+		<span class="cd-image-label" data-type="original">SoftGroup segmentation</span>
+        
+		<div class="cd-resize-img"> <!-- the resizable image on top -->
+			<img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/vdXtHTB.jpg" alt="Modified Image">
+			<span class="cd-image-label" data-type="modified">Mask3D segmentation</span>
+		</div>
+        
+		<span class="cd-handle"></span>
+	</figure> <!-- cd-image-container -->
+</div>
+    </div>
+</div>
+<div class="caption">
+    Mask3D segmentation is much more robust than the current state-of-the-art (Softgroup)
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" title="YouTube video player" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen=""></iframe>
+    </div>
+</div>
+
+<div class="caption">
+    A small, investor-focused showcase of Mask3D segmentation (a small living room)
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-1400.webp" />
+    -->
+
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo.png">
+
+  </picture>
+
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    The core of the model - Sparse convnet (Minkowski engine) + Decoder transformer.
+</div>
+
+<h1 id="a-live-demo">A Live demo</h1>
+
+<p>Follow the instructions down below in order to generate 3D point cloud segmentation, works both indoors and outdoors. Make sure to use the supported 3D point cloud formats, and to orient the cloud correctly (z-axis points towards positive vertical direction).</p>
+
+<div class="container">
+  <div class="container iframe-with-spinner">
+    <svg id="spinner" class="spinner" width="65px" height="65px" viewbox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+      <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+    </svg>
+    <!-- <div id="progress" class="container">
+      <h2>Loading the model...</h2>
+      <div class="progress"></div>
+    </div>Add placeholder -->
+    <iframe sandbox="allow-scripts" id="iframe" src="https://mix3d-demo.nekrasov.dev/mask3d/" height="1000" width="100%" allow="" frameborder="0" hidden="" style=""></iframe>
+  </div>
+</div>
+
+
+          </article>
+
+        </div>
 
     </div>
 
     <!-- Footer -->    
     <footer class="fixed-bottom">
       <div class="container mt-0">
-        &copy; Copyright 2024 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+        © Copyright 2024 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
 
       </div>
     </footer>
