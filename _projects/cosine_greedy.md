@@ -39,6 +39,7 @@ That's the full information we get from a this pair of chemicals. Question is - 
 Greedy Cosine is one of the many ways to compare these pairs of arrays. It does roughly the following:
 
 ```py
+## Algorithm 1 (the thing that goes into the GPU)
 # Accumulation step
 candidates = []
 for mz in A:
@@ -72,13 +73,58 @@ Unfortunately, matchms, even with using JIT-compiled optimized routines, is unbe
 
 Usually in my field, when a job involves writing a custom kernel, the main benefit of doing so is the possible performance gain. Also the performance gain depends on knowing your hardware-specific optimizations really well.
 
-In our case though, a custom kernel was necessary given the nature of the algorithm and size of the problem. The core issue that prevents such an easy solution is that the algorithm fundamentally requires an `O(len(spetra))` disk space to accumulate unfiltered results before reducing these resuls to a single similarity number. ML GPU libraries do not have kernels that can selectively allocate temporary VRAM space per single GPU thread. This means that for every pair, the full memory has to be allocated, which makes even small batch sizes (100 x 100) infeasible to run. More on this in `Experiments` secion.
+In our case, a custom kernel was a necessity given the nature of the algorithm and size of the problem. The core issue that prevents such an easy solution is that the algorithm fundamentally requires an `O(len(spetra))` disk space to accumulate unfiltered results before reducing these results to a single similarity number. ML GPU libraries do not have kernels that can selectively allocate temporary VRAM space per single GPU thread. This means that for every pair, the full memory has to be allocated, which makes even small batch sizes (100 x 100) infeasible to run. More on this in `Experiments` section.
 
 ## The kernel
 
-The kernel was written fully using `numba.cuda` [API](https://numba.pydata.org/numba-doc/latest/cuda/index.html). 
+The kernel was written fully using `numba.cuda.jit` [API](https://numba.pydata.org/numba-doc/latest/cuda/index.html). You can view the [source code](https://github.com/tornikeo/cosine-similarity/) online right now - and even [test it out using Colab in your browser](https://colab.research.google.com/github/tornikeo/cosine-similarity/blob/main/notebooks/samples/colab_tutorial_pesticide.ipynb)!
 
-## Results
+Now, let's talk about specifics:
+
+We are given two large *lists*, called `references` and `queries`.
+
+The references and queries **don't** have a consistent shape - shapes vary from 5 up to 30000! But length of most (99%) spectra are less than 1024.
+
+So, the first step is to truncate spectra to that length, and convert them into homogeneous a contiguous array. We also allocate output space, and feed all three arrays to the GPU. 
+
+This is described in Algorithm 2 (below):
+
+```py
+## Algorithm 2 (the thing that calls Algorithm 1 in batches)
+
+# A nested for-loop, where every reference batch is compared with
+# every query batch. This way, once we run out of batches, 
+# we will have computed all similarities! And, we don't have to 
+# allocate 100s of GBs of memory. Just enough for single batch.
+for references_chunk in batch(references, batch_size = 2048):
+    references_batch = spectra_to_contiguous_array(references_chunk)
+
+    # Optimal batch size is hardware dependent - best values are
+    # usually between 2048 - 8192. Always use powers of two!
+    for queries_chunk in batch(queries, batch_size = 2048):
+        queries_batch = spectra_to_contiguous_array(queries_chunk)
+
+        # We have to pre-allocate outputs for GPU to write in
+        batch_results = empty_array(3, 2048, 2048)
+        
+        # Invoke GPU code (Algo 1)
+        kernel(references_batch, queries_batch, batch_results)
+
+        # Save to disk (necessary if the results are too large for RAM)
+        batch_results.save_to_disk()
+```
+
+This is a simplified version of what is really happening. In an actual code, the recomputation of inner-loop's batches doesn't happen, for example. 
+
+This way, even if we have have `500_000` references and same amount of queries, we can still manage the memory load. In fact, on an RTX4090, it is possible to run `(500k)^2` comparisons within an hour or so (more on that later see `Results and Benchmarks` section below).
+
+![ Grid layout ](/assets/img/cosine_greedy/cosine-batch-layout-grid.jpg)
+
+![ Batch layout ](/assets/img/cosine_greedy/cosine-batch-layout-batch.jpg)
+
+![ Thread layout ](/assets/img/cosine_greedy/cosine-batch-layout-thread.jpg)
+
+## Results and Benchmarks
 
 The `numba.cuda` implementation of the greedy cosine algorithm can run the required 100_000 x 1_500_000 pairwise comparisons in 3-4hrs, using the default parameters in the notebook (`tolerance = 0.1, num_matches=1024, mz_pow = 1, int_pow = 0`).
 

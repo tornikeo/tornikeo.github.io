@@ -62,14 +62,14 @@ In the above video, initially the crystal is very blurry, and comes into the foc
     3. Finally, all the processing has to be done in near-real-time performance. And, the processing has to be causal (i.e. no looking into the future frames).
 
 
-{% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-symbol.jpg" class="center-role-form" caption="A sample marker denoting a sector 'D-10' on the substrate. This 'D-10' symbol has to be predicted indepenently of the orientation of the marker." zoomable=true %}
+{% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-symbol.jpg" class="center-role-form" caption="A sample marker denoting a sector 'D-10' on the substrate. This 'D-10' symbol has to be predicted independently of the orientation of the marker." zoomable=true %}
 
 
 
 
 ## Implementation
 
-{% include video.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-processed-compressed.webm" caption="Result of CV processsing the video feed (notice how the color of the crystal's ID 'ID09-08' turns to black when the contact line is fully covering it). Green lines from the crystal denote the closest distance to the contact line (also shown as a green curve)" width="70%" %}
+{% include video.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/aa-processed-compressed.webm" caption="Result of CV processing the video feed (notice how the color of the crystal's ID 'ID09-08' turns to black when the contact line is fully covering it). Green lines from the crystal denote the closest distance to the contact line (also shown as a green curve)" width="70%" %}
 
 In essence, the implementation of this project is separated in following steps:
 1. Use initial 10-20 frames to identify, orient and classify the marker and its symbols.

@@ -72,7 +72,7 @@ Below you can see the background removal tool in action. It is **free to use**:
 The most pressing constraint of this project was the GPU-requirements of the core layer of the project. This, coupled with the scalability requirements (i.e. a fully managed GPU provider platform) narrowed down our choice of compute providers significantly. At this stage we had just 3 options:
 
 - Set up a manual lightweight server that allocates and de-allocates GPU-powered VMs from `google cloud compute` service.
-- Investigate the `google cloud run anthos` service (which, reportedly provides serveless GPUs)
+- Investigate the `google cloud run anthos` service (which, reportedly provides serverless GPUs)
 - Investigate whether `Google Cloud Vertex AI` could be used for our requirements.
 
 To avoid costly research phase, we consulted with a certified google cloud architect and with their insight, decided to go with `Vertex AI` service. The rough outline of the project was specified during a packed 1 hour-long meeting:

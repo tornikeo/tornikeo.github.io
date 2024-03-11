@@ -7,7 +7,7 @@ importance: 6
 category: projects
 ---
 
-The "repnet", or "repetition counter network" was a bit of an oddball right from the start. The business wanted to create a "universal workout couting and calorie estimation app, from a video". A task, which, after some careful consideration of recent research and the maximum allowed error rate, I carefully laid out was *impossible*. 
+The "repnet", or "repetition counter network" was a bit of an oddball right from the start. The business wanted to create a "universal workout counting and calorie estimation app, from a video". A task, which, after some careful consideration of recent research and the maximum allowed error rate, I carefully laid out was *impossible*. 
 
 So, after some corner-cutting, we arrived at "just count how many reps a person does at a gym". This was also not an easy task. The problem is the typical user is pretty unreliable at providing good quality videos, while also having high initial expectations. 
 

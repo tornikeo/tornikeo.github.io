@@ -1,7 +1,7 @@
 ---
 layout: page
 title: ArxivGPT-2 - scientific writing assistant
-description: We have Codex for coding assistance. Why not also use transformers for assiting with scientific writing? This is where this project comes in.
+description: We have Codex for coding assistance. Why not also use transformers for assisting with scientific writing? This is where this project comes in.
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/c4xxMg4.gif
 importance: 10
 category: personal

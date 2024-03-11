@@ -57,7 +57,7 @@ The hint to the "why?" is the fact that the layer choice matters a **lot**. Earl
 
 ## The problems at hand
 
-We a load of problems. First off, we need an autgrad library, for Javascript. The only well-rounded libraary to do that is the `Tensorflow.JS`. Second, we need a way to extract intermediate representations from that a network (that maybe doable with the as a builtin tfjs feature -- hopefully including tfhub models). Third, we need adjust the network input-output size. We need higher definition, and MobileNet, which is a convnet, should easily allow that. 
+We a load of problems. First off, we need an autgrad library, for Javascript. The only well-rounded library to do that is the `Tensorflow.JS`. Second, we need a way to extract intermediate representations from that a network (that maybe doable with the as a builtin tfjs feature -- hopefully including tfhub models). Third, we need adjust the network input-output size. We need higher definition, and MobileNet, which is a convnet, should easily allow that. 
 
 Last, but not least, it is important that we carefully replicate every single line of code we have within the original kaggle notebook. NNs have a huge error surface and postpartum NN bugfixing is never fun. 
 
@@ -95,7 +95,7 @@ Model also doesn't input Batch size, that's handled by the signature function. O
 
 ### 2022 Jun 19, 18:10 TornikeO
 
-Fixed the issue with model path. Turns out, `webpack.comon.js` redirects all queries from `'assets/models/*'` to the `public/models` directory. Also tweaked the learning rate and updated the `getGradient` function to gather gradients from multiple hidden layers. 
+Fixed the issue with model path. Turns out, `webpack.common.js` redirects all queries from `'assets/models/*'` to the `public/models` directory. Also tweaked the learning rate and updated the `getGradient` function to gather gradients from multiple hidden layers. 
 
 Seems like higher learning rates (0.1,0.05) are more unstable for shallower layers like `block_1_add` but not deeper ones. 
 
