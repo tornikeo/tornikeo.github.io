@@ -1,0 +1,4 @@
+- Add favicon
+- List projects
+- List publications
+- Update actual website
