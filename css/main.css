@@ -2,6 +2,11 @@ header {
     text-align: center;
 }
 
+.soc_icon {
+    width: 50px;
+    margin-left: 5px;
+}
+
 .pic {
     width: 240px;
     height: 240px;
