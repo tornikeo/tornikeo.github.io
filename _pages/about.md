@@ -6,11 +6,12 @@ subtitle: Full-stack Machine Learning Engineer.
 
 profile:
   align: right
-  image: jpeg-optimizer_prof_pic.jpg
+  image: prof_pic.jpg
+  image_circular: true # crops the image to make it circular
 
-news: true  # includes a list of news items
+news: true # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
-social: true  # includes social icons at the bottom of the page
+social: true # includes social icons at the bottom of the page
 ---
 
 I’m a full-stack machine learning engineer. I take client requirements and deliver the end-user tool/product. I handle all of the usual stages, from feasibility evaluation to inference optimization, to long-term API maintenance. This makes it easy for clients to get the result they are looking for, quickly.

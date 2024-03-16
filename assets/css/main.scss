@@ -12,8 +12,14 @@ $max-content-width: {{ site.max_width }};
   "layout",
   "base",
   "distill",
-  "spinners",
-  "image_comparison"
+  "cv",
+  "font-awesome/fontawesome",
+  "font-awesome/brands",
+  "font-awesome/solid",
+  "font-awesome/regular",
+  "tabler-icons/tabler-icons.scss",
+  "tabler-icons/tabler-icons-filled.scss",
+  "tabler-icons/tabler-icons-outline.scss"
 ;
 
 .center-role-form {
