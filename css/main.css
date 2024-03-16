@@ -1,0 +1,10 @@
+header {
+    text-align: center;
+}
+
+.pic {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
