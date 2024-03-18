@@ -53,6 +53,22 @@ video {
 }
 
 
+@media screen and (max-width: 600px) {
+    .project {
+        display: block;
+    }
+    
+    .project img {
+        display: none;
+    }
+
+    .project video {
+        display: none;
+    }
+}
+
+
+
 /* .project.content {
     flex: 1;
     padding: 10px;
