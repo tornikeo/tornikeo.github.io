@@ -6,7 +6,7 @@ subtitle: Full-stack Machine Learning Engineer.
 
 profile:
   align: right
-  image: jpeg-optimizer_prof_pic.jpg
+  image: me_small.jpg
 
 news: true  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
