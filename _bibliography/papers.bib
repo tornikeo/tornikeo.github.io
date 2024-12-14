@@ -3,6 +3,23 @@
 
 @string{aps = {American Physical Society,}}
 
+@article{simms,
+	author = {Onoprishvili, Tornike and Yuan, Jui-Hung and Petrov, Kamen and Ingalalli, Vijay and Khederlarian, Lila and Leuchtenmuller, Niklas and Chandra, Sona and Duarte, Aurelien and Bender, Andreas and Gloaguen, Yoann},
+	title = {SimMS: A GPU-Accelerated Cosine Similarity implementation for Tandem Mass Spectrometry},
+	elocation-id = {2024.07.24.605006},
+	year = {2024},
+	doi = {10.1101/2024.07.24.605006},
+	publisher = {Cold Spring Harbor Laboratory},
+	abstract = {Untargeted metabolomics involves a large-scale comparison of the fragmentation pattern of a mass spectrum against a database containing known spectra. Given the number of comparisons involved, this step can be time-consuming. In this work, we present a GPU-accelerated cosine similarity implementation for Tandem Mass Spectrometry (MS) with approximately 1000-fold speedup compared to the MatchMS reference at a rate of 0.005\% incorrect matches and a rate of 0.002\% incorrect scores. We describe the underlying reasons for these errors and provide means to avoid them.},
+	URL = {https://www.biorxiv.org/content/early/2024/07/25/2024.07.24.605006},
+	eprint = {https://www.biorxiv.org/content/early/2024/07/25/2024.07.24.605006.full.pdf},
+	journal = {bioRxiv},
+  abbr={bioRxiv},
+  bibtex_show={true},
+  code={https://github.com/PangeAI/simms},
+  biorxiv={10.1101/2024.07.24.605006v1}
+}
+
 @article{jandieri2020functional,
   selected={true},
   abbr={Optica},
@@ -14,7 +31,18 @@
   number={12},
   pages={18317--18331},
   year={2020},
-  publisher={Optical Society of America}
+  publisher={Optical Society of America},
+  abstract = {We present a conceptual study on the realization of functional and easily scalable all-optical NOT, 
+  AND and NAND logic gates using bandgap solitons in coupled photonic crystal waveguides. 
+  The underlying structure consists of a planar air-hole type photonic crystal with a hexagonal lattice of air holes 
+  in crystalline silicon (c-Si) as the nonlinear background material. The remaining logical operations can be performed using
+   combinations of these three logic gates. A unique feature of the proposed working scheme is that it operates in the true time-domain,
+  enabling temporal solitons to maintain a stable pulse envelope during each logical operation. Hence, multiple concatenated all-optical
+  logic gates can be easily realized, paving the way to multiple-input all-optical logic gates for ultrafast full-optical digital
+  signal processing. In the suggested setup, there is no need to amplify the output signal after each operation, which can be
+  directly used as a new input signal for another logical operation. The feasibility and efficiency of the proposed logic gates
+  as well as their scalability is demonstrated using our original rigorous theoretical formalism together with full-wave computational
+   electromagnetics.},
 }
 
 @article{jandieri2019digital,
@@ -24,6 +52,26 @@
   title={Digital signal processing in coupled photonic crystal waveguides and its application to an all-optical AND logic gate},
   author={Jandieri, Vakhtang and Onoprishvili, Tornike and Khomeriki, Ramaz and Erni, Daniel and Pistora, Jaromir},
   journal={Optical and Quantum Electronics},
+  abstract = "The realization of all-optical AND logic gates for pulsed signal
+              operation based on the photonic bandgap transmission phenomenon
+              is proposed. We are using realistic planar air-hole type coupled
+              photonic crystal waveguides (C-PCWs) with Kerr-type nonlinear
+              background medium. The novelty of our analysis is that the
+              proposed AND logic gate operates with the temporal solitons,
+              which maintain a stable envelope propagating in the nonlinear
+              C-PCWs, enabling true ultrafast full-optical digital signal
+              processing in the time-domain. The bandgap transmission takes
+              place when the operating frequency is chosen at the very edge of
+              the dispersion curve of one of the supermodes in the C-PCWs. In
+              this regard, our original fast and accurate method is used to
+              efficiently calculate the supermodes of the C-PCW system. The
+              underlying semi-analytical full-wave modal analysis is based on
+              the evaluation of the lattice sums for complex wavenumbers using
+              the transition-matrix method in combination with the generalized
+              reflection-matrix approach. As a proof of concept successful
+              pulse operation of the all-optical AND logic gate is demonstrated
+              in the framework of extensive full-wave finite-difference
+              time-domain electromagnetics analysis.",
   volume={51},
   number={4},
   pages={1--15},
