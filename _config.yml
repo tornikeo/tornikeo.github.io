@@ -58,8 +58,8 @@ github_username: tornikeo # your GitHub user name
 gitlab_username: # your GitLab user name
 linkedin_username: tornike-onoprishvili-928801b6 # your LinkedIn user name
 scholar_userid: QnocfnMAAAAJ # your Google Scholar ID
-orcid_id: 0009-0002-0259-4714 # your ORCID ID
-medium_username: tonop15 # your Medium username
+orcid_id: #0009-0002-0259-4714 # your ORCID ID
+medium_username: #tonop15 # your Medium username
 quora_username: # your Quora username
 publons_id: # your ID on Publons
 research_gate_profile: # your profile on ResearchGate
@@ -68,7 +68,7 @@ work_url: # work page URL
 keybase_username: # your keybase user name
 wikidata_id: # your wikidata id
 dblp_url: # your DBLP profile url
-stackoverflow_id: 14142345 #your stackoverflow id
+stackoverflow_id: #14142345 #your stackoverflow id
 
 contact_note:
 
