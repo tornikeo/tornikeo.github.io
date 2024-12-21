@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.github.io/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornikeo | Page not found</title>
+    <title>Tornikeo | Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="Paper walkthrough" />
     <meta name="keywords" content="tornikeo, tornike, machine-learning, ai, gen-ai, portfolio-website" />
 
 
@@ -32,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.github.io/404.html">
+    <link rel="canonical" href="https://tornikeo.github.io/blog/2024/virchow2/">
     
     <!-- Dark Mode -->
     
@@ -80,7 +80,7 @@
                 </li>
                 
               <!-- Blog -->
-              <li class="nav-item ">
+              <li class="nav-item active">
                 <a class="nav-link" href="/blog/">blog</a>
               </li>
 
@@ -105,16 +105,83 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <!-- page.html -->
+      <!-- _layouts/post.html -->
+
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology</h1>
+    <p class="post-meta">December 18, 2024</p>
+    <p class="post-tags">
+      <a href="/blog/2024"> <i class="fas fa-calendar fa-sm"></i> 2024 </a>
+        ·  
+        <a href="/blog/category/paper-walkthrough">
+          <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a>  
+          
+
+    </p>
   </header>
 
-  <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.github.io/">here</a>.</p>
+  <article class="post-content">
+    <div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@misc</span><span class="p">{</span><span class="nl">zimmermann2024virchow2scalingselfsupervisedmixed</span><span class="p">,</span>
+      <span class="na">title</span><span class="p">=</span><span class="s">{Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology}</span><span class="p">,</span> 
+      <span class="na">author</span><span class="p">=</span><span class="s">{Eric Zimmermann and Eugene Vorontsov and Julian Viret and Adam Casson and Michal Zelechowski and George Shaikovski and Neil Tenenholtz and James Hall and David Klimstra and Razik Yousfi and Thomas Fuchs and Nicolo Fusi and Siqi Liu and Kristen Severson}</span><span class="p">,</span>
+      <span class="na">year</span><span class="p">=</span><span class="s">{2024}</span><span class="p">,</span>
+      <span class="na">eprint</span><span class="p">=</span><span class="s">{2408.00738}</span><span class="p">,</span>
+      <span class="na">archivePrefix</span><span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
+      <span class="na">primaryClass</span><span class="p">=</span><span class="s">{cs.CV}</span><span class="p">,</span>
+      <span class="na">url</span><span class="p">=</span><span class="s">{https://arxiv.org/abs/2408.00738}</span><span class="p">,</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This article is my thought process when looking at Virchow2 models.</p>
+
+<p>Virchow2 provides three new models. All three models are vision-only transformer models used for classifying diseases from histopathology whole-slide images.</p>
+
+<p>Models:</p>
+<ol>
+  <li>Virchow2G 1.9B</li>
+  <li>Virchow2 632M</li>
+  <li>Virchow2G Mini 22M</li>
+</ol>
+
+<p>Smaller models are distillations of larger ones, instead of being trained independently.</p>
+
+<p>Training data is exclusively a 3.1M <a href="https://en.wikipedia.org/wiki/Histopathology" target="_blank" rel="noopener noreferrer">histopathology</a> images. Different tissue types, image authors and stains are available.</p>
+
+<p>All Virchow models here are same architecture as google’s ViT. For example, the Virchow 632M has the exact same shape as <a href="https://huggingface.co/google/vit-huge-patch14-224-in21k" target="_blank" rel="noopener noreferrer">ViT-H from Google</a>. And Virchow2G is the same in shape as ViT-G.</p>
+
+<h2 id="training-details">Training details</h2>
+
+<p>Training images are actually given at different magnifications (called WSI’s). Same tissue is scanned in 5x, 10x, 20x and 40x resolutions. Highest res images are giga-pixel images. They are really hard to train on, directly without some clever workarounds.</p>
+
+<p>This also means that WSI’s might need a different image augmentation approach compared to regular 2D images.</p>
+
+<h2 id="training-data">Training data</h2>
+
+<h3 id="where-do-images-come-from">Where do images come from?</h3>
+<blockquote>
+  <p>Virchow is trained on data from approximately 100,000 patients corresponding to approximately 1.5 million H&amp;E stained WSIs acquired from Memorial Sloan Kettering Cancer Center (MSKCC),</p>
+</blockquote>
+
+<h3 id="how-many-individual-images-do-we-have">How many individual images do we have?</h3>
+
+<p>From original virchow paper:</p>
+
+<blockquote>
+  <p>The training digital pathology dataset comprises 1,488,550 WSIs derived from 119,629 patients. These WSIs are all stained with H&amp;E, a routine stain that stains the nuclei blue and the extracellular matrix and cytoplasm pink. The WSIs are scanned at ×20 resolution or 0.5 mpp using Leica scanners. 
+It’s fair to assume that</p>
+</blockquote>
+
+<p>Virchow2 uses 3.1M WSI’s. WSI’s contain same image at different magnification. What Virchow2 has is 3.1M WSIs, not images. So, image-wise they must have more.</p>
+
+<h3 id="how-many-gpus">How many GPUs?</h3>
+
+<p>Each model is trained on 512 NVIDIA 32GB V100 GPUs.</p>
+
+<h3 id="how-is-loss-calculated-for-largest-model-pretraining">How is loss calculated for largest-model pretraining?</h3>
+
+<p>Training approach is called <a href="https://ai.meta.com/blog/dino-v2-computer-vision-self-supervised-learning/" target="_blank" rel="noopener noreferrer">DINOv2</a>. Paper is <a href="https://arxiv.org/pdf/2304.07193" target="_blank" rel="noopener noreferrer">here</a>. DINO is far from trivial to explain. Long story-short, the loss is calculated based on goodness-of-representation of the <code class="language-plaintext highlighter-rouge">[CLS]</code> token.</p>
 
   </article>
 
