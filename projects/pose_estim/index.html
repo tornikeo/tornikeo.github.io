@@ -9,10 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornikeo | blog</title>
+    <title>Tornikeo | Lightweight pose estimation with Mediapipe</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="A personal website and portfolio of tornikeo, machine learning researcher
-" />
+    <meta name="description" content="Ever wondered how do those fancy whatsapp filters work? Here I will use holistic mediapipe for creating full-body meshing." />
     <meta name="keywords" content="tornikeo, tornike, machine-learning, ai, gen-ai, portfolio-website" />
 
 
@@ -33,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.github.io/blog/">
+    <link rel="canonical" href="https://tornikeo.github.io/projects/pose_estim/">
     
     <!-- Dark Mode -->
     
@@ -81,8 +80,8 @@
                 </li>
                 
               <!-- Blog -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
               </li>
 
               <!-- Resume: Direct link to PDF asset -->
@@ -92,8 +91,8 @@
               </li>
 
               <!-- Toggle theme mode -->
-              <div class = "toggle-container">
-                <a id = "light-toggle">
+              <div class="toggle-container">
+                <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
                 </a>
@@ -106,128 +105,67 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <div class="post">
+      <!-- page.html -->
+<div class="post">
 
-  <div class="header-bar">
-    <h1>AI in the wild</h1>
-    <h2>Supplying AI tools to the masses</h2>
-  </div>
+  <header class="post-header">
+    <h1 class="post-title">Lightweight pose estimation with Mediapipe</h1>
+    <p class="post-description">Ever wondered how do those fancy whatsapp filters work? Here I will use holistic mediapipe for creating full-body meshing.</p>
+  </header>
+
+  <article>
+    <p>Written by: <a href="https://github.com/tornikeo" target="_blank" rel="noopener noreferrer">@tornikeo</a> and <a href="https://openai.com/api/" target="_blank" rel="noopener noreferrer">@GPT3</a></p>
+
+<div class="center-role-form">
+    <div class="col-12">
+        <iframe src="https://tornikeo.github.io/holistic-mediapipe/" height="900" width="1200" allow="camera" allowfullscreen="" frameborder="0" style="
+            -webkit-transform:scale(.84);
+            -moz-transform-scale(.84);
+            right:240px;
+            position:relative;
+        "></iframe>
+    </div>
+</div>
+<div class="caption">
+    The embeddable iframe allows any casual user to 
+    use pose estimation within their web-app, for free!
+</div>
+
+<h3 id="overview-by-tornikeo">Overview by <a href="https://github.com/tornikeo" target="_blank" rel="noopener noreferrer">@tornikeo</a>
+</h3>
+
+<p>Pose estimation is the process of determining the position and orientation of an object in an image. It can be used for a variety of purposes, such as 3D reconstruction, object tracking, and human-computer interaction. The MediaPipe technology can be used to estimate pose from the camera input in real-time. This web-app is completely free, is self-hosted and is very fast.</p>
+
+<p>Additional benefits include - the ability to simply copy-paste the <code class="language-plaintext highlighter-rouge">iframe</code> tag to include the pose estimation on any website. The open source nature of this project (here’s the full <a href="https://github.com/tornikeo/holistic-mediapipe" target="_blank" rel="noopener noreferrer">repo</a>).</p>
+
+<p>Some limitations would be as follows: Since this is self-hosted, its performance heavily depends on the client-side compute capability. Clients without GPU access, for example, could experience drop in FPS.</p>
+
+<p>Future work would be to create android or iOS app for pose estimation - potential uses could be estimating athletic performance, calculating calories spent on exercise or, use AR (augmented reality) approaches to modify the predicted pose into interesting shapes for fun!</p>
+
+<h3 id="overview-by-gpt3">Overview by <a href="https://openai.com/api/" target="_blank" rel="noopener noreferrer">@GPT3</a>
+</h3>
+
+<h4 id="potential-use-cases-for-pose-estimation-web-app">Potential use-cases for pose estimation web-app:</h4>
+
+<p>Pose estimation can be used for a variety of applications. Some potential use-cases for a pose estimation web-app include:</p>
+
+<ul>
+  <li>Tracking the movement of objects in a 3D space</li>
+  <li>Generating 3D models of objects</li>
+  <li>Creating virtual reality experiences</li>
+  <li>Analyzing human movement for health or fitness purposes</li>
+</ul>
+
+<h4 id="usefulness-of-the-web-app">Usefulness of the web-app:</h4>
+
+<p>The web-app is completely free, is self-hosted and is very fast (real-time). This makes it an ideal tool for developers or businesses who want to create applications or services that make use of pose estimation.</p>
+
+<h4 id="summary-and-future-goals">Summary and future goals:</h4>
+
+<p>The pose estimation web-app is a simple and fast way to estimate pose from camera input. The app is free and self-hosted, making it easy to use for developers or businesses. The goal is to eventually port the app to Android or iOS, making it even more accessible.</p>
 
 
-  <ul class="post-list">
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2025/daily-transfomer-perf/">Daily scribbles - on choosing right LLM shapes for GPUs</a>
-        
-      </h3>
-      <p></p>
-      <p class="post-meta"> 4 min read &nbsp; &middot; &nbsp;
-        January 22, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/daily-scribbles">
-              <i class="fas fa-tag fa-sm"></i> daily-scribbles</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2024/tpu/">Google TPUs</a>
-        
-      </h3>
-      <p>Documentation walkthrough</p>
-      <p class="post-meta"> 24 min read &nbsp; &middot; &nbsp;
-        December 19, 2024
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2024">
-          <i class="fas fa-calendar fa-sm"></i> 2024 </a>
-
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/paper-walkthrough">
-              <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2024/virchow2/">Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology</a>
-        
-      </h3>
-      <p>Paper walkthrough</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 18, 2024
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2024">
-          <i class="fas fa-calendar fa-sm"></i> 2024 </a>
-
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/paper-walkthrough">
-              <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-  </ul>
-
-  <nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li><li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
+  </article>
 
 </div>
 
@@ -236,7 +174,7 @@
     <!-- Footer -->    
     <footer class="fixed-bottom">
       <div class="container mt-0">
-        &copy; Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+        © Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
 
       </div>
     </footer>
