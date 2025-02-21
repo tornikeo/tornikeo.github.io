@@ -1,0 +1,1013 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://tornikeo.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tornikeo.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-02-21T10:54:55+00:00</updated><id>https://tornikeo.github.io/feed.xml</id><title type="html">Tornikeo</title><subtitle>A personal website and portfolio of tornikeo, machine learning researcher
+</subtitle><entry><title type="html">Daily scribbles - on choosing right LLM shapes for GPUs</title><link href="https://tornikeo.github.io/blog/2025/daily-transfomer-perf/" rel="alternate" type="text/html" title="Daily scribbles - on choosing right LLM shapes for GPUs" /><published>2025-01-22T00:00:00+00:00</published><updated>2025-01-22T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2025/daily-transfomer-perf</id><content type="html" xml:base="https://tornikeo.github.io/blog/2025/daily-transfomer-perf/"><![CDATA[<p>A100 memory hierarchy - what’s are “perfect” model shape for A100?
+A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?</p>
+
+<p>There’s a thing called <a href="https://github.com/vllm-project/vllm">vLLM</a>. Inference and serving engine for LLMs.</p>
+
+<p>vLLM was built around <strong>PagedAttention</strong> algorithm. Introduced in <a href="https://arxiv.org/abs/2309.06180">paper</a>. What’s a <strong>KV cache</strong>?</p>
+
+<blockquote>
+  <p>KV cache. This is a method for better inference performance. From <a href="https://huggingface.co/blog/kv-cache-quantization">HF</a>. When you are generating long text, a typical autoreg transformer will predict a token by looking at all previous 999 tokens. Then it will predict next token, by looking at previous token and previous 999 tokens. Maybe older tokens could be reused somehow?</p>
+</blockquote>
+
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/kv_cache_quantization/kv-cache-optimization.png" alt="" /></p>
+
+<p>Basically, queries grow downwards (new token = new row), and keys grow leftwards (new token = new column), and values also grow downwards (new token = new row). For processing new token, we only need last row of Q, but full K, V, due to how matrix multiplication works. <em>But</em>, we can simply restore previous K, V, instead of re-computing them. Extra memory, but less compute.</p>
+
+<blockquote>
+  <p>PagedAttention explained on <a href="https://huggingface.co/docs/text-generation-inference/en/conceptual/paged_attention">HF</a>, is a method for inference performance. It optimizes the KV cache, by using lessons from how OS hanldes memory Paging.</p>
+</blockquote>
+
+<p>Amazon’s LLM, rufus was cooked up on top of vLLM.</p>
+
+<p>vLLM supports models up to scale of 405B params, LLAMA 3.1.</p>
+
+<p>Serving is simple <code class="language-plaintext highlighter-rouge">pip install vllm</code> and <code class="language-plaintext highlighter-rouge">vllm serve meta-llama/Llama-3.1-8B</code>. 
+As a python package <code class="language-plaintext highlighter-rouge">vllm</code> has a simple-ish programming API for querying models.</p>
+
+<p>Back to original article.</p>
+
+<p><strong>Mixture of Experts</strong>? <strong>Speculative Decoding</strong>?</p>
+
+<p>There’s the claim: “the most foundamental fact that transformer inference is memory bound”. Let’s see.</p>
+
+<p>===</p>
+
+<p>Preliminaries. GPU memory architecture. A100 80GB SXM has 108 Streaming multiprocessors (SMs), 40MB L2 cache.</p>
+
+<p>When doing inference i.e. <code class="language-plaintext highlighter-rouge">model.generate(prompt)</code> these things happen:</p>
+<ol>
+  <li>Load layer matrices from HBM to L2 to SM.</li>
+  <li>Do matmul, and use tensor cores</li>
+</ol>
+
+<p>Loading part takes much longer than tensor core part.</p>
+
+<p>Suppose we have A100:</p>
+<ul>
+  <li>108 SM, DRAM 80 G, 40M L2 cache</li>
+  <li>bf16 tensor core: 312 tflops</li>
+  <li>DRAM mem bw, 2.039 TB/s</li>
+</ul>
+
+<p>If model is larger than 80GB, it’s split up:</p>
+<ul>
+  <li>Connection by NVLink 300GB/s = 0.3 T/sec</li>
+</ul>
+
+<p>See the problem? 312 TFLOPS » 2.03 TB/s » 0.3 TB/s  » 0.006 TB/s</p>
+
+<p>This seems to show that memory is the main bottleneck. Or is it?</p>
+
+<p>A100 prefers doing 312 operations per each 2.039 loaded bytes. How on <em>Earth</em> can you do 312 operations for approximately 2 bytes?</p>
+
+<p>The matrix multiplication with 2 N-square matrices, has arithmetic intensity proportional to N. Therefore, larger matrix sizes might actually be compute bound. This also means that there’s some sweet-spot matmul size that the GPU likes most.</p>
+
+<p>This also means that any op that is elementwise (e.g. activaions) will always be memory bound. For example:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 512, is compute bound</li>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 1, is memory bound</li>
+</ul>
+
+<p><strong>Kernel fusion</strong> works between an <code class="language-plaintext highlighter-rouge">nn.Linear</code> and a <code class="language-plaintext highlighter-rouge">nn.Relu</code>, or any other activation. Since activation is mem bound, and elementwise, we can immediately apply relu inside CUDA kernel, before returning output to HBM.</p>
+
+<p>Aha. Interesting bit. About online inference. Throughput vs latency:</p>
+<ul>
+  <li>Offline: if we are evaluating the model (offline), and no user waits at the end of the screen, we should increase batch size.</li>
+  <li>Online: if user is waiting, the optimal speed to generate next token is the average human read speed, in tokens. Otherwise human might complain.</li>
+</ul>]]></content><author><name></name></author><category term="daily-scribbles" /><summary type="html"><![CDATA[A100 memory hierarchy - what’s are “perfect” model shape for A100? A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?]]></summary></entry><entry><title type="html">Google TPUs</title><link href="https://tornikeo.github.io/blog/2024/tpu/" rel="alternate" type="text/html" title="Google TPUs" /><published>2024-12-19T00:00:00+00:00</published><updated>2024-12-19T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2024/tpu</id><content type="html" xml:base="https://tornikeo.github.io/blog/2024/tpu/"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<ol>
+  <li>CPUs are have one really fast processor and are bound by memory load/save speed.</li>
+  <li>GPUs have many tiny CPUs inside, and really large memory load/save speed.</li>
+  <li>TPUs don’t have either. Instead, e.g. TPU v3:
+    <ul>
+      <li>Has two systolic ALUs of size 128 x 128. These are ALUs that are laid out in 128 x 128 grid.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The next animation shows how the network “weights” are laid out inside a TPU.</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image4_5pfb45w.gif" alt="" /></p>
+
+<p>And this animation shows the “systolic” movement of data inputs into TPUs:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image1_2pdcvle.gif" alt="" /></p>
+
+<p>So, as far as I understand, these two above animations show a pair-wise convolution between all weights and all inputs. The only thing that is really important here is that from the animations it seems TPUs don’t re-load the used inputs into HBM. From the animations it seems each ALU passes on the inputs to the next ALU vertically after processing. HBM access is really slow. If ALUs can really pass data upstream like that, that’d make the processing much faster. Interesting indeed.</p>
+
+<p>On the horizontal side, it also seems that after processing a chunk of the weights x inputs, ALU passes the accumulated results to the right-side ALU. It is interesting what exactly passes in ALU-to-ALU transfer operations.</p>
+
+<p>Recommendations:</p>
+<ol>
+  <li>Reshape operations should be avoided. Shapes must stay constant. Shapes are actually “compiled”, or baked into model. If you don’t use that extra 8 cells, the compiled will still add those and discard them afterwards.</li>
+  <li>Matrices should be as large as possible and at multiples of 8</li>
+  <li>Matrix multiplications are easiest to perform. Any other operation (add, sub, reshape) are slower.</li>
+</ol>
+
+<h2 id="summary">Summary</h2>
+
+<p>Surprise-surprise, vanilla transformers are really well-suited for google’s TPUs. Especially large ones with large enough hidden dimension. I’d be fair to say that depth of the model won’t matter as much as the hidden size.</p>
+
+<p>Second, it’s best to use JAX for getting your model to work on a TPU. Don’t use PyTorch. JAX has a better support for TPUs. Don’t use TensorFlow under any circumstance.</p>
+
+<p>We know something about the heart of the machine now – what about the rest? What about the TPU host, its disk size, case studies, etc.</p>
+
+<h1 id="system-arch">System arch</h1>
+
+<h2 id="tpu-related-terms">TPU-related Terms</h2>
+
+<ol>
+  <li>Batch Inference: Run when available. Slow as heck.</li>
+  <li>TPU chip contains TensorCores (TC). Better TPUs have more/faster TCs.
+ TC has many matrix-multiply units (MXUs), a vector unit and scalar unit.
+ MXU is either 256x256 (v6e and later) or 128x128 multiply accumulator. MXUs are the workhorse of the TPUs. 
+ TPUs do multiplication in bfloat16, and accumulation in FP32.
+ Vector unit does activations and softmax. Scalar unit does control flow and mem address ops.</li>
+  <li>TPU cube. This is a topology of several connected TPUs. TPU is adjacent to 6 other TPUs, I guess. Starts with v4 and later TPUs.</li>
+  <li>Multislice is connection between several TPU slides. Of course, TPU slices communicate better than a multislice.</li>
+  <li>Cloud TPU ICI resiliency – it’s just a safeguard used when connecting TPU cubes with each other.</li>
+  <li>Queued resource – A representation of TPU resources, used to enqueue and manage a request for a single-slice or multi-slice TPU environment. Basically, queued resource is how you stand in queue, when wanting to access a TPU. This has to be connected with “Batch Inference”.</li>
+  <li>Single host, multi host, and sub host – TPU “host” is a linux VM that controls a TPU. TPUs can have multiple hosts and a host can have many TPUs. A Sub-host workload would mean a process doesn’t use all TPUs of the host.</li>
+  <li><strong>Slice</strong> – Pod slice is a collection of chips that are connected with really fast chip interconnects (ICI). Slices can have different ICI connection shapes, this is called chip topology, and different number of chips. A slice can also be described in total number of TensorCores it has too.</li>
+  <li>SparseCore – if you have a large recommendation engine that relies on embedding vectors, you likely want to use SparseCore. v5 and later chips have specialized hardware for this, called “SparseCores”.</li>
+  <li><strong>TPU Pod</strong> – A collection of TPUs that are physically close to each other and connected with a really fast network. TPU Pods are what you will use if you want to train a large model that doesn’t fit on a single TPU HBM.</li>
+  <li><strong>TPU VM or “worker”</strong> – A virtual machine running Linux that has access to the underlying TPUs. For practical purposes, it’s an ssh terminal that can compile and run TPU based XLA code.</li>
+  <li>TensorCores – these do efficient matrix multiplications. See this <a href="https://dl.acm.org/doi/pdf/10.1145/3360307">ACM article</a> for details.</li>
+  <li>TPU versions – TPU chip architecture changes a lot between chips. AFAIK, there’s smaller incentive in keeping everything backwards-compatible, so google changes TPUs a lot between versions.</li>
+</ol>
+
+<h1 id="tpu-vm-images">TPU VM images</h1>
+
+<p>A default vm for TPUs is <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>. There are others too.</p>
+
+<p>What’s inside <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>?</p>
+
+<h1 id="tpu-versions">TPU versions</h1>
+<p>All TPUs have bf16 mul, fp32 accumulation.</p>
+
+<h2 id="tpu-v6e">TPU v6e</h2>
+<p>Somewhat similar to v5e, but newer. Designed for both training and tuning.</p>
+
+<p>Each v6e has 1 TC and each TC has 2 MXUs.</p>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong></li>
+  <li>Memory/BW: <strong>32GB</strong>,  1640 Gbps</li>
+  <li>Peak perf: 918 TFLOPs</li>
+  <li>Max Pod size: 8960 TPUs (!!)</li>
+  <li>ICI BW: 3584 Gbps</li>
+  <li>Max pod size: 256 Chips</li>
+  <li>All-reduce bandwidth per Pod: 102 TB/s</li>
+</ol>
+
+<p><strong>TODO how much CPU resources does host have in for v6e?</strong></p>
+
+<h2 id="tpu-v5p">TPU v5p</h2>
+<p>For training. This chip is an absolute beast.</p>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong></li>
+  <li>Memory/BW: <strong>95GB</strong>,  2765 Gbps</li>
+  <li>Peak perf: 459 TFLOPs</li>
+  <li>Max Pod size: 8960 TPUs (!!)</li>
+  <li>ICI BW: 4800 Gbps</li>
+</ol>
+
+<h2 id="tpu-v5e">TPU v5e</h2>
+
+<p>For both training and serving.</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/TPU-host-in-v5e.png" alt="" /></p>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong>.</li>
+  <li>Memory/BW: <strong>16GB</strong>, 819 Gbps</li>
+  <li>All reduce BW per pod: 51.2 TB/s</li>
+  <li>Peak perf: 197 TFLOPs</li>
+  <li>ICI BW: 1600 Gbps <strong>Interchip/intrahost is faster than CPU-to-chip</strong>.</li>
+  <li>Max pod: <strong>256 Chips</strong></li>
+  <li>Single CPU can most efficiently access TPUs 0,1,2,3.</li>
+</ol>
+
+<p>Single-host <code class="language-plaintext highlighter-rouge">AcceleratorType</code>-s are:</p>
+
+<ol>
+  <li>v5litepod-1</li>
+  <li>v5litepod-4</li>
+  <li>v5litepod-8</li>
+</ol>
+
+<p>After this, you need to use <code class="language-plaintext highlighter-rouge">Sax</code> to manage several hosts (remember, 1 host has max 8 TPUs). Then it goes to:</p>
+
+<ol>
+  <li>v5litepod-16, 32, etc …</li>
+</ol>
+
+<h2 id="tpu-v4">TPU v4</h2>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong>.</li>
+  <li>Memory/BW: <strong>32GB</strong>, 1200 Gbps</li>
+  <li>All reduce BW per pod: 1100 TB/s</li>
+  <li>Peak perf: 275 TFLOPs</li>
+  <li>ICI BW: 1600 Gbps <strong>Interchip/intrahost is faster than CPU-to-chip</strong>.</li>
+  <li>Max pod: <strong>4096 Chips</strong></li>
+</ol>
+
+<p>Using <code class="language-plaintext highlighter-rouge">v4-8</code> means having 8 <strong>TensorCores</strong> (TCs), with one single VM controlling them. This makes it the easiest to work with.</p>
+
+<h2 id="tpu-vms-themselves">TPU VMs themselves</h2>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">n2d-48-24-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>1 v5e TPU</li>
+      <li>24 CPUs</li>
+      <li>48 GB CPU RAM</li>
+      <li>1 NUMA</li>
+      <li>Disruption: High. This just means that GKE update could terminate your run possibly. You shouldn’t worry about this, as long as you do periodic model checkpoints. Read up on this <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/handle-disruption-gpu-tpu#disruption-in-gke">here</a>.</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">n2d-192-112-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>4 v5e TPUs</li>
+      <li>112 CPUs</li>
+      <li>192 GB CPU RAM (!)</li>
+      <li>1 NUMA</li>
+      <li>Fewer disruptions</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">n2d-384-224-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>8 v5e TPUs</li>
+      <li>224 CPUs (!)</li>
+      <li>384 GB CPU RAM (!!)</li>
+      <li>2 NUMAs</li>
+      <li>Even fewer GKE disruptions</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Larger TPUs just repeat use a number of hosts with <code class="language-plaintext highlighter-rouge">n2d-384-224-v5lite-tpu</code> VMs. <strong>It’s interesting to know</strong> how to implement a connection between inter-host TPUs. I’m assuming</p>
+
+<h1 id="regions-and-zones">Regions and zones</h1>
+
+<p>In EU, TPUs are only in <code class="language-plaintext highlighter-rouge">europe-west4</code>. Latest v6e is only in <code class="language-plaintext highlighter-rouge">us-east1-d</code>, and <code class="language-plaintext highlighter-rouge">us-east5-b</code>.</p>
+
+<h1 id="supported-models">Supported models</h1>
+
+<p>There is this google <a href="https://github.com/AI-Hypercomputer/maxtext/blob/main/README.md">repository</a> called <code class="language-plaintext highlighter-rouge">MaxText</code>. It’s an “optimization free” TPU-based LLM training codebase that is written in python/jax and that achieves a really high TPU-usage. There are samples for training or tuning Llama2, mistral and gemma.</p>
+
+<p><code class="language-plaintext highlighter-rouge">MaxText</code> claims to be inspired by <a href="https://github.com/karpathy/minGPT">MinGPT</a>, which itself is a small self-contained implementation of GPT-2 model in Python. MinGPT primarily uses just two main 300 line scripts, <code class="language-plaintext highlighter-rouge">train.py</code> and <code class="language-plaintext highlighter-rouge">model.py</code>.</p>
+
+<hr />
+
+<h1 id="get-started">Get started</h1>
+
+<p>Let’s do a code walkthrough.</p>
+
+<h2 id="asking-google-for-tpus">Asking Google for TPUs</h2>
+
+<p>First, in google cloud, use search bar for “Cloud TPU”. Click “Enable”.</p>
+
+<p>You then need to ask Google to give you TPU access. This is done again by using the above search bar, and typing “Quotas &amp; System Limits”.</p>
+
+<p>Down in the <strong><code class="language-plaintext highlighter-rouge">Filter</code></strong> tab You need to search for “TPU v5 lite pod cores for serving per project per zone”, in the zone of your choice.</p>
+
+<p>Click three dots on the right side and choose “Edit quota”. Follow the approval flow and you will likely get your access soon.</p>
+
+<h2 id="running-tpus">Running TPUs</h2>
+
+<p>First download the <code class="language-plaintext highlighter-rouge">gcloud</code> shell command, and then run these commands by pasting them one-by-one in your console.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># TODO: use `gcloud projects list` and paste 'NAME' value below</span>
+<span class="nb">export </span><span class="nv">PROJECT_ID</span><span class="o">=</span> 
+<span class="c"># TODO: use `gcloud iam service-accounts list` and paste 'EMAIL' value below</span>
+<span class="nb">export </span><span class="nv">SERVICE_ACCOUNT</span><span class="o">=</span>xyz-compute@developer.gserviceaccount.com 
+<span class="c"># TODO: Come up with a simple unique name</span>
+<span class="nb">export </span><span class="nv">RESOURCE_NAME</span><span class="o">=</span>v5litepod-1-resource
+
+<span class="c"># TODO: Use browser "login with google" window to do auth</span>
+gcloud auth login <span class="c"># opens a browser window</span>
+
+<span class="c"># Enable TPUs</span>
+gcloud services <span class="nb">enable </span>tpu.googleapis.com 
+
+<span class="c"># Allow TPUs to access the rest of your gcloud with this account</span>
+gcloud beta services identity create <span class="se">\</span>
+    <span class="nt">--service</span> tpu.googleapis.com <span class="se">\</span>
+    <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+<span class="c"># This prints</span>
+<span class="c"># "Service identity created: `service-xyz@cloud-tpu.iam.gserviceaccount.com`"</span>
+<span class="c"># This email isn't needed. Ignore it.</span>
+
+
+<span class="c"># Stand in a queue to access a TPU node</span>
+gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span>
+
+<span class="c"># check if it's your turn in the queue</span>
+gcloud alpha compute tpus queued-resources describe <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a
+
+<span class="c"># You will see something like</span>
+<span class="c"># createTime: '2024-12-20T09:25:02.391983567Z'</span>
+<span class="c"># guaranteed: {}</span>
+<span class="c"># name: projects/&lt;Project&gt;/locations/us-central1-a/queuedResources/v5litepod-1-resource</span>
+<span class="c"># queueingPolicy:</span>
+<span class="c">#   validUntilTime: '2024-12-21T09:25:02.423775424Z'</span>
+<span class="c"># state:</span>
+<span class="c">#   state: PROVISIONING &lt;----- REPEAT UNTIL THIS IS "ACTIVE"</span>
+<span class="c"># tpu:</span>
+<span class="c">#   nodeSpec:</span>
+<span class="c">#   - node:</span>
+<span class="c">#       acceleratorType: v5litepod-1</span>
+<span class="c">#       networkConfig:</span>
+<span class="c">#         enableExternalIps: true</span>
+<span class="c">#         network: default</span>
+<span class="c">#       queuedResource: projects/&lt;project&gt;/locations/us-central1-a/queuedResources/v5litepod-1-resource</span>
+<span class="c">#       runtimeVersion: v2-alpha-tpuv5-lite</span>
+<span class="c">#       schedulingConfig: {}</span>
+<span class="c">#       serviceAccount:</span>
+<span class="c">#         email: xyz-compute@developer.gserviceaccount.com</span>
+<span class="c">#       shieldedInstanceConfig: {}</span>
+<span class="c">#     nodeId: v5litepod</span>
+<span class="c">#     parent: projects/&lt;project&gt;/locations/us-central1-a</span>
+
+<span class="c"># ssh into TPU node</span>
+gcloud alpha compute tpus tpu-vm ssh v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span>  us-central1-a
+
+
+<span class="c">## DON'T FORGET TO STOP THE TPU!</span>
+gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span>
+
+<span class="c">## Delete the disk too</span>
+gcloud compute disks delete <span class="nv">$DISK_NAME</span> <span class="se">\</span>
+<span class="nt">--zone</span> <span class="nv">$ZONE</span>
+</code></pre></div></div>
+
+<p>You will see something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SSH key found in project metadata; not updating instance.
+Using ssh batch size of 1. Attempting to SSH into 1 nodes with a total of 1 workers.
+SSH: Attempting to connect to worker 0...
+Warning: Permanently added 'tpu.xyz-0-voj4cz' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 6.5.0-1013-gcp x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+  System information as of Fri Dec 20 09:27:55 UTC 2024
+
+  System load:  1.09521484375     Processes:                353
+  Usage of /:   8.8% of 96.73GB   Users logged in:          0
+  Memory usage: 2%                IPv4 address for docker0: xyz
+  Swap usage:   0%                IPv4 address for ens6:    xyz
+
+Expanded Security Maintenance for Applications is not enabled.
+
+145 updates can be applied immediately.
+88 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+7 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+tornikeo@t1v-n-5cb9aa1d-w-0:~$
+</code></pre></div></div>
+
+<p>Yay. At this point you can access your TPU. If you are in EU like me, you will get a terminal that is really laggy, since the 
+actual TPU is in US. Latency is really high. You can take a look around.</p>
+
+<h2 id="look-around-inside-tpu-vm">Look around inside TPU VM</h2>
+
+<p>To see how much disk space you have, use <code class="language-plaintext highlighter-rouge">df -h</code>. I’m getting 
+something like below:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">df</span> <span class="nt">-h</span>
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        97G   14G   84G  15% /
+tmpfs            24G     0   24G   0% /dev/shm
+tmpfs           9.5G  1.9M  9.5G   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+efivarfs         56K   24K   27K  48% /sys/firmware/efi/efivars
+/dev/sda15      105M  6.1M   99M   6% /boot/efi
+tmpfs           4.8G  4.0K  4.8G   1% /run/user/2001
+</code></pre></div></div>
+<p>AFAIK, this means we have around 84GB total, from which we already use 14GB. 
+To list everything that’s physically connected to VM hardware details, use <code class="language-plaintext highlighter-rouge">lspci</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span>lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC <span class="o">[</span>Natoma] <span class="o">(</span>rev 02<span class="o">)</span>
+00:01.0 ISA bridge: Intel Corporation 82371AB/EB/MB PIIX4 ISA <span class="o">(</span>rev 03<span class="o">)</span>
+00:01.3 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI <span class="o">(</span>rev 03<span class="o">)</span>
+00:03.0 IOMMU: Advanced Micro Devices, Inc. <span class="o">[</span>AMD] Milan IOMMU
+00:04.0 Non-VGA unclassified device: Red Hat, Inc. Virtio SCSI
+00:05.0 Unassigned class <span class="o">[</span>ff00]: Google, Inc. Device 0063
+00:06.0 Ethernet controller: Google, Inc. Compute Engine Virtual Ethernet <span class="o">[</span>gVNIC]
+00:07.0 Unclassified device <span class="o">[</span>00ff]: Red Hat, Inc. Virtio RNG
+</code></pre></div></div>
+
+<p>I’m guessing the <code class="language-plaintext highlighter-rouge">00:05.0 Unassigned class [ff00]: Google, Inc. Device 0063</code> could be our TPU. Who knows?</p>
+
+<p>We can learn more about CPUs, by using <code class="language-plaintext highlighter-rouge">hwinfo | less</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span>hwinfo | less
+...
+<span class="nt">-----</span> /proc/cpuinfo <span class="nt">-----</span>
+  processor     : 0
+  vendor_id     : AuthenticAMD
+  cpu family    : 25
+  model         : 1
+  model name    : AMD EPYC 7B13
+  stepping      : 0
+  microcode     : 0xffffffff
+  cpu MHz               : 2450.000
+  cache size    : 512 KB
+  physical <span class="nb">id</span>   : 0
+  siblings      : 24
+  core <span class="nb">id</span>               : 0
+  cpu cores     : 12
+  apicid                : 0
+  initial apicid        : 0
+  fpu           : <span class="nb">yes
+  </span>fpu_exception : <span class="nb">yes
+  </span>cpuid level   : 13
+  wp            : <span class="nb">yes
+  </span>flags         : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext invpcid_single ssbd ibrs ibpb stibp vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr arat npt nrip_save umip vaes vpclmulqdq rdpid fsrm
+  bugs          : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso
+  bogomips      : 4900.00
+  TLB size      : 2560 4K pages
+  clflush size  : 64
+  cache_alignment       : 64
+  address sizes : 48 bits physical, 48 bits virtual
+  power management:
+</code></pre></div></div>
+
+<p>We have 24 such AMD CPUs:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">nproc
+</span>24
+</code></pre></div></div>
+
+<p>Total RAM we have is 49GB:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">cat</span> /proc/meminfo | <span class="nb">grep </span>MemTotal
+MemTotal:       49316192 kB
+</code></pre></div></div>
+
+<h2 id="install-packages">Install packages</h2>
+<p>We already have python and pip, so let’s install packages inside the TPU VM. This can take 3-4 minutes.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch_xla[tpu] <span class="nt">-f</span> https://storage.googleapis.com/libtpu-releases/index.html
+pip <span class="nb">install </span>torch_xla[pallas]
+pip <span class="nb">install </span>timm
+</code></pre></div></div>
+
+<h2 id="exit">Exit</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+</code></pre></div></div>
+
+<h2 id="making-life-easier">Making life easier</h2>
+
+<p>At this point, you can likely run what you need. Now, of course you 
+don’t need to sit around waiting for pip to finish running. Instead you can specify a startup script that does literally everything.</p>
+
+<p>There’s a neat trick on gcloud, documented <a href="https://cloud.google.com/compute/docs/instances/startup-scripts/linux#passing-directly">here</a>, that allows you to add a startup script to any linux-based instance including TPUs! Here’s how you use it:</p>
+
+<p>For example</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+     <span class="nt">--metadata</span> startup-script<span class="o">=</span><span class="s1">'#! /bin/bash
+      touch tornikeo-was-here.txt # to make sure it all works.
+      pip install torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+      pip install torch_xla[pallas]
+      pip install timm
+      EOF'</span>
+</code></pre></div></div>
+
+<p>Or, if you want to keep the startup file separately, use:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+    <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+    <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+    <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+    <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+    <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+    <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+    <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+    <span class="nt">--metadata-from-file</span> startup-script<span class="o">=</span>FILE_PATH
+</code></pre></div></div>
+
+<p>You can get startup script logs inside ssh, by reading <code class="language-plaintext highlighter-rouge">/var/log/syslog</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-6b747f45-w-0:~<span class="nv">$ </span><span class="nb">grep </span>startup-scrip /var/log/syslog
+</code></pre></div></div>
+
+<p>This can help you in debugging the startup script in a TPU VM.</p>
+
+<p>Either way, after the instance is ACTIVE, you can check that our startup script was indeed executed in SSH:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-6b747f45-w-0:~<span class="nv">$ </span><span class="nb">ls</span> /
+bin   dev  home  lib32  libx32      media  opt   root  sbin  srv  tmp                    usr
+boot  etc  lib   lib64  lost+found  mnt    proc  run   snap  sys  tornikeo-was-here.txt  var
+</code></pre></div></div>
+
+<p>The startup script can very well be a script that does literally everything:</p>
+
+<ol>
+  <li>Download data</li>
+  <li>Download model (if pretrained)</li>
+  <li>Authenticate with external services (e.g. github, wandb, huggingface)</li>
+  <li>Clone or copy over your full code from github branch or local machine</li>
+  <li>Run training, fine-tuning, eval and push model checkpoints to your HF repo</li>
+  <li>Shut self down
+    <ul>
+      <li>hint: you can simply use <code class="language-plaintext highlighter-rouge">gcloud alpha compute tpus queued-resources delete v5litepod-1-resource --force --quiet</code> inside the ssh script.</li>
+      <li>If something goes wrong and you don’t reach that line, things might get expensive. Make sure to reserve the TPU instance only as long as you think you will need.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>This way you can rapidly test model hyper-parameters.</p>
+
+<h1 id="configure-your-tpu">Configure your TPU</h1>
+
+<h2 id="storage-options">Storage Options</h2>
+
+<p>This section is about the disk of TPU VM. If you TPU instance is small,
+say <code class="language-plaintext highlighter-rouge">v5litepod-1</code> then you don’t get a lot of disk space and you might run out as you download the dataset.</p>
+
+<p><strong>Most times</strong> if you are performing any serious experiments, you are better off using a FUSE (see below), which basically attaches a <code class="language-plaintext highlighter-rouge">gs://</code> bucket to your system as if it were a regular directory. This can also be used for huggingface datasets.</p>
+
+<h3 id="add-a-persistent-disk-pd">Add a Persistent Disk (PD)</h3>
+
+<p>By default, each TPU VM has 100GB boot persistent disk with OS and all packages. This can be used for storing data, as long as the data is small enough. Usually, you need around 20GB for packages and most of the 80GB can be used.</p>
+
+<p>Most times, this 100GB won’t be enough. You need to add a persistent disk (PD) to a TPU VM. PD lives on after TPU gets disposed of, so you could store data or models there.</p>
+
+<h3 id="use-gs-bucket">Use <code class="language-plaintext highlighter-rouge">gs://</code> bucket</h3>
+
+<p>You could use a <code class="language-plaintext highlighter-rouge">gs://my-bucket</code> as a storage. Even if that bucket is fastest and in the same region, it will be much slower than a PD, but also not restricted in size.</p>
+
+<h3 id="use-gs-like-a-local-folder-gcsfuse">Use <code class="language-plaintext highlighter-rouge">gs://</code> like a local folder (gcsfuse)</h3>
+
+<p><code class="language-plaintext highlighter-rouge">GCSFUSE</code> is for people who want to use a Cloud Storage Bucket (i.e. upload/download to <code class="language-plaintext highlighter-rouge">gs://</code>), but do so with regular <code class="language-plaintext highlighter-rouge">cp</code>, <code class="language-plaintext highlighter-rouge">mv</code>, <code class="language-plaintext highlighter-rouge">rm</code> semantics, like the bucket were an actual local disk. Simpler than attaching a persistent disk and simpler than using a Cloud Storage Bucket, but could be slower than a disk if you use it incorrectly.</p>
+
+<p>I have used <code class="language-plaintext highlighter-rouge">gcsfuse</code> both as a way to asynchronously <em>upload</em> model artifacts, and to <em>download</em> really large data. In my experience, simply using a huggingface dataset with <code class="language-plaintext highlighter-rouge">streaming=True</code> is a simpler solution.</p>
+
+<p>gcsfuse can be installed in a startup script, like so:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+apt <span class="nb">install</span> <span class="nt">-y</span> numactl lsb-release gnupg curl net-tools iproute2 procps lsof git ethtool <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">export </span><span class="nv">GCSFUSE_REPO</span><span class="o">=</span>gcsfuse-<span class="sb">`</span>lsb_release <span class="nt">-c</span> <span class="nt">-s</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"deb https://packages.cloud.google.com/apt </span><span class="nv">$GCSFUSE_REPO</span><span class="s2"> main"</span> | <span class="nb">tee</span> /etc/apt/sources.list.d/gcsfuse.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+apt update <span class="nt">-y</span> <span class="o">&amp;&amp;</span> apt <span class="nt">-y</span> <span class="nb">install </span>gcsfuse
+</code></pre></div></div>
+
+<p>In the same startup script, you can attach a bucket. Note <code class="language-plaintext highlighter-rouge">bucket-name</code> does <em>not</em> contain <code class="language-plaintext highlighter-rouge">gs://</code> prefix, simply provide the bucket name.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> /tmp/fuse/datasets/
+gcsfuse <span class="nt">-o</span> rw <span class="nt">--implicit-dirs</span> <span class="se">\</span>
+        <span class="nt">--type-cache-max-size-mb</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--stat-cache-max-size-mb</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--kernel-list-cache-ttl-secs</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--metadata-cache-ttl-secs</span><span class="o">=</span><span class="nt">-1</span> <span class="se">\</span>
+        bucket-name /tmp/fuse/datasets/
+</code></pre></div></div>
+
+<p>I also encountered an error with gcsfuse, which was solved with</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>proto-plus<span class="o">==</span>1.24.0.dev1
+</code></pre></div></div>
+
+<h3 id="filestore-file-share-like-fuse-but-faster">Filestore file share (like FUSE, but faster)</h3>
+
+<p>This seems to be an evolved version of FUSE. AFAIK, the smallest size of dataset Filestore supports is 1TB at least.</p>
+
+<h1 id="training-and-inference">Training and inference</h1>
+
+<h1 id="v6e-tpu">v6e TPU</h1>
+
+<p>As of Dec 2024, this v6e TPU is the latest. It is somewhat similar to v5e, with maximum Pod size of 256 chips.</p>
+
+<p>Due to waiting for the quota increase, I’ll cover this specific chip a bit later on.</p>
+
+<h1 id="v5p-tpu">v5p TPU</h1>
+
+<p>To use this chip, you first need to increase your quota of <code class="language-plaintext highlighter-rouge">TPUV5PPerProjectPerZoneForTPUAPI</code> in the cloud IAM and Admin page on quotas. By default you don’t have access to v5p.</p>
+
+<p><strong>Note</strong> the minimum amount of v5p chips you can have is 8. Looking at the <a href="https://cloud.google.com/tpu/pricing?hl=en">pricing page</a> this means that, per hour, the minimum price for a <code class="language-plaintext highlighter-rouge">v5p-8</code> is <strong>$33</strong> (!). SO keep this in mind.</p>
+
+<p>While going through the documentation, I found that accessing even the smallest  <code class="language-plaintext highlighter-rouge">v5p-8</code> instance is really slow. With queue, I waited for around half an hour before giving up.</p>
+
+<p>My recommendation definitely is to try fitting your problem on <code class="language-plaintext highlighter-rouge">v5e</code> instances first, and only then try to scale up to <code class="language-plaintext highlighter-rouge">v5p</code>.</p>
+
+<h1 id="v5e-tpu">v5e TPU</h1>
+
+<p>This TPU variant is marketed as a the most value-per-dollar data-center chip. Let’s try it out.</p>
+
+<p>The setup is the usual, but notice the <code class="language-plaintext highlighter-rouge">--worker=all</code>. This is needed because we actually will work with a v5litepod-16. This instance will have two VMs. So, while you can connect to each instance individually using SSH, it’s much easier to execute stuff on all at the same time using this argument.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install Jax</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html'</span>
+
+<span class="c"># Clone imagenet metadata</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'git clone https://github.com/google/flax.git &amp;&amp; cd flax/examples/imagenet &amp;&amp; pip install -r requirements.txt &amp;&amp; pip install flax==0.7.4'</span>
+
+<span class="c"># Make fake data</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'mkdir -p $HOME/flax/.tfds/metadata/imagenet2012/5.1.0 &amp;&amp; curl https://raw.githubusercontent.com/tensorflow/datasets/v4.4.0/tensorflow_datasets/testing/metadata/imagenet2012/5.1.0/dataset_info.json --output $HOME/flax/.tfds/metadata/imagenet2012/5.1.0/dataset_info.json'</span>
+
+<span class="c"># Train</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'cd flax/examples/imagenet &amp;&amp; JAX_PLATFORMS=tpu python3 imagenet_fake_data_benchmark.py'</span>
+</code></pre></div></div>
+
+<p>If you get an error <code class="language-plaintext highlighter-rouge">AttributeError: module 'jax.config' has no attribute 'define_bool_state'</code>, then you likely need to use <code class="language-plaintext highlighter-rouge">jax==0.4.24</code> during the first step. See this open <a href="https://github.com/google/flax/issues/3180">discussion</a> on flax on the issue.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Documentation walkthrough]]></summary></entry><entry><title type="html">DINO</title><link href="https://tornikeo.github.io/blog/2024/dino/" rel="alternate" type="text/html" title="DINO" /><published>2024-12-18T00:00:00+00:00</published><updated>2024-12-18T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2024/dino</id><content type="html" xml:base="https://tornikeo.github.io/blog/2024/dino/"><![CDATA[<p>This write-up is basically my interpretation of this excellent <a href="https://www.youtube.com/watch?v=h3ij3F3cPIk">video explanation</a> by Yannic Kilcher. Go check it out.</p>
+
+<p>DINOv2 is a self-supervisied pretraining method for visual transformers. It is <em>much</em> more complex to write and explain compared to ViT pretraining. However, DINO gets a much better performance with a given parameter, data and compute budget.</p>
+
+<p>Remember, DINO is a method for training. The <em>model</em> that DINO is applied to is a vision transformer. The end result of DINO just like any other pretraining model, is a really good embedding model. If course, DINO-pretrained model can be used for fine-tuning tasks too.</p>
+
+<p>DINO-trained ViTs are particularly good as visual embedding models. Such ViTs can support linear classifier or vector search algorithms on top of them.</p>
+
+<p>DINO means self-<strong>di</strong>stilation with <strong>no</strong> labels.</p>
+
+<p>What happens in DINO is <strong>this</strong>:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gs, gt student and teacher models (same models)
+# C: center of augmentation
+# tps, tpt: student and teacher softmax temperatures (student's is higher)
+# alpha, beta: teacher and center momentum rates
+</span>
+<span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">gs</span><span class="p">.</span><span class="n">params</span> <span class="c1"># init "teacher" from "student"
+</span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+   <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="nf">aug</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">aug</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># Perform random augs on image x
+</span>
+   <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="nf">gs</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="nf">gs</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="c1"># pass x1,2 aug into "student"
+</span>   <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="nf">gt</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="nf">gt</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="c1"># pass x1,2 aug into "teacher"
+</span>
+   <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="nc">H</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span> <span class="o">+</span> <span class="nc">H</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">t1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+   <span class="n">loss</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+   <span class="nf">update</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span> <span class="c1"># SGD
+</span>
+   <span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">gs</span><span class="p">.</span><span class="n">params</span>
+   <span class="n">C</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="nf">cat</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">]).</span><span class="nf">mean</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="nf">detach</span><span class="p">()</span> <span class="c1"># cut off teacher gradient
+</span>  <span class="n">s</span> <span class="o">=</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">s</span> <span class="o">/</span> <span class="n">tps</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+  <span class="n">t</span> <span class="o">=</span> <span class="nf">softmax</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">C</span><span class="p">)</span> <span class="o">/</span> <span class="n">tpt</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Center and sharpen
+</span>  <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="nf">log</span><span class="p">(</span><span class="n">s</span><span class="p">)).</span><span class="nf">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div></div>
+
+<p>There’s a lot to unpack here.</p>
+
+<p>First, we have two identical models at the start. We call them ‘student’ and ‘teacher’ – terrible naming in my opinion, but alternatives are even worse. At any rate, teacher <code class="language-plaintext highlighter-rouge">gt</code> and student <code class="language-plaintext highlighter-rouge">gs</code> are same random transformer ViT models at the start.</p>
+
+<p>Next, we get an image of fixed shape from database. ViT’s need fixed-shape images. Say, this image is 224 x 224 RGB image of a cat. This is stored in tensor <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">aug</code> is a function that outputs random image augmentations. <code class="language-plaintext highlighter-rouge">x1</code> and <code class="language-plaintext highlighter-rouge">x2</code> are augmented versions of <code class="language-plaintext highlighter-rouge">x</code>. <code class="language-plaintext highlighter-rouge">x1</code> and <code class="language-plaintext highlighter-rouge">x2</code> could be small, non-overlapping crops of <code class="language-plaintext highlighter-rouge">x</code> even.</p>
+
+<p>Now, both <code class="language-plaintext highlighter-rouge">x1</code>, <code class="language-plaintext highlighter-rouge">x2</code> pass into both networks, and both teacher and student use softmax in the end to create a probability distribution.</p>
+
+<p>We calculate the loss for <em>identity</em>. We want the two models to output the same exact probability distributions, that’s what <code class="language-plaintext highlighter-rouge">-t*log(s)</code> does. We penalize deviations between student and teacher, but <strong>we only penalize the student</strong>. We only update the student with <code class="language-plaintext highlighter-rouge">update(gs)</code>.</p>
+
+<p>The teacher just tosses the gradient away and instead does two extra steps. First, from teacher’s logits we subtract <code class="language-plaintext highlighter-rouge">C</code>, and use lower temperature <code class="language-plaintext highlighter-rouge">tpt</code> for softmax. This makes teacher’s distrbution more “peak”-y. The student distribution is more spread out due to higher temperature and it also doesn’t use the centering <code class="language-plaintext highlighter-rouge">C</code>.</p>
+
+<p>Teacher parameters are then updated with student parameters via an exponentially moving average, with <code class="language-plaintext highlighter-rouge">gt.params = alpha * gt.params + (1-alpha) * gs.params</code>.</p>
+
+<p>I hear you asking: “but Tornike why this setup – complex as it is – not just collapse to both models spitting out a uniform distribution and thus collapsing the to lowest loss and useless model?”</p>
+
+<p>So, what prevents the models from agreeing on outputting a uniform distribution?</p>
+
+<p>I don’t know. It seems that the combination using <code class="language-plaintext highlighter-rouge">C</code> and <code class="language-plaintext highlighter-rouge">tst</code> prevents that. A nice <a href="https://imbue.com/research/2020-08-24-understanding-self-supervised-contrastive-learning/">article</a> about this explans why we can avoid collpse:</p>
+
+<blockquote>
+  <p>Mode collapse is prevented precisely because all samples in the mini-batch cannot take on the same value after batch normalization</p>
+</blockquote>
+
+<p>As far as I understand, subtracting the <code class="language-plaintext highlighter-rouge">C</code> from current teacher representation is precisely what prevents the collapse. For collapse to happen, a model has to output the exact same distribution for all augmented inputs. However, if we subtract <code class="language-plaintext highlighter-rouge">C</code> from all representations and also sharpen the distribution, the collapsed state becomes a really unstable parameter setup. Any slight parameter deviation from the collapsed state would cause the models to diverge into non-collapsed states. Basically, we rig the game so that approaching collapse becomes harder and harder.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Paper walkthrough]]></summary></entry><entry><title type="html">Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology</title><link href="https://tornikeo.github.io/blog/2024/virchow2/" rel="alternate" type="text/html" title="Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology" /><published>2024-12-18T00:00:00+00:00</published><updated>2024-12-18T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2024/virchow2</id><content type="html" xml:base="https://tornikeo.github.io/blog/2024/virchow2/"><![CDATA[<div class="language-bibtex highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@misc</span><span class="p">{</span><span class="nl">zimmermann2024virchow2scalingselfsupervisedmixed</span><span class="p">,</span>
+      <span class="na">title</span><span class="p">=</span><span class="s">{Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology}</span><span class="p">,</span> 
+      <span class="na">author</span><span class="p">=</span><span class="s">{Eric Zimmermann and Eugene Vorontsov and Julian Viret and Adam Casson and Michal Zelechowski and George Shaikovski and Neil Tenenholtz and James Hall and David Klimstra and Razik Yousfi and Thomas Fuchs and Nicolo Fusi and Siqi Liu and Kristen Severson}</span><span class="p">,</span>
+      <span class="na">year</span><span class="p">=</span><span class="s">{2024}</span><span class="p">,</span>
+      <span class="na">eprint</span><span class="p">=</span><span class="s">{2408.00738}</span><span class="p">,</span>
+      <span class="na">archivePrefix</span><span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
+      <span class="na">primaryClass</span><span class="p">=</span><span class="s">{cs.CV}</span><span class="p">,</span>
+      <span class="na">url</span><span class="p">=</span><span class="s">{https://arxiv.org/abs/2408.00738}</span><span class="p">,</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This is a collection of my notes about Virchow2.</p>
+
+<p>Virchow2 provides three new models. All three models are vision-only transformer models used for classifying diseases from histopathology whole-slide images.</p>
+
+<p>Models:</p>
+<ol>
+  <li>Virchow2G 1.9B</li>
+  <li>Virchow2 632M</li>
+  <li>Virchow2G Mini 22M</li>
+</ol>
+
+<p>Smaller models are distillations of larger ones, instead of being trained independently.</p>
+
+<p>Training data is exclusively a 3.1M <a href="https://en.wikipedia.org/wiki/Histopathology">histopathology</a> images. Different tissue types, image authors and stains are available.</p>
+
+<p>All Virchow models here are same architecture as google’s ViT. For example, the Virchow 632M has the exact same shape as <a href="https://huggingface.co/google/vit-huge-patch14-224-in21k">ViT-H from Google</a>. And Virchow2G is the same in shape as ViT-G.</p>
+
+<h2 id="training-details">Training details</h2>
+
+<p>Training images are actually given at different magnifications (called WSI’s). Same tissue is scanned in 5x, 10x, 20x and 40x resolutions. Highest res images are giga-pixel images. They are really hard to train on, directly without some clever workarounds.</p>
+
+<p>This also means that WSI’s might need a different image augmentation approach compared to regular 2D images.</p>
+
+<h2 id="training-data">Training data</h2>
+
+<h3 id="where-do-images-come-from">Where do images come from?</h3>
+<blockquote>
+  <p>Virchow is trained on data from approximately 100,000 patients corresponding to approximately 1.5 million H&amp;E stained WSIs acquired from Memorial Sloan Kettering Cancer Center (MSKCC),</p>
+</blockquote>
+
+<h3 id="how-many-individual-images-do-we-have">How many individual images do we have?</h3>
+
+<p>From original virchow paper:</p>
+
+<blockquote>
+  <p>The training digital pathology dataset comprises 1,488,550 WSIs derived from 119,629 patients. These WSIs are all stained with H&amp;E, a routine stain that stains the nuclei blue and the extracellular matrix and cytoplasm pink. The WSIs are scanned at ×20 resolution or 0.5 mpp using Leica scanners. 
+It’s fair to assume that</p>
+</blockquote>
+
+<p>Virchow2 uses 3.1M WSI’s. WSI’s contain same image at different magnification. What Virchow2 has is 3.1M WSIs, not images. So, image-wise they must have more.</p>
+
+<h3 id="how-many-gpus">How many GPUs?</h3>
+
+<p>Each model is trained on 512 NVIDIA 32GB V100 GPUs.</p>
+
+<h3 id="how-is-loss-calculated-for-largest-model-pretraining">How is loss calculated for largest-model pretraining?</h3>
+
+<p>Training approach is called <a href="https://ai.meta.com/blog/dino-v2-computer-vision-self-supervised-learning/">DINOv2</a>. Paper is <a href="https://arxiv.org/pdf/2304.07193">here</a>. DINO is far from trivial to explain. Long story-short, the loss is calculated based on goodness-of-representation of the <code class="language-plaintext highlighter-rouge">[CLS]</code> token.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Paper walkthrough]]></summary></entry><entry><title type="html">Research logs - PhD day-to-day log</title><link href="https://tornikeo.github.io/blog/2022/phd-logs/" rel="alternate" type="text/html" title="Research logs - PhD day-to-day log" /><published>2022-06-29T16:01:00+00:00</published><updated>2022-06-29T16:01:00+00:00</updated><id>https://tornikeo.github.io/blog/2022/phd-logs</id><content type="html" xml:base="https://tornikeo.github.io/blog/2022/phd-logs/"><![CDATA[<h2 id="jun-23-1740---tornike">Jun 23, 17:40 - Tornike</h2>
+
+<h3 id="overview">Overview</h3>
+<p>Currently, I’m actively searching for possible PhD topics - in ML. I almost feel like a <a href="https://en.wikipedia.org/wiki/Journeyman">journeyman</a>, having some knowledge, but not enough to prove my worth as an expert within the field.</p>
+
+<p>The one topic that got me interested today is the so called <code class="language-plaintext highlighter-rouge">binary neural networks</code> - NNs that rely on “cheaper” binary operations (XOR, OR, AND, etc.) in order to simulate the capabilities of MatMul-powered networks. There is an interesting paper on that topic, with title <a href="https://arxiv.org/abs/1603.05279">“XNOR-Net: ImageNet Classification Using Binary Convolutional Neural Networks”</a>. 
+In this paper, authors <em>approximate</em> the <code class="language-plaintext highlighter-rouge">Conv</code> operation in two different ways - both relying on binary ops.</p>
+
+<h3 id="brief-and-probably-bad-overview-of-xnor-networks-paper">Brief (and probably bad) overview of XNOR-Networks paper</h3>
+<p>In the first case, which is aptly called <code class="language-plaintext highlighter-rouge">Binary-Weights-Network</code>, the inputs \(I\) are still usual <code class="language-plaintext highlighter-rouge">fp32</code> <code class="language-plaintext highlighter-rouge">[BN, C, W,  H]</code> matrices. However, the <code class="language-plaintext highlighter-rouge">Conv</code> operation \(I * W\), where \(W\) is the kernel, is decomposed into \(I * W \approx ( I \oplus B ) * \alpha\), where \(B\) is a constrained binary kernel \(B \in \{ -1, +1 \} ^ {C \times W \times H}\) and \(\alpha\) is a mean of \(W\), and so \(\alpha \in R^{+}\).</p>
+
+<p>The benefits of this approach are as follows:</p>
+<ul>
+  <li>\(B\) can theoretically be stored in a 32-times smaller space.</li>
+  <li>The \(\oplus\) can be performed using just additions and subtractions.</li>
+</ul>
+
+<p>The second case, the titular <code class="language-plaintext highlighter-rouge">XNOR-Network</code>, also binarizes the inputs.The approximation looks like this:</p>
+
+\[I * W \approx (sign(I) \otimes sign(W)) \odot K\alpha\]
+
+<p>Where \(\otimes\) is the binary convolution (same as above, can be done without multiplications), the \(\odot\) is elementwise dot product, and the \(K\alpha\), serves the same purpose as the \(\alpha\) in the <code class="language-plaintext highlighter-rouge">Binary-Weights-Network</code> - to contain the scaling factors (And I arguably didn’t spend enough time to understand this fully).</p>
+
+<p>The inputs are binarized just as you’d expect - just a plain \(sign(\cdot)\) of the inputs is enough to get the job done. The authors then derive the appropriate gradients for these operations and use a <code class="language-plaintext highlighter-rouge">SGD</code> with momentum to train the network.</p>
+
+<p>Authors note that a speedup can only be gained from using this architecture when the <code class="language-plaintext highlighter-rouge">CPU</code> of the machine can’t “fuse the multiplication and addition as a single cycle operation… On those CPUs, Binary-Weight-Networks does not deliver speed up”.</p>
+
+<p>At this point, I began searching for related code for this paper - found this <a href="https://github.com/jiecaoyu/XNOR-Net-PyTorch">github repo</a>, and played with it for a little bit on <a href="https://www.kaggle.com/code/tornikeonoprishvili/xnor-net-pytorch-mnist">kaggle</a>, and then… lost interest. Why:</p>
+<ul>
+  <li>I didn’t think that this CNN weights compression approach is going to be useful in the foreseeable future. Yes, it does reduce size requirements, but currently, the trend is to make larger models, not smaller ones. The average consumer hardware capabilities are also increasing. If you don’t believe me, take a look at the average consumer-facing software size in GB, year after year. It’s increasing, getting less and less efficient (the trend even has a name - “bloatware”), while also getting <em>more</em> popular. Because hardware allows this. There is no need (yet) to make something more complex in order to save space. Which leads me to another point…</li>
+  <li>Things are already pretty damn hard in ML :) Unless someone has a really good reason to save those extra bytes, the effort fixing the bugs that the extra complexity would bring wouldn’t be worth it. Not to mention that a lot of the ideas and tools already developed for non-binary networks might not work with the binary networks without some adjustments.</li>
+</ul>
+
+<h3 id="conclusion">Conclusion</h3>
+<p>Binary networks allows for up to 32x storage size reduction for Convnets and up to 64x times inference speedup for older CPU architectures. It does this by approximating Conv operation with binary operations and scaling. Both inference and training modes are available and discussed within the paper. While initially interested, I reasoned that the architecture wouldn’t be popular because hardware improvements incentivise less efficient but simpler approaches in ML.</p>
+
+<h2 id="jun-29-1740---tornike">Jun 29, 17:40 - Tornike</h2>
+
+<h3 id="overview-1">Overview</h3>
+<p>Not having TPUs buried in my backyard (and also not having a backyard either), I considered exploring the current <code class="language-plaintext highlighter-rouge">deep learnng for tabular data</code> research. Also, Kaggle is hosting a a monthly “Tabular Playground” competitions, which also got me interested. Current challenge (expires in 2 days), is about data imputation (guessing missing values). And it kind of feels like a generalized tabular prediction task - instead of a single target column, you have many. It’s almost like an industrial version of <em>sudoku</em>.</p>
+
+<p>Either way, the research into a new topic starts with a good literature review, which forms a bird’s eye view of the topic. I chose an excellent paper <a href="https://arxiv.org/pdf/2110.01889.pdf">“Deep Neural Networks and Tabular Data: A Survey”</a>, by Vadim Borisov et al., first published in 2021/10.</p>
+
+<h3 id="contents-of-deep-neural-networks-and-tabular-data-a-survey">Contents of Deep Neural Networks and Tabular Data: A Survey</h3>
+<p>The abstract neatly rounds up what the following papers discuss - there are three families of models for tabular DNN, and that tree-based learners still outperform DNN approaches by a sizeable margin - especially in supervised settings.</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/37z17Eu-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/37z17Eu-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/37z17Eu-1400.webp" />
+    -->
+
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/37z17Eu.png" />
+
+  </picture>
+
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    Taxonomy of DNN approaches for tabular data.
+</div>
+
+<p>Paper introduces three main classes of models in tabular DNNs.<br />
+<strong>Data transformation</strong> methods are focused on transforming the tabular data in a way that better enables DNNs to learn. This includes the good ol’ fashioned categorical encoding schemes, such as one-hot encoding, hashing, target encoding, and others. Other approaches are mostly encoder-decoder style models that learn the mapping \(x \approx \hat{f}(x,W)\). These models can be also divided within <em>single dimensional</em> and <em>multi dimensional</em> groups, with the former transforming features independently and the latter mapping entire record to optimized representation.<br />
+<strong>Specialized architectures</strong> are divided into <em>hybrid</em> fully differentiable and partially differentiable classes and transformer based models. Hybrid models are, in essence, an attempt to merge DNNs with GBDTs. Only the fully differentiable ones provide a way to SGD-optimize the entire pipeline. Transformer models avoid merging with GDBTs and instead rely on attention to complex representations.<br />
+<strong>Regularization models</strong> attempt to find optimal regularization approaches to combat higher complexity of the DNNs, which they claim is the main reason as to why the DNNs aren’t able to generalize well on tabular data.</p>
+
+<p>Further, the main issues that hinder tabular DNN performance are listed as follows:</p>
+<ul>
+  <li>Data quality is usually much worse, with many missing values, outliers, numerical errors (man-made or otherwise), and size of data. Frequent class imbalance is also a frequent problem. Whereas, most modern tree-based learners can handle missing, extreme and different values by design.</li>
+  <li>Correlations are complex or non-existent. No spatial, token-wise correlations - think of the success Convnets achieved, with their <strong>inductive bias</strong>. The convnet is ready to capture the most important visual characteristics from the image, by design. This is possible because there is a strong spatial correlation between pixels in real-world images. In tabular data, these relationships have to be learned from scratch.</li>
+  <li>Preprocessing is vital for tabular DNN methods, complicating the data-to-prediction pipeline and requiring extra computation, whereas tree-based learners like CatBoost can handle categorical values internally. Main approaches to feature encoding are later discussed in the paper.</li>
+  <li>Model sensitivity to all features of the sample. For image data, a shift in the target usually means a lot of pixels changing their values at once. Whereas in tabular data, just a single feature could decide the value of the target. Tree-based learners handle these cases well by making a decision based on a single feature and a threshold, whereas DNNs (particularly dense FFNs) weigh each feature value with equal weight - diluting the most important signal with what is essentially noise.</li>
+</ul>
+
+<h4 id="models-just-the-ones-i-found-personally-interesting">Models (Just the ones I found personally interesting)</h4>
+<p>TODO</p>
+
+<h2 id="jun-30-1420---tornike">Jun 30, 14:20 - Tornike</h2>
+<p>Working on applying transformers for tabular data. An interesting idea I have yet to test out is that we replace continuous variables with categoricals.
+To make that work, we will need to reduce the number of unique continuous values. That can be done in two ways (still have to test which is best):</p>
+<ul>
+  <li>Standard scale everything
+    <ul>
+      <li>Then round to 3-4 significant digits (depending on comp. resources)</li>
+      <li>Every different value is a different category
+This comes with an issue: If a segment of values is empty, no category will be created such that it maps to that segment. Thus, the network won’t be able to output that value at all.</li>
+    </ul>
+  </li>
+  <li>Standard scale everything
+    <ul>
+      <li>Get a \(N\) as high as comp. resources allow. Select a region of \(R = \pm M\sigma\), where \(M\) is manually selected.</li>
+      <li>Divide region \(R\) into \(N\) segments. Assign each segment a unique embedding.</li>
+      <li>Values that fall into that segment, get assigned the same embedding.</li>
+      <li>Add several additional categories for NaNs, infs and possibly outliers (if someone wants to manually label outliers).</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="jul-4-1825---tornike">Jul 4, 18:25 - Tornike</h2>
+<p>Just launched the first long-running notebook. Didn’t yet to add validation eval, but the model is being saved, so I’ll just validate from the saved model. I’m using the <code class="language-plaintext highlighter-rouge">'hf-internal-testing/tiny-random-distilbert'</code> model - with random weights. I noticed several possible sources of bugs in the future:</p>
+<ul>
+  <li>It’s possible that random embeddings aren’t scaled properly (<a href="https://pytorch.org/tutorials/beginner/transformer_tutorial.html">this</a> pytorch tutorial uniform randomly inits weights in the range of \(\pm0.1\)).</li>
+  <li>The current approach I’m testing is to assign each unique rounded float value a unique embedding. However, there’s a question of whether or not same value from two <em>different</em> columns can share an embedding. I think it’s going to be infeasible to do so. To allow model to differentiate between values of different columns, I <em>re-enable</em> positional encoding (default is <em>off</em> in tinydisilbert config). Hopefully this works. Otherwise, I’d need to encode column info some other way.</li>
+  <li>Set <code class="language-plaintext highlighter-rouge">max_position_embeddings</code> to 80 - i.e. the number of columns. Inputs are never going to be larger than this, so this is a good optimization.</li>
+  <li>Just found out that by default the <code class="language-plaintext highlighter-rouge">loss</code> function ignores <code class="language-plaintext highlighter-rouge">labels</code> which equal -100. i.e. If \(y^{i}_{target} = -100\) then \(\mathcal{L}(x^{i}_{pred}, y^{i}_{target}) = 0\). So model doesn’t wrongfully learn to produce tokens that correspond to the <code class="language-plaintext highlighter-rouge">NaN</code> value.</li>
+  <li>Speaking of <code class="language-plaintext highlighter-rouge">NaN</code> values and other special tokens, once current run is done, I’m going to add a few extra tokens to embedding space (might have to set up manual mapping from float to cat). Currently I’m thinking of assigning embeddings to $N$ segments of \(\pm 3\sigma\) range + 5 extra segments for NaN, \(+\infty\), \(-\infty\), \(o^{-}_{outlier}\), \(o^{+}_{outlier}\), where extreme values are values above and below of the \(\pm 3\sigma\).</li>
+</ul>
+
+<h2 id="jul-8-2244---tornike">Jul 8, 22:44 - Tornike</h2>
+
+<p>I’ve heard that transformers are quite compute-hungry - they are one of the most general (least biased) model out there (next to GNNs) and require much more training than, say, CNNs that have built-in aptitude to capture pixel-data. Now - I have experienced that fact firsthand. It took the tinybert 1 hour to achieve just 20% val accuracy. Next time I’m going to change a few things:</p>
+
+<ul>
+  <li>Instead use an even smaller encoder (something like 4 embed-dim + 2 attn heads and single layer?)</li>
+  <li>Also plot training loss (I expect it to overfit quite rapidly, with increasing model size)</li>
+  <li>Maybe try tinybert on even smaller datasets - fitting a line in 2d and observing how predictions change with increasing complexity.</li>
+</ul>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/kSGazUz-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/kSGazUz-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/kSGazUz-1400.webp" />
+    -->
+
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/kSGazUz.png" />
+
+  </picture>
+
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    Result of training random tinybert on MNIST with 
+    all-categorical encoding - for 1 hour.
+</div>
+
+<h2 id="jul-15-2235---tornike">Jul 15, 22:35 - Tornike</h2>
+
+<p>Four words: “Well regularized Simple Nets”. This is the name of the a <a href="https://openreview.net/forum?id=d3k38LTDCyO">2021 paper</a> that proposes a novel approach to tabular deep learning. I believe the importance of effective learning from tabular data needs no introduction - it is the most abundant and most general form of data out there. The paper attempts to dethrone the wildly popular XGBoost and other GBDT frameworks by using simple MLPs (9 layers, 512 neurons, activation selu, classification task). We know that this set-up doesn’t compare to XGBoost’s performance, however, the authors actually manage to <strong>beat</strong> XGBoost and various other architectures on most datasets (see below figure, “MLP-C” is the proposed approach).</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/PaEd4hK-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/PaEd4hK-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/PaEd4hK-1400.webp" />
+    -->
+
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/PaEd4hK.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    Last column "MLP-C" shows the performance of the proposed model. 
+</div>
+
+<p>The authors achieve this impressive feat by creating a “cocktail” of regularization techniques (dropout, weight decay, augmentation, etc.) and finding the best combination for the fixed network, using the validation set (20% of labelled data), using bayesian optimization. The best combination is then applied to the model, and is trained on train + validation data anew. The above figure shows test-set results.</p>]]></content><author><name></name></author><category term="day-to-day" /><category term="research" /><category term="logs" /><summary type="html"><![CDATA[Arguably honest logs made during my PhD struggles]]></summary></entry><entry><title type="html">The correct mindset</title><link href="https://tornikeo.github.io/blog/2022/correct-mindset/" rel="alternate" type="text/html" title="The correct mindset" /><published>2022-03-02T20:01:00+00:00</published><updated>2022-03-02T20:01:00+00:00</updated><id>https://tornikeo.github.io/blog/2022/correct-mindset</id><content type="html" xml:base="https://tornikeo.github.io/blog/2022/correct-mindset/"><![CDATA[<p>So, it’s yet another day, maybe even a Monday or, god-forbid, the start of a new month. And, <strong>oh boy</strong>, it’s time to make those new resolutions that I inevitably drop at the first graze of inconvenience.</p>
+
+<div class="row mt-3">
+    <div class="col-sm-12 offset-sm-1  mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://imgs.xkcd.com/comics/resolution-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://imgs.xkcd.com/comics/resolution-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://imgs.xkcd.com/comics/resolution-1400.webp" />
+    -->
+
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://imgs.xkcd.com/comics/resolution.png" data-zoomable="" />
+
+  </picture>
+
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    <a href="https://xkcd.com/1154/">
+    xkcd: Resolution</a>
+</div>
+
+<p>I believe the issue here is improperly conditioning the mind. Expecting to “go there and <em>do it</em>” is wrong. 
+“Doing it” requires a lot of things to go smoothly. Things, that sometimes are out of my control. For example, 
+I could try to start writing a blog <em>this</em> Monday, but be unable to do so because of that critical task I had to do
+at work after office hours. Life is like that. It’s hard.</p>
+
+<p>So, instead, I use a different way to thinking: Accept that I am <em>inevitably</em> going to face major obstacles ahead. 
+Concretely, when preparing myself for a committing to a new resolution, I like to pinch skin on my arm to feel a bit of pain. 
+That way, I tell the lazy part of my brain that: “Yes, it’s going to hurt. Yes, I will continue receiving the pain. Yes, I will commit to this resolution, no matter what”. And, more importantly than that, I try to imagine how despite my best efforts, I <em>fail</em> to achieve whatever objective I had in mind. I believe this is also important, since during long-term resolutions there <em>inevitably</em> are moments when I will be convinced that “it’s hopeless, I failed”. But these brief moments of desperation should not dictate the course of action in  long-term commitments. To make sure that I did, in fact, fail, takes more time. And acting on the impulse like that is just not beneficial.</p>
+
+<p>Some might argue that this kind of mindset is the same as “having low expectations to be happier in the end”. But despite what I said above, I usually find that having high expectations motivates me more.</p>
+
+<p>So, if I were to summarize all of the above in a single sentence, I’d say something like: “Pain <em>and</em> Gain”. Incidentally, there is a movie with <a href="https://www.imdb.com/title/tt1980209/">that exact name</a>, check it out, it’s great. :smile:</p>]]></content><author><name></name></author><category term="day-to-day" /><category term="mindset" /><category term="motivation" /><summary type="html"><![CDATA[How I keep myself sane within AI]]></summary></entry></feed>
