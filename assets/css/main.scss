@@ -22,3 +22,7 @@ $max-content-width: {{ site.max_width }};
   margin: 1em auto;
   display: table;
 }
+
+.rounded {
+  border-radius: 10%;
+}
