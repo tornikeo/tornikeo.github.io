@@ -9,7 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornikeo | blog</title>
+    <title>Tornikeo | Daily scribbles - on choosing right LLM shapes for GPUs</title>
     <meta name="author" content="Tornike  Onoprishvili" />
     <meta name="description" content="A personal website and portfolio of tornikeo, machine learning researcher
 " />
@@ -33,7 +33,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.github.io/blog/">
+    <link rel="canonical" href="https://tornikeo.github.io/blog/2025/daily-transfomer-perf/">
     
     <!-- Dark Mode -->
     
@@ -82,7 +82,7 @@
                 
               <!-- Blog -->
               <li class="nav-item active">
-                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/blog/">blog</a>
               </li>
 
               <!-- Resume: Direct link to PDF asset -->
@@ -92,8 +92,8 @@
               </li>
 
               <!-- Toggle theme mode -->
-              <div class = "toggle-container">
-                <a id = "light-toggle">
+              <div class="toggle-container">
+                <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
                 </a>
@@ -106,128 +106,106 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <div class="post">
+      <!-- _layouts/post.html -->
 
-  <div class="header-bar">
-    <h1>AI in the wild</h1>
-    <h2>Supplying AI tools to the masses</h2>
-  </div>
+<div class="post">
 
-
-  <ul class="post-list">
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2025/daily-transfomer-perf/">Daily scribbles - on choosing right LLM shapes for GPUs</a>
-        
-      </h3>
-      <p></p>
-      <p class="post-meta"> 4 min read &nbsp; &middot; &nbsp;
-        January 22, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
+  <header class="post-header">
+    <h1 class="post-title">Daily scribbles - on choosing right LLM shapes for GPUs</h1>
+    <p class="post-meta">January 22, 2025</p>
+    <p class="post-tags">
+      <a href="/blog/2025"> <i class="fas fa-calendar fa-sm"></i> 2025 </a>
+        ·  
+        <a href="/blog/category/daily-scribbles">
+          <i class="fas fa-tag fa-sm"></i> daily-scribbles</a>  
           
 
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/daily-scribbles">
-              <i class="fas fa-tag fa-sm"></i> daily-scribbles</a> &nbsp;
-              
-          
     </p>
-    </li>
+  </header>
 
-    
+  <article class="post-content">
+    <p>A100 memory hierarchy - what’s are “perfect” model shape for A100?
+A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?</p>
 
-    
-    
-    
-    
+<p>There’s a thing called <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener noreferrer">vLLM</a>. Inference and serving engine for LLMs.</p>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2024/tpu/">Google TPUs</a>
-        
-      </h3>
-      <p>Documentation walkthrough</p>
-      <p class="post-meta"> 24 min read &nbsp; &middot; &nbsp;
-        December 19, 2024
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2024">
-          <i class="fas fa-calendar fa-sm"></i> 2024 </a>
+<p>vLLM was built around <strong>PagedAttention</strong> algorithm. Introduced in <a href="https://arxiv.org/abs/2309.06180" target="_blank" rel="noopener noreferrer">paper</a>. What’s a <strong>KV cache</strong>?</p>
 
-          
+<blockquote>
+  <p>KV cache. This is a method for better inference performance. From <a href="https://huggingface.co/blog/kv-cache-quantization" target="_blank" rel="noopener noreferrer">HF</a>. When you are generating long text, a typical autoreg transformer will predict a token by looking at all previous 999 tokens. Then it will predict next token, by looking at previous token and previous 999 tokens. Maybe older tokens could be reused somehow?</p>
+</blockquote>
 
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/paper-walkthrough">
-              <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a> &nbsp;
-              
-          
-    </p>
-    </li>
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/kv_cache_quantization/kv-cache-optimization.png" alt=""></p>
 
-    
+<p>Basically, queries grow downwards (new token = new row), and keys grow leftwards (new token = new column), and values also grow downwards (new token = new row). For processing new token, we only need last row of Q, but full K, V, due to how matrix multiplication works. <em>But</em>, we can simply restore previous K, V, instead of re-computing them. Extra memory, but less compute.</p>
 
-    
-    
-    
-    
+<blockquote>
+  <p>PagedAttention explained on <a href="https://huggingface.co/docs/text-generation-inference/en/conceptual/paged_attention" target="_blank" rel="noopener noreferrer">HF</a>, is a method for inference performance. It optimizes the KV cache, by using lessons from how OS hanldes memory Paging.</p>
+</blockquote>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2024/virchow2/">Virchow2: Scaling Self-Supervised Mixed Magnification Models in Pathology</a>
-        
-      </h3>
-      <p>Paper walkthrough</p>
-      <p class="post-meta"> 3 min read &nbsp; &middot; &nbsp;
-        December 18, 2024
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2024">
-          <i class="fas fa-calendar fa-sm"></i> 2024 </a>
+<p>Amazon’s LLM, rufus was cooked up on top of vLLM.</p>
 
-          
+<p>vLLM supports models up to scale of 405B params, LLAMA 3.1.</p>
 
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/paper-walkthrough">
-              <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a> &nbsp;
-              
-          
-    </p>
-    </li>
+<p>Serving is simple <code class="language-plaintext highlighter-rouge">pip install vllm</code> and <code class="language-plaintext highlighter-rouge">vllm serve meta-llama/Llama-3.1-8B</code>. 
+As a python package <code class="language-plaintext highlighter-rouge">vllm</code> has a simple-ish programming API for querying models.</p>
 
-    
-  </ul>
+<p>Back to original article.</p>
 
-  <nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li><li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
+<p><strong>Mixture of Experts</strong>? <strong>Speculative Decoding</strong>?</p>
+
+<p>There’s the claim: “the most foundamental fact that transformer inference is memory bound”. Let’s see.</p>
+
+<p>===</p>
+
+<p>Preliminaries. GPU memory architecture. A100 80GB SXM has 108 Streaming multiprocessors (SMs), 40MB L2 cache.</p>
+
+<p>When doing inference i.e. <code class="language-plaintext highlighter-rouge">model.generate(prompt)</code> these things happen:</p>
+<ol>
+  <li>Load layer matrices from HBM to L2 to SM.</li>
+  <li>Do matmul, and use tensor cores</li>
+</ol>
+
+<p>Loading part takes much longer than tensor core part.</p>
+
+<p>Suppose we have A100:</p>
+<ul>
+  <li>108 SM, DRAM 80 G, 40M L2 cache</li>
+  <li>bf16 tensor core: 312 tflops</li>
+  <li>DRAM mem bw, 2.039 TB/s</li>
+</ul>
+
+<p>If model is larger than 80GB, it’s split up:</p>
+<ul>
+  <li>Connection by NVLink 300GB/s = 0.3 T/sec</li>
+</ul>
+
+<p>See the problem? 312 TFLOPS » 2.03 TB/s » 0.3 TB/s  » 0.006 TB/s</p>
+
+<p>This seems to show that memory is the main bottleneck. Or is it?</p>
+
+<p>A100 prefers doing 312 operations per each 2.039 loaded bytes. How on <em>Earth</em> can you do 312 operations for approximately 2 bytes?</p>
+
+<p>The matrix multiplication with 2 N-square matrices, has arithmetic intensity proportional to N. Therefore, larger matrix sizes might actually be compute bound. This also means that there’s some sweet-spot matmul size that the GPU likes most.</p>
+
+<p>This also means that any op that is elementwise (e.g. activaions) will always be memory bound. For example:</p>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 512, is compute bound</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 1, is memory bound</li>
+</ul>
+
+<p><strong>Kernel fusion</strong> works between an <code class="language-plaintext highlighter-rouge">nn.Linear</code> and a <code class="language-plaintext highlighter-rouge">nn.Relu</code>, or any other activation. Since activation is mem bound, and elementwise, we can immediately apply relu inside CUDA kernel, before returning output to HBM.</p>
+
+<p>Aha. Interesting bit. About online inference. Throughput vs latency:</p>
+<ul>
+  <li>Offline: if we are evaluating the model (offline), and no user waits at the end of the screen, we should increase batch size.</li>
+  <li>Online: if user is waiting, the optimal speed to generate next token is the average human read speed, in tokens. Otherwise human might complain.</li>
+</ul>
+
+  </article>
 
 </div>
 
@@ -236,7 +214,7 @@
     <!-- Footer -->    
     <footer class="fixed-bottom">
       <div class="container mt-0">
-        &copy; Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+        © Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
 
       </div>
     </footer>
