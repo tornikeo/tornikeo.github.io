@@ -18,7 +18,7 @@
           {{reference}}
         {%- else %}
           <!-- Title -->
-          <div class="title">{{entry.title}}</div>
+          <div class="title"><a href="https://doi.org/{{entry.doi}}">{{entry.title}}</a></div>
           <!-- Author -->
           <div class="author">
           {%- for author in entry.author_array -%}
