@@ -2,11 +2,11 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Tornikeo # the website title (if blank, full name will be used instead)
+title: "blank"
 first_name: Tornike
 middle_name: 
 last_name: Onoprishvili
-email: tornikeonoprishvili@gmail.com
+email: 
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   A personal website and portfolio of tornikeo, machine learning researcher
 footer_text: >

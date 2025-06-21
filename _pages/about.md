@@ -1,6 +1,5 @@
 ---
 layout: about
-title: about
 permalink: /
 
 profile:
@@ -12,18 +11,14 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm a Machine Learning engineer with 5 years of work experience, mostly in applied machine learning and inference cost-optimization in the cloud. I'm currently learning to apply my trade to computational chemistry.
+I'm Tornike Onoprishvili.
 
-This website serves as a hub for project write-ups and technical discussions. I store pretty much all the useful, non-rigorous text on here.
+I am a master's degree student at [USI](https://www.usi.ch/en). This website contains posts about some of my noteworthy projects, as well as less noteworthy blogs.
 
-These days I'm working on my master thesis "GPU-accelerated simulation of mass spectometry" at [Università della Svizzera Italiana](https://www.usi.ch/) (USI). Previously I've authored a parallel GPU program for fast mass spectra search called [SimMS](https://github.com/PangeAI/simms) and wrote a [paper](https://academic.oup.com/bioinformatics/advance-article/doi/10.1093/bioinformatics/btaf081/8026685). I Even before *that* I did a [number](https://tornikeo.github.io/projects/) of smaller AI/ML projects.
+You can reach me at `[my firstname][my lastname]@gmail.com`.
 
-## Tech stack
-- Python, CUDA C++
-- PyTorch and Jax
-- Linux, Git, Docker
-- Google Cloud and AWS
-- NVIDIA GPUs *and* Google TPUs
+# Past Projects
 
-## Education
-I'm currently doing an MSc. degree at [LUT University](https://www.lut.fi/en) in Finland with double degree at [Università della Svizzera italiana](https://www.usi.ch/it) in Switzerland. I got my BSc. Eng. at [Free University of Tbilisi](https://freeuni.edu.ge/en) in Georgia.
+- I've designed some of the key parts of an upcoming [MS/MS Foundation model, SpectruMS](https://github.com/tornikeo/cdn/raw/master/assets/spectrums/iccs_presentation.pdf). The paper is a work in progress.
+- I built and maintain the fastest exact [Cosine Similarity calculation tool](https://github.com/PangeAI/simms). It's a fairly simple and unoptimized CUDA kernel that calculates Mass spectrum [Cosine Similarity](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.CosineGreedy.html) and [Modified Cosine Similarity](https://matchms.readthedocs.io/en/latest/api/matchms.similarity.ModifiedCosine.html) scores. The speedups come from the massive memory bandwidth that GPUs typically have. There's no shared memory used, and memory access patterns are less than ideal. I will optimize it at some point.
+- I built a [finite-difference time-domain simulation tool](https://github.com/tornikeo/optical_nand) for fully all-optical logical gates. These "optical gates" are made of a special glass that changes its refractive index $n$ as the power of the laser increases. This allows us to make a fully optical AND gate. The simulations also show how the all-powerful NAND gate can be built. All simulation codes are in MATLAB.
