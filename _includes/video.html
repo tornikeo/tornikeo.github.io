@@ -3,14 +3,14 @@
 <figure>
   <div class="container text-center">
   <video height="{{ include.height }}" class="{{ include.class }}" 
-    width="{{ include.width | default: 100% }}" autoplay loop muted playsinline>
-
+    width="{{ include.width | default: 100% }}" autoplay loop muted>
     <!-- <img {% if include.class %}class="{{ include.class }}"{% endif %} src="{{ include.path | relative_url }}" {% if include.alt %}alt="{{ include.alt }}"{% endif %} {% if include.title %}title="{{ include.title }}"{% endif %} {% if include.zoomable %}data-zoomable{% endif %} /> -->
     <source src="{{ include.path | relative_url }}"
     type="video/mp4">
 
   </video>
 </div>
-  {%- if include.caption -%}<figcaption class="caption">{{ include.caption }}</figcaption>{%- endif %}
-
+  {%- if include.caption -%}
+    <figcaption class="caption">{{ include.caption | markdownify }}</figcaption>
+  {%- endif -%}
 </figure>

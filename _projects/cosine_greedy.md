@@ -8,7 +8,7 @@ category: large projects
 ---
 
 ## Intro
-Metabolomics is a scientific field that is suffering from success. This field of bioinformatics enjoys access to vast quantities of high-quality, publicly available mass spectral data. And this is exactly the problem. The size of the available data makes search a real slog, even for the best systems. Fortunately, there's something very special about the search: The core algorithm is embarrassingly parallel. We exploited this property to make search **1700x** faster using NVIDIA GPUs. We also wrote a [paper](https://doi.org/10.1093/bioinformatics/btaf081) about it and [open-sourced the code](https://github.com/PangeAI/simms).
+Metabolomics is a scientific field that is suffering from success. This field of bioinformatics enjoys access to vast quantities of high-quality, publicly available mass spectral data. And this is exactly the problem: the size of the available data makes search a real slog, even for the best systems. Fortunately, there's something very special about the search: the core algorithm is embarrassingly parallel. We exploited this property to make search **1700x** faster using NVIDIA GPUs. We also wrote a [paper](https://doi.org/10.1093/bioinformatics/btaf081) about it and [open-sourced the code](https://github.com/PangeAI/simms).
 
 If you want to learn more about this field, check out "Mass Spectrometry: Principles and Applications" by Hoffmann and Stroobant. I'll instead jump straight into the computational algorithm.
 
@@ -60,7 +60,7 @@ for i, rspec in enumerate(rlist):
     matrix[i,j] = cosine_similarity(rspec, qspec)
 ```
 
-That loop, even on the best hardware and hundreds of CPUs, takes **weeks** to complete. The program we developed works in **minutes**, using a single NVIDIA GPU. And the fun thing is we didn't even change the algorithm. The GPU program outputs are exact—they are not an approximation.
+That loop, even on the best hardware and hundreds of CPUs, takes **weeks** to complete. The program we developed works in **minutes**, using a single NVIDIA GPU. And the fun thing is, we didn't even change the algorithm. The GPU program outputs are exact—they are not an approximation.
 
 ## Implementation
 So, how does this work? The idea was pretty simple—NVIDIA GPUs are famous for their ability to run parallel programs really quickly. If you look at the `matrix_similarity.py` code above, you will notice that all the `matrix[i,j]` entries can be computed independently, i.e., in parallel. So all we had to do was figure out how to fit this problem onto an NVIDIA GPU. Below is a visual guide on how we fit the problem to a GPU:
@@ -73,9 +73,9 @@ Step 1: stack all references and queries on top of each other, into a 2D array. 
 # Input: Many References and queries
 # Output: Similarity matrix of all-vs-all spectra
 
-for references_chunk in batch(references, batch_size = 3): # 3 per batch, in practice we use 2048
+for references_chunk in batch(references, batch_size=3): # 3 per batch; in practice we use 2048
   references_batch = spectra_to_contiguous_array(references_chunk)
-  for queries_chunk in batch(queries, batch_size = 2):
+  for queries_chunk in batch(queries, batch_size=2):
     queries_batch = spectra_to_contiguous_array(queries_chunk)
 
     # We have to pre-allocate outputs for GPU to write in
