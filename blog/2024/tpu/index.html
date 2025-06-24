@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tornike  Onoprishvili | Google TPUs</title>
+    <meta name="author" content="Tornike  Onoprishvili" />
+    <meta name="description" content="Documentation walkthrough" />
+    <meta name="keywords" content="tornikeo, tornike, machine-learning, ai, gen-ai, portfolio-website" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    
+    <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://tornikeo.github.io/blog/2024/tpu/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <meta name="referrer" content="no-referrer">
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://tornikeo.github.io/"><span class="font-weight-bold">Tornike</span>   Onoprishvili</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">about</a>
+              </li>
+
+              <!-- Other pages -->
+                <li class="nav-item ">
+                  <a class="nav-link" href="/projects/">projects</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="/publications/">publications</a>
+                </li>
+                
+              <!-- Blog -->
+              <li class="nav-item active">
+                <a class="nav-link" href="/blog/">blog</a>
+              </li>
+
+              <!-- Resume: Direct link to PDF asset -->
+              <li class="nav-item">
+                <a class="nav-link" href="/assets/pdf/tornikeo_resume.pdf">resume
+                </a>
+              </li>
+
+              <!-- Toggle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- _layouts/post.html -->
+
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Google TPUs</h1>
+    <p class="post-meta">December 19, 2024</p>
+    <p class="post-tags">
+      <a href="/blog/2024"> <i class="fas fa-calendar fa-sm"></i> 2024 </a>
+        ·  
+        <a href="/blog/category/paper-walkthrough">
+          <i class="fas fa-tag fa-sm"></i> paper-walkthrough</a>  
+          
+
+    </p>
+  </header>
+
+  <article class="post-content">
+    <h1 id="introduction">Introduction</h1>
+
+<ol>
+  <li>CPUs are have one really fast processor and are bound by memory load/save speed.</li>
+  <li>GPUs have many tiny CPUs inside, and really large memory load/save speed.</li>
+  <li>TPUs don’t have either. Instead, e.g. TPU v3:
+    <ul>
+      <li>Has two systolic ALUs of size 128 x 128. These are ALUs that are laid out in 128 x 128 grid.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The next animation shows how the network “weights” are laid out inside a TPU.</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image4_5pfb45w.gif" alt=""></p>
+
+<p>And this animation shows the “systolic” movement of data inputs into TPUs:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image1_2pdcvle.gif" alt=""></p>
+
+<p>So, as far as I understand, these two above animations show a pair-wise convolution between all weights and all inputs. The only thing that is really important here is that from the animations it seems TPUs don’t re-load the used inputs into HBM. From the animations it seems each ALU passes on the inputs to the next ALU vertically after processing. HBM access is really slow. If ALUs can really pass data upstream like that, that’d make the processing much faster. Interesting indeed.</p>
+
+<p>On the horizontal side, it also seems that after processing a chunk of the weights x inputs, ALU passes the accumulated results to the right-side ALU. It is interesting what exactly passes in ALU-to-ALU transfer operations.</p>
+
+<p>Recommendations:</p>
+<ol>
+  <li>Reshape operations should be avoided. Shapes must stay constant. Shapes are actually “compiled”, or baked into model. If you don’t use that extra 8 cells, the compiled will still add those and discard them afterwards.</li>
+  <li>Matrices should be as large as possible and at multiples of 8</li>
+  <li>Matrix multiplications are easiest to perform. Any other operation (add, sub, reshape) are slower.</li>
+</ol>
+
+<h2 id="summary">Summary</h2>
+
+<p>Surprise-surprise, vanilla transformers are really well-suited for google’s TPUs. Especially large ones with large enough hidden dimension. I’d be fair to say that depth of the model won’t matter as much as the hidden size.</p>
+
+<p>Second, it’s best to use JAX for getting your model to work on a TPU. Don’t use PyTorch. JAX has a better support for TPUs. Don’t use TensorFlow under any circumstance.</p>
+
+<p>We know something about the heart of the machine now – what about the rest? What about the TPU host, its disk size, case studies, etc.</p>
+
+<h1 id="system-arch">System arch</h1>
+
+<h2 id="tpu-related-terms">TPU-related Terms</h2>
+
+<ol>
+  <li>Batch Inference: Run when available. Slow as heck.</li>
+  <li>TPU chip contains TensorCores (TC). Better TPUs have more/faster TCs.
+ TC has many matrix-multiply units (MXUs), a vector unit and scalar unit.
+ MXU is either 256x256 (v6e and later) or 128x128 multiply accumulator. MXUs are the workhorse of the TPUs. 
+ TPUs do multiplication in bfloat16, and accumulation in FP32.
+ Vector unit does activations and softmax. Scalar unit does control flow and mem address ops.</li>
+  <li>TPU cube. This is a topology of several connected TPUs. TPU is adjacent to 6 other TPUs, I guess. Starts with v4 and later TPUs.</li>
+  <li>Multislice is connection between several TPU slides. Of course, TPU slices communicate better than a multislice.</li>
+  <li>Cloud TPU ICI resiliency – it’s just a safeguard used when connecting TPU cubes with each other.</li>
+  <li>Queued resource – A representation of TPU resources, used to enqueue and manage a request for a single-slice or multi-slice TPU environment. Basically, queued resource is how you stand in queue, when wanting to access a TPU. This has to be connected with “Batch Inference”.</li>
+  <li>Single host, multi host, and sub host – TPU “host” is a linux VM that controls a TPU. TPUs can have multiple hosts and a host can have many TPUs. A Sub-host workload would mean a process doesn’t use all TPUs of the host.</li>
+  <li>
+<strong>Slice</strong> – Pod slice is a collection of chips that are connected with really fast chip interconnects (ICI). Slices can have different ICI connection shapes, this is called chip topology, and different number of chips. A slice can also be described in total number of TensorCores it has too.</li>
+  <li>SparseCore – if you have a large recommendation engine that relies on embedding vectors, you likely want to use SparseCore. v5 and later chips have specialized hardware for this, called “SparseCores”.</li>
+  <li>
+<strong>TPU Pod</strong> – A collection of TPUs that are physically close to each other and connected with a really fast network. TPU Pods are what you will use if you want to train a large model that doesn’t fit on a single TPU HBM.</li>
+  <li>
+<strong>TPU VM or “worker”</strong> – A virtual machine running Linux that has access to the underlying TPUs. For practical purposes, it’s an ssh terminal that can compile and run TPU based XLA code.</li>
+  <li>TensorCores – these do efficient matrix multiplications. See this <a href="https://dl.acm.org/doi/pdf/10.1145/3360307" target="_blank" rel="noopener noreferrer">ACM article</a> for details.</li>
+  <li>TPU versions – TPU chip architecture changes a lot between chips. AFAIK, there’s smaller incentive in keeping everything backwards-compatible, so google changes TPUs a lot between versions.</li>
+</ol>
+
+<h1 id="tpu-vm-images">TPU VM images</h1>
+
+<p>A default vm for TPUs is <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>. There are others too.</p>
+
+<p>What’s inside <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>?</p>
+
+<h1 id="tpu-versions">TPU versions</h1>
+<p>All TPUs have bf16 mul, fp32 accumulation.</p>
+
+<h2 id="tpu-v6e">TPU v6e</h2>
+<p>Somewhat similar to v5e, but newer. Designed for both training and tuning.</p>
+
+<p>Each v6e has 1 TC and each TC has 2 MXUs.</p>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong></li>
+  <li>Memory/BW: <strong>32GB</strong>,  1640 Gbps</li>
+  <li>Peak perf: 918 TFLOPs</li>
+  <li>Max Pod size: 8960 TPUs (!!)</li>
+  <li>ICI BW: 3584 Gbps</li>
+  <li>Max pod size: 256 Chips</li>
+  <li>All-reduce bandwidth per Pod: 102 TB/s</li>
+</ol>
+
+<p><strong>TODO how much CPU resources does host have in for v6e?</strong></p>
+
+<h2 id="tpu-v5p">TPU v5p</h2>
+<p>For training. This chip is an absolute beast.</p>
+
+<ol>
+  <li><strong>Single host can have 8 TPUs at most</strong></li>
+  <li>Memory/BW: <strong>95GB</strong>,  2765 Gbps</li>
+  <li>Peak perf: 459 TFLOPs</li>
+  <li>Max Pod size: 8960 TPUs (!!)</li>
+  <li>ICI BW: 4800 Gbps</li>
+</ol>
+
+<h2 id="tpu-v5e">TPU v5e</h2>
+
+<p>For both training and serving.</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/TPU-host-in-v5e.png" alt=""></p>
+
+<ol>
+  <li>
+<strong>Single host can have 8 TPUs at most</strong>.</li>
+  <li>Memory/BW: <strong>16GB</strong>, 819 Gbps</li>
+  <li>All reduce BW per pod: 51.2 TB/s</li>
+  <li>Peak perf: 197 TFLOPs</li>
+  <li>ICI BW: 1600 Gbps <strong>Interchip/intrahost is faster than CPU-to-chip</strong>.</li>
+  <li>Max pod: <strong>256 Chips</strong>
+</li>
+  <li>Single CPU can most efficiently access TPUs 0,1,2,3.</li>
+</ol>
+
+<p>Single-host <code class="language-plaintext highlighter-rouge">AcceleratorType</code>-s are:</p>
+
+<ol>
+  <li>v5litepod-1</li>
+  <li>v5litepod-4</li>
+  <li>v5litepod-8</li>
+</ol>
+
+<p>After this, you need to use <code class="language-plaintext highlighter-rouge">Sax</code> to manage several hosts (remember, 1 host has max 8 TPUs). Then it goes to:</p>
+
+<ol>
+  <li>v5litepod-16, 32, etc …</li>
+</ol>
+
+<h2 id="tpu-v4">TPU v4</h2>
+
+<ol>
+  <li>
+<strong>Single host can have 8 TPUs at most</strong>.</li>
+  <li>Memory/BW: <strong>32GB</strong>, 1200 Gbps</li>
+  <li>All reduce BW per pod: 1100 TB/s</li>
+  <li>Peak perf: 275 TFLOPs</li>
+  <li>ICI BW: 1600 Gbps <strong>Interchip/intrahost is faster than CPU-to-chip</strong>.</li>
+  <li>Max pod: <strong>4096 Chips</strong>
+</li>
+</ol>
+
+<p>Using <code class="language-plaintext highlighter-rouge">v4-8</code> means having 8 <strong>TensorCores</strong> (TCs), with one single VM controlling them. This makes it the easiest to work with.</p>
+
+<h2 id="tpu-vms-themselves">TPU VMs themselves</h2>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">n2d-48-24-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>1 v5e TPU</li>
+      <li>24 CPUs</li>
+      <li>48 GB CPU RAM</li>
+      <li>1 NUMA</li>
+      <li>Disruption: High. This just means that GKE update could terminate your run possibly. You shouldn’t worry about this, as long as you do periodic model checkpoints. Read up on this <a href="https://cloud.google.com/kubernetes-engine/docs/concepts/handle-disruption-gpu-tpu#disruption-in-gke" target="_blank" rel="noopener noreferrer">here</a>.</li>
+    </ul>
+  </li>
+  <li>
+<code class="language-plaintext highlighter-rouge">n2d-192-112-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>4 v5e TPUs</li>
+      <li>112 CPUs</li>
+      <li>192 GB CPU RAM (!)</li>
+      <li>1 NUMA</li>
+      <li>Fewer disruptions</li>
+    </ul>
+  </li>
+  <li>
+<code class="language-plaintext highlighter-rouge">n2d-384-224-v5lite-tpu</code> for <code class="language-plaintext highlighter-rouge">v5litepod-1</code> has:
+    <ul>
+      <li>8 v5e TPUs</li>
+      <li>224 CPUs (!)</li>
+      <li>384 GB CPU RAM (!!)</li>
+      <li>2 NUMAs</li>
+      <li>Even fewer GKE disruptions</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Larger TPUs just repeat use a number of hosts with <code class="language-plaintext highlighter-rouge">n2d-384-224-v5lite-tpu</code> VMs. <strong>It’s interesting to know</strong> how to implement a connection between inter-host TPUs. I’m assuming</p>
+
+<h1 id="regions-and-zones">Regions and zones</h1>
+
+<p>In EU, TPUs are only in <code class="language-plaintext highlighter-rouge">europe-west4</code>. Latest v6e is only in <code class="language-plaintext highlighter-rouge">us-east1-d</code>, and <code class="language-plaintext highlighter-rouge">us-east5-b</code>.</p>
+
+<h1 id="supported-models">Supported models</h1>
+
+<p>There is this google <a href="https://github.com/AI-Hypercomputer/maxtext/blob/main/README.md" target="_blank" rel="noopener noreferrer">repository</a> called <code class="language-plaintext highlighter-rouge">MaxText</code>. It’s an “optimization free” TPU-based LLM training codebase that is written in python/jax and that achieves a really high TPU-usage. There are samples for training or tuning Llama2, mistral and gemma.</p>
+
+<p><code class="language-plaintext highlighter-rouge">MaxText</code> claims to be inspired by <a href="https://github.com/karpathy/minGPT" target="_blank" rel="noopener noreferrer">MinGPT</a>, which itself is a small self-contained implementation of GPT-2 model in Python. MinGPT primarily uses just two main 300 line scripts, <code class="language-plaintext highlighter-rouge">train.py</code> and <code class="language-plaintext highlighter-rouge">model.py</code>.</p>
+
+<hr>
+
+<h1 id="get-started">Get started</h1>
+
+<p>Let’s do a code walkthrough.</p>
+
+<h2 id="asking-google-for-tpus">Asking Google for TPUs</h2>
+
+<p>First, in google cloud, use search bar for “Cloud TPU”. Click “Enable”.</p>
+
+<p>You then need to ask Google to give you TPU access. This is done again by using the above search bar, and typing “Quotas &amp; System Limits”.</p>
+
+<p>Down in the <strong><code class="language-plaintext highlighter-rouge">Filter</code></strong> tab You need to search for “TPU v5 lite pod cores for serving per project per zone”, in the zone of your choice.</p>
+
+<p>Click three dots on the right side and choose “Edit quota”. Follow the approval flow and you will likely get your access soon.</p>
+
+<h2 id="running-tpus">Running TPUs</h2>
+
+<p>First download the <code class="language-plaintext highlighter-rouge">gcloud</code> shell command, and then run these commands by pasting them one-by-one in your console.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># TODO: use `gcloud projects list` and paste 'NAME' value below</span>
+<span class="nb">export </span><span class="nv">PROJECT_ID</span><span class="o">=</span> 
+<span class="c"># TODO: use `gcloud iam service-accounts list` and paste 'EMAIL' value below</span>
+<span class="nb">export </span><span class="nv">SERVICE_ACCOUNT</span><span class="o">=</span>xyz-compute@developer.gserviceaccount.com 
+<span class="c"># TODO: Come up with a simple unique name</span>
+<span class="nb">export </span><span class="nv">RESOURCE_NAME</span><span class="o">=</span>v5litepod-1-resource
+
+<span class="c"># TODO: Use browser "login with google" window to do auth</span>
+gcloud auth login <span class="c"># opens a browser window</span>
+
+<span class="c"># Enable TPUs</span>
+gcloud services <span class="nb">enable </span>tpu.googleapis.com 
+
+<span class="c"># Allow TPUs to access the rest of your gcloud with this account</span>
+gcloud beta services identity create <span class="se">\</span>
+    <span class="nt">--service</span> tpu.googleapis.com <span class="se">\</span>
+    <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+<span class="c"># This prints</span>
+<span class="c"># "Service identity created: `service-xyz@cloud-tpu.iam.gserviceaccount.com`"</span>
+<span class="c"># This email isn't needed. Ignore it.</span>
+
+
+<span class="c"># Stand in a queue to access a TPU node</span>
+gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span>
+
+<span class="c"># check if it's your turn in the queue</span>
+gcloud alpha compute tpus queued-resources describe <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a
+
+<span class="c"># You will see something like</span>
+<span class="c"># createTime: '2024-12-20T09:25:02.391983567Z'</span>
+<span class="c"># guaranteed: {}</span>
+<span class="c"># name: projects/&lt;Project&gt;/locations/us-central1-a/queuedResources/v5litepod-1-resource</span>
+<span class="c"># queueingPolicy:</span>
+<span class="c">#   validUntilTime: '2024-12-21T09:25:02.423775424Z'</span>
+<span class="c"># state:</span>
+<span class="c">#   state: PROVISIONING &lt;----- REPEAT UNTIL THIS IS "ACTIVE"</span>
+<span class="c"># tpu:</span>
+<span class="c">#   nodeSpec:</span>
+<span class="c">#   - node:</span>
+<span class="c">#       acceleratorType: v5litepod-1</span>
+<span class="c">#       networkConfig:</span>
+<span class="c">#         enableExternalIps: true</span>
+<span class="c">#         network: default</span>
+<span class="c">#       queuedResource: projects/&lt;project&gt;/locations/us-central1-a/queuedResources/v5litepod-1-resource</span>
+<span class="c">#       runtimeVersion: v2-alpha-tpuv5-lite</span>
+<span class="c">#       schedulingConfig: {}</span>
+<span class="c">#       serviceAccount:</span>
+<span class="c">#         email: xyz-compute@developer.gserviceaccount.com</span>
+<span class="c">#       shieldedInstanceConfig: {}</span>
+<span class="c">#     nodeId: v5litepod</span>
+<span class="c">#     parent: projects/&lt;project&gt;/locations/us-central1-a</span>
+
+<span class="c"># ssh into TPU node</span>
+gcloud alpha compute tpus tpu-vm ssh v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span>  us-central1-a
+
+
+<span class="c">## DON'T FORGET TO STOP THE TPU!</span>
+gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span>
+
+<span class="c">## Delete the disk too</span>
+gcloud compute disks delete <span class="nv">$DISK_NAME</span> <span class="se">\</span>
+<span class="nt">--zone</span> <span class="nv">$ZONE</span>
+</code></pre></div></div>
+
+<p>You will see something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SSH key found in project metadata; not updating instance.
+Using ssh batch size of 1. Attempting to SSH into 1 nodes with a total of 1 workers.
+SSH: Attempting to connect to worker 0...
+Warning: Permanently added 'tpu.xyz-0-voj4cz' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 6.5.0-1013-gcp x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+  System information as of Fri Dec 20 09:27:55 UTC 2024
+
+  System load:  1.09521484375     Processes:                353
+  Usage of /:   8.8% of 96.73GB   Users logged in:          0
+  Memory usage: 2%                IPv4 address for docker0: xyz
+  Swap usage:   0%                IPv4 address for ens6:    xyz
+
+Expanded Security Maintenance for Applications is not enabled.
+
+145 updates can be applied immediately.
+88 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+7 additional security updates can be applied with ESM Apps.
+Learn more about enabling ESM Apps service at https://ubuntu.com/esm
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+tornikeo@t1v-n-5cb9aa1d-w-0:~$
+</code></pre></div></div>
+
+<p>Yay. At this point you can access your TPU. If you are in EU like me, you will get a terminal that is really laggy, since the 
+actual TPU is in US. Latency is really high. You can take a look around.</p>
+
+<h2 id="look-around-inside-tpu-vm">Look around inside TPU VM</h2>
+
+<p>To see how much disk space you have, use <code class="language-plaintext highlighter-rouge">df -h</code>. I’m getting 
+something like below:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">df</span> <span class="nt">-h</span>
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        97G   14G   84G  15% /
+tmpfs            24G     0   24G   0% /dev/shm
+tmpfs           9.5G  1.9M  9.5G   1% /run
+tmpfs           5.0M     0  5.0M   0% /run/lock
+efivarfs         56K   24K   27K  48% /sys/firmware/efi/efivars
+/dev/sda15      105M  6.1M   99M   6% /boot/efi
+tmpfs           4.8G  4.0K  4.8G   1% /run/user/2001
+</code></pre></div></div>
+<p>AFAIK, this means we have around 84GB total, from which we already use 14GB. 
+To list everything that’s physically connected to VM hardware details, use <code class="language-plaintext highlighter-rouge">lspci</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span>lspci
+00:00.0 Host bridge: Intel Corporation 440FX - 82441FX PMC <span class="o">[</span>Natoma] <span class="o">(</span>rev 02<span class="o">)</span>
+00:01.0 ISA bridge: Intel Corporation 82371AB/EB/MB PIIX4 ISA <span class="o">(</span>rev 03<span class="o">)</span>
+00:01.3 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI <span class="o">(</span>rev 03<span class="o">)</span>
+00:03.0 IOMMU: Advanced Micro Devices, Inc. <span class="o">[</span>AMD] Milan IOMMU
+00:04.0 Non-VGA unclassified device: Red Hat, Inc. Virtio SCSI
+00:05.0 Unassigned class <span class="o">[</span>ff00]: Google, Inc. Device 0063
+00:06.0 Ethernet controller: Google, Inc. Compute Engine Virtual Ethernet <span class="o">[</span>gVNIC]
+00:07.0 Unclassified device <span class="o">[</span>00ff]: Red Hat, Inc. Virtio RNG
+</code></pre></div></div>
+
+<p>I’m guessing the <code class="language-plaintext highlighter-rouge">00:05.0 Unassigned class [ff00]: Google, Inc. Device 0063</code> could be our TPU. Who knows?</p>
+
+<p>We can learn more about CPUs, by using <code class="language-plaintext highlighter-rouge">hwinfo | less</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span>hwinfo | less
+...
+<span class="nt">-----</span> /proc/cpuinfo <span class="nt">-----</span>
+  processor     : 0
+  vendor_id     : AuthenticAMD
+  cpu family    : 25
+  model         : 1
+  model name    : AMD EPYC 7B13
+  stepping      : 0
+  microcode     : 0xffffffff
+  cpu MHz               : 2450.000
+  cache size    : 512 KB
+  physical <span class="nb">id</span>   : 0
+  siblings      : 24
+  core <span class="nb">id</span>               : 0
+  cpu cores     : 12
+  apicid                : 0
+  initial apicid        : 0
+  fpu           : <span class="nb">yes
+  </span>fpu_exception : <span class="nb">yes
+  </span>cpuid level   : 13
+  wp            : <span class="nb">yes
+  </span>flags         : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext invpcid_single ssbd ibrs ibpb stibp vmmcall fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr arat npt nrip_save umip vaes vpclmulqdq rdpid fsrm
+  bugs          : sysret_ss_attrs null_seg spectre_v1 spectre_v2 spec_store_bypass srso
+  bogomips      : 4900.00
+  TLB size      : 2560 4K pages
+  clflush size  : 64
+  cache_alignment       : 64
+  address sizes : 48 bits physical, 48 bits virtual
+  power management:
+</code></pre></div></div>
+
+<p>We have 24 such AMD CPUs:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">nproc
+</span>24
+</code></pre></div></div>
+
+<p>Total RAM we have is 49GB:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-5cb9aa1d-w-0:~<span class="nv">$ </span><span class="nb">cat</span> /proc/meminfo | <span class="nb">grep </span>MemTotal
+MemTotal:       49316192 kB
+</code></pre></div></div>
+
+<h2 id="install-packages">Install packages</h2>
+<p>We already have python and pip, so let’s install packages inside the TPU VM. This can take 3-4 minutes.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch_xla[tpu] <span class="nt">-f</span> https://storage.googleapis.com/libtpu-releases/index.html
+pip <span class="nb">install </span>torch_xla[pallas]
+pip <span class="nb">install </span>timm
+</code></pre></div></div>
+
+<h2 id="exit">Exit</h2>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+</code></pre></div></div>
+
+<h2 id="making-life-easier">Making life easier</h2>
+
+<p>At this point, you can likely run what you need. Now, of course you 
+don’t need to sit around waiting for pip to finish running. Instead you can specify a startup script that does literally everything.</p>
+
+<p>There’s a neat trick on gcloud, documented <a href="https://cloud.google.com/compute/docs/instances/startup-scripts/linux#passing-directly" target="_blank" rel="noopener noreferrer">here</a>, that allows you to add a startup script to any linux-based instance including TPUs! Here’s how you use it:</p>
+
+<p>For example</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+     <span class="nt">--metadata</span> startup-script<span class="o">=</span><span class="s1">'#! /bin/bash
+      touch tornikeo-was-here.txt # to make sure it all works.
+      pip install torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+      pip install torch_xla[pallas]
+      pip install timm
+      EOF'</span>
+</code></pre></div></div>
+
+<p>Or, if you want to keep the startup file separately, use:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+    <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+    <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+    <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+    <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+    <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+    <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+    <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+    <span class="nt">--metadata-from-file</span> startup-script<span class="o">=</span>FILE_PATH
+</code></pre></div></div>
+
+<p>You can get startup script logs inside ssh, by reading <code class="language-plaintext highlighter-rouge">/var/log/syslog</code>:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-6b747f45-w-0:~<span class="nv">$ </span><span class="nb">grep </span>startup-scrip /var/log/syslog
+</code></pre></div></div>
+
+<p>This can help you in debugging the startup script in a TPU VM.</p>
+
+<p>Either way, after the instance is ACTIVE, you can check that our startup script was indeed executed in SSH:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tornikeo@t1v-n-6b747f45-w-0:~<span class="nv">$ </span><span class="nb">ls</span> /
+bin   dev  home  lib32  libx32      media  opt   root  sbin  srv  tmp                    usr
+boot  etc  lib   lib64  lost+found  mnt    proc  run   snap  sys  tornikeo-was-here.txt  var
+</code></pre></div></div>
+
+<p>The startup script can very well be a script that does literally everything:</p>
+
+<ol>
+  <li>Download data</li>
+  <li>Download model (if pretrained)</li>
+  <li>Authenticate with external services (e.g. github, wandb, huggingface)</li>
+  <li>Clone or copy over your full code from github branch or local machine</li>
+  <li>Run training, fine-tuning, eval and push model checkpoints to your HF repo</li>
+  <li>Shut self down
+    <ul>
+      <li>hint: you can simply use <code class="language-plaintext highlighter-rouge">gcloud alpha compute tpus queued-resources delete v5litepod-1-resource --force --quiet</code> inside the ssh script.</li>
+      <li>If something goes wrong and you don’t reach that line, things might get expensive. Make sure to reserve the TPU instance only as long as you think you will need.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>This way you can rapidly test model hyper-parameters.</p>
+
+<h1 id="configure-your-tpu">Configure your TPU</h1>
+
+<h2 id="storage-options">Storage Options</h2>
+
+<p>This section is about the disk of TPU VM. If you TPU instance is small,
+say <code class="language-plaintext highlighter-rouge">v5litepod-1</code> then you don’t get a lot of disk space and you might run out as you download the dataset.</p>
+
+<p><strong>Most times</strong> if you are performing any serious experiments, you are better off using a FUSE (see below), which basically attaches a <code class="language-plaintext highlighter-rouge">gs://</code> bucket to your system as if it were a regular directory. This can also be used for huggingface datasets.</p>
+
+<h3 id="add-a-persistent-disk-pd">Add a Persistent Disk (PD)</h3>
+
+<p>By default, each TPU VM has 100GB boot persistent disk with OS and all packages. This can be used for storing data, as long as the data is small enough. Usually, you need around 20GB for packages and most of the 80GB can be used.</p>
+
+<p>Most times, this 100GB won’t be enough. You need to add a persistent disk (PD) to a TPU VM. PD lives on after TPU gets disposed of, so you could store data or models there.</p>
+
+<h3 id="use-gs-bucket">Use <code class="language-plaintext highlighter-rouge">gs://</code> bucket</h3>
+
+<p>You could use a <code class="language-plaintext highlighter-rouge">gs://my-bucket</code> as a storage. Even if that bucket is fastest and in the same region, it will be much slower than a PD, but also not restricted in size.</p>
+
+<h3 id="use-gs-like-a-local-folder-gcsfuse">Use <code class="language-plaintext highlighter-rouge">gs://</code> like a local folder (gcsfuse)</h3>
+
+<p><code class="language-plaintext highlighter-rouge">GCSFUSE</code> is for people who want to use a Cloud Storage Bucket (i.e. upload/download to <code class="language-plaintext highlighter-rouge">gs://</code>), but do so with regular <code class="language-plaintext highlighter-rouge">cp</code>, <code class="language-plaintext highlighter-rouge">mv</code>, <code class="language-plaintext highlighter-rouge">rm</code> semantics, like the bucket were an actual local disk. Simpler than attaching a persistent disk and simpler than using a Cloud Storage Bucket, but could be slower than a disk if you use it incorrectly.</p>
+
+<p>I have used <code class="language-plaintext highlighter-rouge">gcsfuse</code> both as a way to asynchronously <em>upload</em> model artifacts, and to <em>download</em> really large data. In my experience, simply using a huggingface dataset with <code class="language-plaintext highlighter-rouge">streaming=True</code> is a simpler solution.</p>
+
+<p>gcsfuse can be installed in a startup script, like so:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt update <span class="o">&amp;&amp;</span> <span class="se">\</span>
+apt <span class="nb">install</span> <span class="nt">-y</span> numactl lsb-release gnupg curl net-tools iproute2 procps lsof git ethtool <span class="o">&amp;&amp;</span> <span class="se">\</span>
+<span class="nb">export </span><span class="nv">GCSFUSE_REPO</span><span class="o">=</span>gcsfuse-<span class="sb">`</span>lsb_release <span class="nt">-c</span> <span class="nt">-s</span><span class="sb">`</span>
+<span class="nb">echo</span> <span class="s2">"deb https://packages.cloud.google.com/apt </span><span class="nv">$GCSFUSE_REPO</span><span class="s2"> main"</span> | <span class="nb">tee</span> /etc/apt/sources.list.d/gcsfuse.list
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+apt update <span class="nt">-y</span> <span class="o">&amp;&amp;</span> apt <span class="nt">-y</span> <span class="nb">install </span>gcsfuse
+</code></pre></div></div>
+
+<p>In the same startup script, you can attach a bucket. Note <code class="language-plaintext highlighter-rouge">bucket-name</code> does <em>not</em> contain <code class="language-plaintext highlighter-rouge">gs://</code> prefix, simply provide the bucket name.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> /tmp/fuse/datasets/
+gcsfuse <span class="nt">-o</span> rw <span class="nt">--implicit-dirs</span> <span class="se">\</span>
+        <span class="nt">--type-cache-max-size-mb</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--stat-cache-max-size-mb</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--kernel-list-cache-ttl-secs</span><span class="o">=</span><span class="nt">-1</span> <span class="nt">--metadata-cache-ttl-secs</span><span class="o">=</span><span class="nt">-1</span> <span class="se">\</span>
+        bucket-name /tmp/fuse/datasets/
+</code></pre></div></div>
+
+<p>I also encountered an error with gcsfuse, which was solved with</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>proto-plus<span class="o">==</span>1.24.0.dev1
+</code></pre></div></div>
+
+<h3 id="filestore-file-share-like-fuse-but-faster">Filestore file share (like FUSE, but faster)</h3>
+
+<p>This seems to be an evolved version of FUSE. AFAIK, the smallest size of dataset Filestore supports is 1TB at least.</p>
+
+<h1 id="training-and-inference">Training and inference</h1>
+
+<h1 id="v6e-tpu">v6e TPU</h1>
+
+<p>As of Dec 2024, this v6e TPU is the latest. It is somewhat similar to v5e, with maximum Pod size of 256 chips.</p>
+
+<p>Due to waiting for the quota increase, I’ll cover this specific chip a bit later on.</p>
+
+<h1 id="v5p-tpu">v5p TPU</h1>
+
+<p>To use this chip, you first need to increase your quota of <code class="language-plaintext highlighter-rouge">TPUV5PPerProjectPerZoneForTPUAPI</code> in the cloud IAM and Admin page on quotas. By default you don’t have access to v5p.</p>
+
+<p><strong>Note</strong> the minimum amount of v5p chips you can have is 8. Looking at the <a href="https://cloud.google.com/tpu/pricing?hl=en" target="_blank" rel="noopener noreferrer">pricing page</a> this means that, per hour, the minimum price for a <code class="language-plaintext highlighter-rouge">v5p-8</code> is <strong>$33</strong> (!). SO keep this in mind.</p>
+
+<p>While going through the documentation, I found that accessing even the smallest  <code class="language-plaintext highlighter-rouge">v5p-8</code> instance is really slow. With queue, I waited for around half an hour before giving up.</p>
+
+<p>My recommendation definitely is to try fitting your problem on <code class="language-plaintext highlighter-rouge">v5e</code> instances first, and only then try to scale up to <code class="language-plaintext highlighter-rouge">v5p</code>.</p>
+
+<h1 id="v5e-tpu">v5e TPU</h1>
+
+<p>This TPU variant is marketed as a the most value-per-dollar data-center chip. Let’s try it out.</p>
+
+<p>The setup is the usual, but notice the <code class="language-plaintext highlighter-rouge">--worker=all</code>. This is needed because we actually will work with a v5litepod-16. This instance will have two VMs. So, while you can connect to each instance individually using SSH, it’s much easier to execute stuff on all at the same time using this argument.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Install Jax</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'pip install -U "jax[tpu]" -f https://storage.googleapis.com/jax-releases/libtpu_releases.html'</span>
+
+<span class="c"># Clone imagenet metadata</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'git clone https://github.com/google/flax.git &amp;&amp; cd flax/examples/imagenet &amp;&amp; pip install -r requirements.txt &amp;&amp; pip install flax==0.7.4'</span>
+
+<span class="c"># Make fake data</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'mkdir -p $HOME/flax/.tfds/metadata/imagenet2012/5.1.0 &amp;&amp; curl https://raw.githubusercontent.com/tensorflow/datasets/v4.4.0/tensorflow_datasets/testing/metadata/imagenet2012/5.1.0/dataset_info.json --output $HOME/flax/.tfds/metadata/imagenet2012/5.1.0/dataset_info.json'</span>
+
+<span class="c"># Train</span>
+gcloud compute tpus tpu-vm ssh <span class="k">${</span><span class="nv">TPU_NAME</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--project</span><span class="o">=</span><span class="k">${</span><span class="nv">PROJECT_ID</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--zone</span><span class="o">=</span><span class="k">${</span><span class="nv">ZONE</span><span class="k">}</span> <span class="se">\</span>
+   <span class="nt">--worker</span><span class="o">=</span>all <span class="se">\</span>
+   <span class="nt">--command</span><span class="o">=</span><span class="s1">'cd flax/examples/imagenet &amp;&amp; JAX_PLATFORMS=tpu python3 imagenet_fake_data_benchmark.py'</span>
+</code></pre></div></div>
+
+<p>If you get an error <code class="language-plaintext highlighter-rouge">AttributeError: module 'jax.config' has no attribute 'define_bool_state'</code>, then you likely need to use <code class="language-plaintext highlighter-rouge">jax==0.4.24</code> during the first step. See this open <a href="https://github.com/google/flax/issues/3180" target="_blank" rel="noopener noreferrer">discussion</a> on flax on the issue.</p>
+
+  </article>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        © Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
+
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/spinner.js"></script>
+  <script src="/assets/js/image_comparison.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    
+  </body>
+</html>
+
