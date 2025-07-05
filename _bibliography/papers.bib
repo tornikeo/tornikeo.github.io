@@ -12,7 +12,6 @@
     month = {02},
     issn = {1367-4811},
     doi = {10.1093/bioinformatics/btaf081},
-    doi = {10.1093/bioinformatics/btaf081},
     eprint = {https://academic.oup.com/bioinformatics/advance-article-pdf/doi/10.1093/bioinformatics/btaf081/62014671/btaf081.pdf},
     abstract = {
     Untargeted metabolomics involves a large-scale comparison of the fragmentation pattern of a mass spectrum against a database containing known spectra. Given the number of comparisons involved, this step can be time-consuming.In this work, we present a GPU-accelerated cosine similarity implementation for Tandem Mass Spectrometry (MS), with an approximately 1000-fold speedup compared to the MatchMS reference implementation, without any loss of accuracy. This improvement enables repository-scale spectral library matching for compound identification without the need for large compute clusters. This impact extends to any spectral comparison-based methods such as molecular networking approaches and analogue search.All code, results, and notebooks supporting are freely available under the MIT license at https://github.com/pangeAI/simms/.}
@@ -71,4 +70,15 @@
   pages={1--15},
   year={2019},
   publisher={Springer}
+}
+
+@article{onoprishvili2025graphics,
+  title        = {{On Graphics Processing Units For Simulation Of Mass Spectra}},
+  author       = {Onoprishvili, Tornike},
+  abstract={{Mass spectrometry (MS) is an important technique in analytical chemistry for identifying molecules. Accurate identification often relies on high-quality datasets of experimental mass spectra. Unfortunately, the existing datasets are not large enough to capture the full diversity of biological molecules. Expanding these datasets with new experiments is a slow and expensive process. An alternative to experimental data is the simulation of mass spectra in silico using computational quantum chemistry. These approaches are often computationally intensive, which limits their use to only the most well-equipped computational chemistry labs. In recent years, the mass adoption of Artificial intelligence (AI) programs has led to a soaring demand for high-performance graphics processing units (GPUs). This study demonstrates that offloading parts of the in silico mass spectra calculations to a GPU can lead to substantial speedups. In these settings, it is shown that a single state-of-the-art NVIDIA GPU can provide an equivalent computational power of over 300x central processing units (CPUs). In this way, it is demonstrated that the hardware typically used for AI inference can also be effectively utilized for the simulation of mass spectra.}},
+  year         = {2025},
+  month        = {July},
+  url          = {https://urn.fi/URN:NBN:fi-fe2025063075583},
+  school       = {LUT University},
+  type         = {thesis}
 }
