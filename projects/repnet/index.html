@@ -9,10 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | blog</title>
+    <title>Tornike  Onoprishvili | Repetition counting - for fitness!</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="A personal website and portfolio of tornikeo, machine learning researcher
-" />
+    <meta name="description" content="Automatically enumerate reps and sets from a video!" />
     <meta name="keywords" content="tornikeo, tornike, machine-learning, ai, gen-ai, portfolio-website" />
 
 
@@ -33,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.github.io/blog/">
+    <link rel="canonical" href="https://tornikeo.github.io/projects/repnet/">
     
     <!-- Dark Mode -->
     
@@ -81,8 +80,8 @@
                 </li>
                 
               <!-- Blog -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
               </li>
 
               <!-- Resume: Direct link to PDF asset -->
@@ -92,8 +91,8 @@
               </li>
 
               <!-- Toggle theme mode -->
-              <div class = "toggle-container">
-                <a id = "light-toggle">
+              <div class="toggle-container">
+                <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
                 </a>
@@ -106,128 +105,49 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <div class="post">
+      <!-- page.html -->
+<div class="post">
 
-  <div class="header-bar">
-    <h1>AI in the wild</h1>
-    <h2>Supplying AI tools to the masses</h2>
-  </div>
+  <header class="post-header">
+    <h1 class="post-title">Repetition counting - for fitness!</h1>
+    <p class="post-description">Automatically enumerate reps and sets from a video!</p>
+  </header>
 
+  <article>
+    <p>The “repnet”, or “repetition counter network” was a bit of an oddball right from the start. The business wanted to create a “universal workout counting and calorie estimation app, from a video”. A task, which, after some careful consideration of recent research and the maximum allowed error rate, I carefully laid out was <em>impossible</em>.</p>
 
-  <ul class="post-list">
-    
+<p>So, after some corner-cutting, we arrived at “just count how many reps a person does at a gym”. This was also not an easy task. The problem is the typical user is pretty unreliable at providing good quality videos, while also having high initial expectations.</p>
 
-    
-    
-    
-    
+<p>So, we wanted something to be very robust to visual noise, able to count any kind of repeating motions and be accurate enough for rep counting at a gym.</p>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2025/hello-ptx/">PTX Hello World</a>
-        
-      </h3>
-      <p>A really simple handwritten PTX file for learning CUDA</p>
-      <p class="post-meta"> 6 min read &nbsp; &middot; &nbsp;
-        July 4, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
+<p>After a while, I arrived at <a href="https://ai.googleblog.com/2020/06/repnet-counting-repetitions-in-videos.html" target="_blank" rel="noopener noreferrer">this wonderful article by google</a>.</p>
 
-          
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
 
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/tutorial">
-              <i class="fas fa-tag fa-sm"></i> tutorial</a> &nbsp;
-              
-          
-    </p>
-    </li>
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-1400.webp" />
+    -->
 
-    
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs.png" data-zoomable="">
 
-    
-    
-    
-    
+  </picture>
 
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2025/papers/">Reading List</a>
-        
-      </h3>
-      <p></p>
-      <p class="post-meta"> 1 min read &nbsp; &middot; &nbsp;
-        July 3, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
+</figure>
 
-          
+    </div>
+</div>
+<div class="caption">
+        The paper and free, as is the accompanying source code.
+</div>
 
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/daily-scribbles">
-              <i class="fas fa-tag fa-sm"></i> daily-scribbles</a> &nbsp;
-              
-          
-    </p>
-    </li>
+<p>Work-in-progress: more details coming soon…</p>
 
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/blog/2025/daily-transfomer-perf/">Daily scribbles - on choosing right LLM shapes for GPUs</a>
-        
-      </h3>
-      <p></p>
-      <p class="post-meta"> 4 min read &nbsp; &middot; &nbsp;
-        January 22, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
-          
-
-          
-          &nbsp; &middot; &nbsp;
-            
-            <a href="/blog/category/daily-scribbles">
-              <i class="fas fa-tag fa-sm"></i> daily-scribbles</a> &nbsp;
-              
-          
-    </p>
-    </li>
-
-    
-  </ul>
-
-  <nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li><li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
+  </article>
 
 </div>
 
@@ -236,7 +156,7 @@
     <!-- Footer -->    
     <footer class="fixed-bottom">
       <div class="container mt-0">
-        &copy; Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+        © Copyright 2025 Tornike  Onoprishvili. Powered by <a href="https://jekyllrb.com/" target="_blank" rel="noopener noreferrer">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio" target="_blank" rel="noopener noreferrer">al-folio</a> theme. Hosted by <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer">GitHub Pages</a>.
 
       </div>
     </footer>

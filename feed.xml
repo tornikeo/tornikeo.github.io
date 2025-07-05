@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://tornikeo.github.io/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tornikeo.github.io/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-07-05T14:58:55+00:00</updated><id>https://tornikeo.github.io/feed.xml</id><title type="html">blank</title><subtitle>A personal website and portfolio of tornikeo, machine learning researcher
+</subtitle><entry><title type="html">PTX Hello World</title><link href="https://tornikeo.github.io/blog/2025/hello-ptx/" rel="alternate" type="text/html" title="PTX Hello World" /><published>2025-07-04T00:00:00+00:00</published><updated>2025-07-04T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2025/hello-ptx</id><content type="html" xml:base="https://tornikeo.github.io/blog/2025/hello-ptx/"><![CDATA[<p>When writing CUDA C++ applications, the GPU kernels (aka <code class="language-plaintext highlighter-rouge">__global__</code> functions) are compiled down to Parallel Thread Execution (PTX). PTX is a <a href="https://docs.nvidia.com/cuda/parallel-thread-execution/">well-documented</a> assembly-like language. Unfortunately, I couldn’t find a “Hello, world” equivalent for PTX, so I decided to write this small introduction.</p>
+
+<p>The easiest way to start writing PTX is to embed it inside a CUDA C++ source file, using <code class="language-plaintext highlighter-rouge">asm(...)</code>.</p>
+
+<p>For example, here’s a CUDA kernel,</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// main.cu</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span>
+<span class="n">__global__</span> <span class="kt">void</span> <span class="nf">add_kernel</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span><span class="o">*</span> <span class="n">result</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">sum</span><span class="p">;</span>
+  <span class="k">asm</span><span class="p">(</span><span class="s">"add.s32 %0, %1, %2;"</span> <span class="o">:</span> <span class="s">"=r"</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">b</span><span class="p">));</span> <span class="c1">// inline PTX</span>
+  <span class="o">*</span><span class="n">result</span> <span class="o">=</span> <span class="n">sum</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">int</span><span class="o">*</span> <span class="n">d_result</span><span class="p">;</span>
+  <span class="n">cudaMalloc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">d_result</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+  <span class="n">add_kernel</span><span class="o">&lt;&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="o">&gt;&gt;&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d_result</span><span class="p">);</span>
+  <span class="n">cudaMemcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">result</span><span class="p">,</span> <span class="n">d_result</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">),</span> <span class="n">cudaMemcpyDeviceToHost</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">"Result: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
+  <span class="n">cudaFree</span><span class="p">(</span><span class="n">d_result</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>that adds two numbers. This is compiled as</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvcc main.cu <span class="nt">-o</span> main.bin <span class="o">&amp;&amp;</span> ./main.bin
+<span class="c"># -&gt; Result: 5</span>
+</code></pre></div></div>
+
+<p>Now, the asm looks like a function call, but instead contains <code class="language-plaintext highlighter-rouge">:</code> to separate its “arguments”. The syntax of <code class="language-plaintext highlighter-rouge">asm</code> looks like this:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">asm</span><span class="p">(</span><span class="s">"assembly_code"</span> <span class="o">:</span> <span class="n">output_operands</span> <span class="o">:</span> <span class="n">input_operands</span> <span class="o">:</span> <span class="n">clobbers</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>Where <code class="language-plaintext highlighter-rouge">"assembly_code"</code> contains a PTX instruction with placeholder variables <code class="language-plaintext highlighter-rouge">%0, %1, %2</code>. These placeholder variables are replaced with <code class="language-plaintext highlighter-rouge">: output_operands : input_operands</code>. The <code class="language-plaintext highlighter-rouge">: clobbers</code> are an optional scratchpad space (we don’t need it in this case).</p>
+
+<p>So the <code class="language-plaintext highlighter-rouge">add.s32 %0, %1, %2</code> PTX instruction tells the GPU to add 32-bit registers <code class="language-plaintext highlighter-rouge">%1 %2</code> as integers and store the result to <code class="language-plaintext highlighter-rouge">%0</code>. The result is the int32 value of 5. The <code class="language-plaintext highlighter-rouge">.s32</code> suffix means the operands and result are <strong>signed 32-bit integers</strong>.</p>
+
+<p><img src="https://github.com/tornikeo/cdn/raw/master/assets/inline_ptx/explain_asm.png" alt="" /></p>
+
+<p>The <code class="language-plaintext highlighter-rouge">"=r"(sum)</code> means that we are supplying variable <code class="language-plaintext highlighter-rouge">sum</code> that is meant as an output operand (<code class="language-plaintext highlighter-rouge">=</code>) and should reside in a register (<code class="language-plaintext highlighter-rouge">r</code>). Similarly, <code class="language-plaintext highlighter-rouge">"r"(a), "r"(b)</code> means that variables <code class="language-plaintext highlighter-rouge">a</code> and <code class="language-plaintext highlighter-rouge">b</code> are supplied as inputs, and should also reside in registers.</p>
+
+<p>The <code class="language-plaintext highlighter-rouge">"=r"</code> is called a “constraint”. There are many other constraints and you can read about them in <a href="https://gcc.gnu.org/onlinedocs/gcc/Constraints.html">GCC docs</a>.</p>
+
+<p>Our <code class="language-plaintext highlighter-rouge">asm</code> instruction should be copied and pasted in the final PTX. PTX can be generated via</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nvcc <span class="nt">-ptx</span> main.cu <span class="nt">-o</span> main.ptx
+</code></pre></div></div>
+
+<p>Looking at <code class="language-plaintext highlighter-rouge">main.ptx</code>, we see:</p>
+
+<pre><code class="language-ll">// main.ptx
+.version 8.4
+.target sm_52
+.address_size 64
+
+	// .globl	_Z10add_kerneliiPi
+
+.visible .entry _Z10add_kerneliiPi(
+	.param .u32 _Z10add_kerneliiPi_param_0,
+	.param .u32 _Z10add_kerneliiPi_param_1,
+	.param .u64 _Z10add_kerneliiPi_param_2
+)
+{
+	.reg .b32 	%r&lt;4&gt;;
+	.reg .b64 	%rd&lt;3&gt;;
+
+
+	ld.param.u32 	%r2, [_Z10add_kerneliiPi_param_0];
+	ld.param.u32 	%r3, [_Z10add_kerneliiPi_param_1];
+	ld.param.u64 	%rd1, [_Z10add_kerneliiPi_param_2];
+	cvta.to.global.u64 	%rd2, %rd1;
+	// begin inline asm
+	add.s32 %r1, %r2, %r3;
+	// end inline asm
+	st.global.u32 	[%rd2], %r1;
+	ret;
+
+}
+</code></pre>
+
+<h2 id="errors-and-debugging">Errors and debugging</h2>
+
+<p>Writing inline <code class="language-plaintext highlighter-rouge">asm</code> can be hard because making accidental errors is easy. Let’s see a couple of errors:</p>
+
+<h3 id="1-typo-in-the-instruction-name">1. <strong>Typo in the Instruction Name</strong></h3>
+<p>Here the PTX instruction name is incorrect:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">asm</span><span class="p">(</span><span class="s">"ad.s32 %0, %1, %2;"</span> <span class="o">:</span> <span class="s">"=r"</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">b</span><span class="p">));</span> <span class="c1">// 'ad' instead of 'add'</span>
+</code></pre></div></div>
+<p><strong>Error:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ptxas /tmp/tmpxft_0000bab7_00000000-6_main.ptx, line 30; error   : Not a name of any known instruction: 'ad'
+ptxas fatal   : Ptx assembly aborted due to errors
+</code></pre></div></div>
+
+<h3 id="2-wrong-operand-type">2. <strong>Wrong Operand Type</strong></h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">add.s64</code> instruction requires 64-bit operands but is supplied with 32-bit operands instead:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">asm</span><span class="p">(</span><span class="s">"add.s64 %0, %1, %2;"</span> <span class="o">:</span> <span class="s">"=r"</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">b</span><span class="p">));</span> <span class="c1">// sum, a, b are int (32-bit), while add.s64 needs 64 bit operands</span>
+</code></pre></div></div>
+
+<p><strong>Error:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ptxas /tmp/tmpxft_0000be0d_00000000-6_main.ptx, line 30; error   : Arguments mismatch for instruction 'add'
+ptxas fatal   : Ptx assembly aborted due to errors
+</code></pre></div></div>
+
+<h3 id="3-missing-output-operand">3. <strong>Missing Output Operand</strong></h3>
+
+<p>The output operand isn’t supplied:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">asm</span><span class="p">(</span><span class="s">"add.s32 %0, %1, %2;"</span> <span class="o">:</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">b</span><span class="p">));</span> <span class="c1">// No output operand</span>
+</code></pre></div></div>
+
+<p><strong>Error:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main.cu(12): warning #549-D: variable "sum" is used before its value is set
+      *result = sum;
+main.cu(11): error: Internal Compiler Error (codegen): "asm operand index requested is larger than the number of asm operands provided!"
+</code></pre></div></div>
+
+<h3 id="4-invalid-register-constraint">4. <strong>Invalid Register Constraint</strong></h3>
+<p>Register constraint is incorrect:</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">asm</span><span class="p">(</span><span class="s">"add.s32 %0, %1, %2;"</span> <span class="o">:</span> <span class="s">"=m"</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span> <span class="o">:</span> <span class="s">"r"</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="s">"r"</span><span class="p">(</span><span class="n">b</span><span class="p">));</span> <span class="c1">// '=m' is not valid for PTX</span>
+</code></pre></div></div>
+<p><strong>Error:</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>main.cu(13): error: asm constraint letter 'm' is not allowed inside a __device__/__global__ function
+      asm("add.s32 %0, %1, %2;" : "=m"(sum) : "r"(a), "r"(b));
+</code></pre></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Writing PTX by hand is hard and error-prone. However, just like hand-writing CPU assembly, hand-written PTX can be used to extract peak performance from important kernels, for instance a matrix multiplication. PTX instructions can be written using inline <code class="language-plaintext highlighter-rouge">asm</code> statements with a <a href="https://gcc.gnu.org/onlinedocs/gcc/Extended-Asm.html"><code class="language-plaintext highlighter-rouge">gcc</code> syntax</a>. If you are interested in learning more about PTX, take a look at <a href="https://docs.nvidia.com/cuda/parallel-thread-execution/">NVIDIA PTX documentation</a>.</p>]]></content><author><name></name></author><category term="tutorial" /><summary type="html"><![CDATA[A really simple handwritten PTX file for learning CUDA]]></summary></entry><entry><title type="html">Reading List</title><link href="https://tornikeo.github.io/blog/2025/papers/" rel="alternate" type="text/html" title="Reading List" /><published>2025-07-03T00:00:00+00:00</published><updated>2025-07-03T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2025/papers</id><content type="html" xml:base="https://tornikeo.github.io/blog/2025/papers/"><![CDATA[<h1 id="todo">TODO</h1>
+
+<p>Alice’s Adventures in a Differentiable Wonderland – Volume I, A Tour of the Land.</p>
+
+<div class="language-bib highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">@misc</span><span class="p">{</span><span class="nl">scardapane2024alicesadventuresdifferentiablewonderland</span><span class="p">,</span>
+      <span class="na">title</span><span class="p">=</span><span class="s">{Alice's Adventures in a Differentiable Wonderland -- Volume I, A Tour of the Land}</span><span class="p">,</span> 
+      <span class="na">author</span><span class="p">=</span><span class="s">{Simone Scardapane}</span><span class="p">,</span>
+      <span class="na">year</span><span class="p">=</span><span class="s">{2024}</span><span class="p">,</span>
+      <span class="na">eprint</span><span class="p">=</span><span class="s">{2404.17625}</span><span class="p">,</span>
+      <span class="na">archivePrefix</span><span class="p">=</span><span class="s">{arXiv}</span><span class="p">,</span>
+      <span class="na">primaryClass</span><span class="p">=</span><span class="s">{cs.LG}</span><span class="p">,</span>
+      <span class="na">url</span><span class="p">=</span><span class="s">{https://arxiv.org/abs/2404.17625}</span><span class="p">,</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="done">DONE</h1>
+
+<p>Git re-basin: Merging models modulo permutation symmetries.</p>
+
+<p>@article{ainsworth2022git,
+  title={Git re-basin: Merging models modulo permutation symmetries},
+  author={Ainsworth, Samuel K and Hayase, Jonathan and Srinivasa, Siddhartha},
+  journal={arXiv preprint arXiv:2209.04836},
+  year={2022}
+}</p>]]></content><author><name></name></author><category term="daily-scribbles" /><summary type="html"><![CDATA[TODO]]></summary></entry><entry><title type="html">Daily scribbles - on choosing right LLM shapes for GPUs</title><link href="https://tornikeo.github.io/blog/2025/daily-transfomer-perf/" rel="alternate" type="text/html" title="Daily scribbles - on choosing right LLM shapes for GPUs" /><published>2025-01-22T00:00:00+00:00</published><updated>2025-01-22T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2025/daily-transfomer-perf</id><content type="html" xml:base="https://tornikeo.github.io/blog/2025/daily-transfomer-perf/"><![CDATA[<p>A100 memory hierarchy - what’s are “perfect” model shape for A100?
+A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?</p>
+
+<p>There’s a thing called <a href="https://github.com/vllm-project/vllm">vLLM</a>. Inference and serving engine for LLMs.</p>
+
+<p>vLLM was built around <strong>PagedAttention</strong> algorithm. Introduced in <a href="https://arxiv.org/abs/2309.06180">paper</a>. What’s a <strong>KV cache</strong>?</p>
+
+<blockquote>
+  <p>KV cache. This is a method for better inference performance. From <a href="https://huggingface.co/blog/kv-cache-quantization">HF</a>. When you are generating long text, a typical autoreg transformer will predict a token by looking at all previous 999 tokens. Then it will predict next token, by looking at previous token and previous 999 tokens. Maybe older tokens could be reused somehow?</p>
+</blockquote>
+
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/kv_cache_quantization/kv-cache-optimization.png" alt="" /></p>
+
+<p>Basically, queries grow downwards (new token = new row), and keys grow leftwards (new token = new column), and values also grow downwards (new token = new row). For processing new token, we only need last row of Q, but full K, V, due to how matrix multiplication works. <em>But</em>, we can simply restore previous K, V, instead of re-computing them. Extra memory, but less compute.</p>
+
+<blockquote>
+  <p>PagedAttention explained on <a href="https://huggingface.co/docs/text-generation-inference/en/conceptual/paged_attention">HF</a>, is a method for inference performance. It optimizes the KV cache, by using lessons from how OS hanldes memory Paging.</p>
+</blockquote>
+
+<p>Amazon’s LLM, rufus was cooked up on top of vLLM.</p>
+
+<p>vLLM supports models up to scale of 405B params, LLAMA 3.1.</p>
+
+<p>Serving is simple <code class="language-plaintext highlighter-rouge">pip install vllm</code> and <code class="language-plaintext highlighter-rouge">vllm serve meta-llama/Llama-3.1-8B</code>. 
+As a python package <code class="language-plaintext highlighter-rouge">vllm</code> has a simple-ish programming API for querying models.</p>
+
+<p>Back to original article.</p>
+
+<p><strong>Mixture of Experts</strong>? <strong>Speculative Decoding</strong>?</p>
+
+<p>There’s the claim: “the most foundamental fact that transformer inference is memory bound”. Let’s see.</p>
+
+<p>===</p>
+
+<p>Preliminaries. GPU memory architecture. A100 80GB SXM has 108 Streaming multiprocessors (SMs), 40MB L2 cache.</p>
+
+<p>When doing inference i.e. <code class="language-plaintext highlighter-rouge">model.generate(prompt)</code> these things happen:</p>
+<ol>
+  <li>Load layer matrices from HBM to L2 to SM.</li>
+  <li>Do matmul, and use tensor cores</li>
+</ol>
+
+<p>Loading part takes much longer than tensor core part.</p>
+
+<p>Suppose we have A100:</p>
+<ul>
+  <li>108 SM, DRAM 80 G, 40M L2 cache</li>
+  <li>bf16 tensor core: 312 tflops</li>
+  <li>DRAM mem bw, 2.039 TB/s</li>
+</ul>
+
+<p>If model is larger than 80GB, it’s split up:</p>
+<ul>
+  <li>Connection by NVLink 300GB/s = 0.3 T/sec</li>
+</ul>
+
+<p>See the problem? 312 TFLOPS » 2.03 TB/s » 0.3 TB/s  » 0.006 TB/s</p>
+
+<p>This seems to show that memory is the main bottleneck. Or is it?</p>
+
+<p>A100 prefers doing 312 operations per each 2.039 loaded bytes. How on <em>Earth</em> can you do 312 operations for approximately 2 bytes?</p>
+
+<p>The matrix multiplication with 2 N-square matrices, has arithmetic intensity proportional to N. Therefore, larger matrix sizes might actually be compute bound. This also means that there’s some sweet-spot matmul size that the GPU likes most.</p>
+
+<p>This also means that any op that is elementwise (e.g. activaions) will always be memory bound. For example:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 512, is compute bound</li>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 1, is memory bound</li>
+</ul>
+
+<p><strong>Kernel fusion</strong> works between an <code class="language-plaintext highlighter-rouge">nn.Linear</code> and a <code class="language-plaintext highlighter-rouge">nn.Relu</code>, or any other activation. Since activation is mem bound, and elementwise, we can immediately apply relu inside CUDA kernel, before returning output to HBM.</p>
+
+<p>Aha. Interesting bit. About online inference. Throughput vs latency:</p>
+<ul>
+  <li>Offline: if we are evaluating the model (offline), and no user waits at the end of the screen, we should increase batch size.</li>
+  <li>Online: if user is waiting, the optimal speed to generate next token is the average human read speed, in tokens. Otherwise human might complain.</li>
+</ul>]]></content><author><name></name></author><category term="daily-scribbles" /><summary type="html"><![CDATA[A100 memory hierarchy - what’s are “perfect” model shape for A100? A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?]]></summary></entry><entry><title type="html">Google TPUs</title><link href="https://tornikeo.github.io/blog/2024/tpu/" rel="alternate" type="text/html" title="Google TPUs" /><published>2024-12-19T00:00:00+00:00</published><updated>2024-12-19T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2024/tpu</id><content type="html" xml:base="https://tornikeo.github.io/blog/2024/tpu/"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>Google’s Tensor Processing Units (TPUs) are custom accelerators designed for large-scale machine learning workloads. Unlike CPUs and GPUs, TPUs use a unique systolic array architecture to maximize throughput for matrix operations, making them ideal for deep learning tasks. This post is a practical walkthrough of TPU architecture, setup, and usage, with tips for maximizing performance and minimizing cost.</p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>TPUs excel at large, static-shape matrix multiplications, making them perfect for transformer models and similar architectures.</li>
+  <li>JAX is the preferred framework for TPUs; PyTorch and TensorFlow have less robust support.</li>
+  <li>Efficient TPU usage requires careful attention to data layout, shape, and storage.</li>
+  <li>Google Cloud provides several TPU versions, each with different capabilities and pricing.</li>
+  <li>Automating setup and teardown is crucial to avoid unnecessary costs.</li>
+</ul>
+
+<h1 id="tpu-architecture-overview">TPU Architecture Overview</h1>
+
+<ol>
+  <li>CPUs have a single fast processor, limited by memory bandwidth.</li>
+  <li>GPUs contain many small cores and high memory bandwidth.</li>
+  <li>TPUs, e.g., v3, feature two 128x128 systolic ALUs—grids of ALUs optimized for matrix operations.</li>
+</ol>
+
+<p>The following animation shows how network weights are laid out inside a TPU:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image4_5pfb45w.gif" alt="" /></p>
+
+<p>And this animation shows the systolic movement of data inputs into TPUs:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image1_2pdcvle.gif" alt="" /></p>
+
+<p>These animations illustrate how TPUs perform pairwise convolutions between all weights and inputs. Notably, TPUs minimize slow HBM (High Bandwidth Memory) access by passing data directly between ALUs, both vertically (inputs) and horizontally (accumulated results). This design enables high throughput for large matrix multiplications.</p>
+
+<h1 id="practical-recommendations">Practical Recommendations</h1>
+
+<ul>
+  <li>Avoid reshape operations; keep tensor shapes constant, as shapes are compiled into the model.</li>
+  <li>Use large matrices with dimensions as multiples of 8 for best performance.</li>
+  <li>Prefer matrix multiplications; other operations (add, sub, reshape) are slower.</li>
+</ul>
+
+<h1 id="system-architecture-and-key-terms">System Architecture and Key Terms</h1>
+
+<h2 id="tpu-related-terms">TPU-related Terms</h2>
+
+<ul>
+  <li><strong>Batch Inference</strong>: On-demand, but slow.</li>
+  <li><strong>TensorCore (TC)</strong>: Contains matrix-multiply units (MXUs), vector, and scalar units. MXUs are 128x128 or 256x256.</li>
+  <li><strong>TPU Cube</strong>: Topology of interconnected TPUs (v4+).</li>
+  <li><strong>Multislice</strong>: Connection between multiple TPU slices.</li>
+  <li><strong>Queued Resource</strong>: Manages requests for TPU environments.</li>
+  <li><strong>Host/Sub-host</strong>: Linux VM(s) controlling TPUs; a host can manage multiple TPUs.</li>
+  <li><strong>Slice</strong>: Collection of chips connected via fast interconnects (ICI).</li>
+  <li><strong>SparseCore</strong>: Specialized hardware for large embedding tables (v5+).</li>
+  <li><strong>TPU Pod</strong>: Cluster of TPUs for large-scale training.</li>
+  <li><strong>TPU VM/Worker</strong>: Linux VM with direct TPU access.</li>
+  <li><strong>TPU Versions</strong>: Each generation differs significantly in architecture and capabilities.</li>
+</ul>
+
+<h1 id="tpu-versions-and-specs">TPU Versions and Specs</h1>
+
+<h2 id="tpu-v6e">TPU v6e</h2>
+<ul>
+  <li>1 TC per chip, 2 MXUs per TC</li>
+  <li>32GB memory, 1640 Gbps BW, 918 TFLOPs</li>
+  <li>Max pod: 256 chips, 8960 TPUs</li>
+</ul>
+
+<h2 id="tpu-v5p">TPU v5p</h2>
+<ul>
+  <li>95GB memory, 2765 Gbps BW, 459 TFLOPs</li>
+  <li>Max pod: 8960 TPUs</li>
+</ul>
+
+<h2 id="tpu-v5e">TPU v5e</h2>
+<ul>
+  <li>16GB memory, 819 Gbps BW, 197 TFLOPs</li>
+  <li>Max pod: 256 chips</li>
+</ul>
+
+<h2 id="tpu-v4">TPU v4</h2>
+<ul>
+  <li>32GB memory, 1200 Gbps BW, 275 TFLOPs</li>
+  <li>Max pod: 4096 chips</li>
+</ul>
+
+<h1 id="tpu-vm-images-and-hardware">TPU VM Images and Hardware</h1>
+
+<p>Default VM image: <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>. Example VM specs for v5litepod-1:</p>
+<ul>
+  <li>1 v5e TPU, 24 CPUs, 48GB RAM</li>
+  <li>Larger pods scale up CPU/RAM and NUMA nodes</li>
+</ul>
+
+<h1 id="regions-and-zones">Regions and Zones</h1>
+
+<ul>
+  <li>EU: <code class="language-plaintext highlighter-rouge">europe-west4</code></li>
+  <li>v6e: <code class="language-plaintext highlighter-rouge">us-east1-d</code>, <code class="language-plaintext highlighter-rouge">us-east5-b</code></li>
+</ul>
+
+<h1 id="supported-models">Supported Models</h1>
+
+<p>Google’s <a href="https://github.com/AI-Hypercomputer/maxtext">MaxText</a> repo provides optimized TPU training code for Llama2, Mistral, Gemma, etc., using JAX.</p>
+
+<h1 id="getting-started-requesting-and-using-tpus">Getting Started: Requesting and Using TPUs</h1>
+
+<ol>
+  <li>Enable “Cloud TPU” in Google Cloud.</li>
+  <li>Request quota for your desired TPU type and zone.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">gcloud</code> to provision, monitor, and SSH into TPU VMs.</li>
+  <li>Always delete resources when done to avoid charges.</li>
+</ol>
+
+<p>Example setup and teardown commands:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set up environment variables</span>
+<span class="nb">export </span><span class="nv">PROJECT_ID</span><span class="o">=</span> <span class="c"># your project</span>
+<span class="nb">export </span><span class="nv">SERVICE_ACCOUNT</span><span class="o">=</span>xyz-compute@developer.gserviceaccount.com
+<span class="nb">export </span><span class="nv">RESOURCE_NAME</span><span class="o">=</span>v5litepod-1-resource
+
+<span class="c"># Authenticate and enable TPUs</span>
+gcloud auth login
+gcloud services <span class="nb">enable </span>tpu.googleapis.com
+gcloud beta services identity create <span class="nt">--service</span> tpu.googleapis.com <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+
+<span class="c"># Request a TPU node</span>
+gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span>
+
+<span class="c"># Check status</span>
+gcloud alpha compute tpus queued-resources describe <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a
+
+<span class="c"># SSH into TPU node</span>
+gcloud alpha compute tpus tpu-vm ssh v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span>  us-central1-a
+
+<span class="c"># Delete TPU resource</span>
+gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span>
+</code></pre></div></div>
+
+<h1 id="exploring-the-tpu-vm">Exploring the TPU VM</h1>
+
+<ul>
+  <li>Check disk space: <code class="language-plaintext highlighter-rouge">df -h</code></li>
+  <li>List hardware: <code class="language-plaintext highlighter-rouge">lspci</code></li>
+  <li>CPU info: <code class="language-plaintext highlighter-rouge">hwinfo | less</code> or <code class="language-plaintext highlighter-rouge">nproc</code></li>
+  <li>RAM: <code class="language-plaintext highlighter-rouge">cat /proc/meminfo | grep MemTotal</code></li>
+</ul>
+
+<h1 id="installing-packages">Installing Packages</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch_xla[tpu] <span class="nt">-f</span> https://storage.googleapis.com/libtpu-releases/index.html
+pip <span class="nb">install </span>torch_xla[pallas]
+pip <span class="nb">install </span>timm
+</code></pre></div></div>
+
+<h1 id="automating-setup-with-startup-scripts">Automating Setup with Startup Scripts</h1>
+
+<p>You can use a startup script to automate package installation and environment setup:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+     <span class="nt">--metadata</span> startup-script<span class="o">=</span><span class="s1">'#! /bin/bash
+      pip install torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+      pip install torch_xla[pallas]
+      pip install timm
+      EOF'</span>
+</code></pre></div></div>
+
+<h1 id="storage-options">Storage Options</h1>
+
+<ul>
+  <li><strong>Boot Disk</strong>: 100GB by default; usable for small datasets.</li>
+  <li><strong>Persistent Disk (PD)</strong>: Add for larger, persistent storage.</li>
+  <li><strong>Cloud Storage (<code class="language-plaintext highlighter-rouge">gs://</code>)</strong>: Unlimited size, but slower than PD.</li>
+  <li><strong>GCSFUSE</strong>: Mount a bucket as a local directory for easy access.</li>
+  <li><strong>Filestore</strong>: High-performance, but minimum 1TB.</li>
+</ul>
+
+<h1 id="training-and-inference">Training and Inference</h1>
+
+<ul>
+  <li>Use JAX for best TPU support.</li>
+  <li>For multi-host pods, use <code class="language-plaintext highlighter-rouge">--worker=all</code> to run commands on all VMs.</li>
+  <li>Always match JAX/Flax versions to avoid compatibility issues.</li>
+</ul>
+
+<h1 id="cost-and-quota-considerations">Cost and Quota Considerations</h1>
+
+<ul>
+  <li>v5p and v6e chips are expensive and may require quota increases.</li>
+  <li>Always automate resource deletion to avoid unexpected charges.</li>
+</ul>
+
+<h1 id="final-thoughts">Final Thoughts</h1>
+
+<p>TPUs offer unmatched performance for large-scale deep learning, but require careful setup and management. By understanding the architecture, using the right frameworks, and automating your workflow, you can maximize both performance and cost-efficiency.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Documentation walkthrough]]></summary></entry><entry><title type="html">DINO</title><link href="https://tornikeo.github.io/blog/2024/dino/" rel="alternate" type="text/html" title="DINO" /><published>2024-12-18T00:00:00+00:00</published><updated>2024-12-18T00:00:00+00:00</updated><id>https://tornikeo.github.io/blog/2024/dino</id><content type="html" xml:base="https://tornikeo.github.io/blog/2024/dino/"><![CDATA[<p>DINOv2 is a self-supervised pretraining method for visual transformers. It is much more complex to write and explain compared to ViT pretraining. However, DINO achieves much better performance with a given parameter, data, and compute budget.</p>
+
+<p>Remember, DINO is a method for pretraining. The <em>model</em> that DINO is applied to is a vision transformer. The end result of DINO, just like any other pretraining method, is a really good embedding model. Of course, a DINO-pretrained model can be used for fine-tuning tasks too.</p>
+
+<p>DINO-trained ViTs are particularly good as visual embedding models. Such ViTs can support linear classifiers or vector search algorithms on top of them.</p>
+
+<p>DINO means self-<strong>di</strong>stillation with <strong>no</strong> labels.</p>
+
+<p>What happens in DINO is <strong>this</strong>:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># gs, gt student and teacher models (same models)
+# C: center of augmentation
+# tps, tpt: student and teacher softmax temperatures (student's is higher)
+# alpha, beta: teacher and center momentum rates
+</span>
+<span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">gs</span><span class="p">.</span><span class="n">params</span> <span class="c1"># init "teacher" from "student"
+</span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+   <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="nf">aug</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">aug</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># Perform random augs on image x
+</span>
+   <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="o">=</span> <span class="nf">gs</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="nf">gs</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="c1"># pass x1,2 aug into "student"
+</span>   <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="nf">gt</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="nf">gt</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span> <span class="c1"># pass x1,2 aug into "teacher"
+</span>
+   <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="nc">H</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span> <span class="n">t2</span><span class="p">)</span> <span class="o">+</span> <span class="nc">H</span><span class="p">(</span><span class="n">s2</span><span class="p">,</span> <span class="n">t1</span><span class="p">))</span><span class="o">/</span><span class="mi">2</span>
+   <span class="n">loss</span><span class="p">.</span><span class="nf">backward</span><span class="p">()</span>
+   <span class="nf">update</span><span class="p">(</span><span class="n">gs</span><span class="p">)</span> <span class="c1"># SGD
+</span>
+   <span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">gt</span><span class="p">.</span><span class="n">params</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">gs</span><span class="p">.</span><span class="n">params</span>
+   <span class="n">C</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">C</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="nf">cat</span><span class="p">([</span><span class="n">t1</span><span class="p">,</span><span class="n">t2</span><span class="p">]).</span><span class="nf">mean</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="p">.</span><span class="nf">detach</span><span class="p">()</span> <span class="c1"># cut off teacher gradient
+</span>  <span class="n">s</span> <span class="o">=</span> <span class="nf">softmax</span><span class="p">(</span><span class="n">s</span> <span class="o">/</span> <span class="n">tps</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+  <span class="n">t</span> <span class="o">=</span> <span class="nf">softmax</span><span class="p">(</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">C</span><span class="p">)</span> <span class="o">/</span> <span class="n">tpt</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># Center and sharpen
+</span>  <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="nf">log</span><span class="p">(</span><span class="n">s</span><span class="p">)).</span><span class="nf">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">).</span><span class="nf">mean</span><span class="p">()</span>
+  <span class="k">return</span> <span class="n">loss</span>
+</code></pre></div></div>
+
+<p>There’s a lot to unpack here.</p>
+
+<p>First, we have two identical models at the start. We call them ‘student’ and ‘teacher’—not the best naming, but alternatives are even worse. At any rate, the teacher <code class="language-plaintext highlighter-rouge">gt</code> and student <code class="language-plaintext highlighter-rouge">gs</code> are the same random transformer ViT models at the start.</p>
+
+<p>Next, we get an image of fixed shape from the database. ViTs need fixed-shape images. Say, this image is a 224 x 224 RGB image of a cat. This is stored in tensor <code class="language-plaintext highlighter-rouge">x</code>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">aug</code> is a function that outputs random image augmentations. <code class="language-plaintext highlighter-rouge">x1</code> and <code class="language-plaintext highlighter-rouge">x2</code> are augmented versions of <code class="language-plaintext highlighter-rouge">x</code>. <code class="language-plaintext highlighter-rouge">x1</code> and <code class="language-plaintext highlighter-rouge">x2</code> could be small, non-overlapping crops of <code class="language-plaintext highlighter-rouge">x</code> even.</p>
+
+<p>Now, both <code class="language-plaintext highlighter-rouge">x1</code> and <code class="language-plaintext highlighter-rouge">x2</code> pass into both networks, and both teacher and student use softmax at the end to create a probability distribution.</p>
+
+<p>We calculate the loss for <em>identity</em>. We want the two models to output the same exact probability distributions—that’s what <code class="language-plaintext highlighter-rouge">-t*log(s)</code> does. We penalize deviations between student and teacher, but <strong>we only penalize the student</strong>. We only update the student with <code class="language-plaintext highlighter-rouge">update(gs)</code>.</p>
+
+<p>The teacher just discards the gradient and instead does two extra steps. First, from the teacher’s logits we subtract <code class="language-plaintext highlighter-rouge">C</code>, and use a lower temperature <code class="language-plaintext highlighter-rouge">tpt</code> for softmax. This makes the teacher’s distribution more “peaky.” The student distribution is more spread out due to the higher temperature and it also doesn’t use the centering <code class="language-plaintext highlighter-rouge">C</code>.</p>
+
+<p>Teacher parameters are then updated with student parameters via an exponentially moving average, with <code class="language-plaintext highlighter-rouge">gt.params = alpha * gt.params + (1-alpha) * gs.params</code>.</p>
+
+<p>You might ask: “Tornike, why this setup—complex as it is—instead of just letting both models collapse to outputting a uniform distribution, thus minimizing the loss but resulting in a useless model?”</p>
+
+<p>So, what prevents the models from agreeing on outputting a uniform distribution?</p>
+
+<p>I don’t know for sure. It seems that the combination of using <code class="language-plaintext highlighter-rouge">C</code> and <code class="language-plaintext highlighter-rouge">tpt</code> prevents that. A nice <a href="https://imbue.com/research/2020-08-24-understanding-self-supervised-contrastive-learning/">article</a> explains why we can avoid collapse:</p>
+
+<blockquote>
+  <p>Mode collapse is prevented precisely because all samples in the mini-batch cannot take on the same value after batch normalization</p>
+</blockquote>
+
+<p>As far as I understand, subtracting <code class="language-plaintext highlighter-rouge">C</code> from the current teacher representation is precisely what prevents the collapse. For collapse to happen, a model has to output the exact same distribution for all augmented inputs. However, if we subtract <code class="language-plaintext highlighter-rouge">C</code> from all representations and also sharpen the distribution, the collapsed state becomes a really unstable parameter setup. Any slight parameter deviation from the collapsed state would cause the models to diverge into non-collapsed states. Basically, we rig the game so that approaching collapse becomes harder and harder.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Paper walkthrough]]></summary></entry></feed>
