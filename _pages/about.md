@@ -14,9 +14,12 @@ social: true  # includes social icons at the bottom of the page
 
 I'm Tornike Onoprishvili.
 
-I am a master's degree student at [USI](https://www.usi.ch/en). This website contains posts about some of my noteworthy projects, as well as less noteworthy blogs.
+This website contains posts about some of my noteworthy projects, and my less noteworthy blogs.
 
-You can reach me at `[my firstname][my lastname]@gmail.com`.
+Shoot me an email at `tornikeo.dev [@] gmail [.] com`, I'm always interested in collaboration on these topics:
+- GPU acceleration.
+- Cloud providers.
+- Large scale LLM training.
 
 # Past Projects
 
