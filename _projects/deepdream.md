@@ -12,7 +12,7 @@ Well, since I'm working on making attentional style transfer [model](https://git
 
 <div class="row mt-3" style="justify-content:center;">
     <div class="col-sm-8 mt-3 mt-md-0" >
-        <iframe src="https://tornikeo.github.io/embed-deepdream" height="805px" width="550px" frameborder="0" allowfullscreen></iframe>
+        <iframe src="https://tornikeo.com/embed-deepdream" height="805px" width="550px" frameborder="0" allowfullscreen></iframe>
     </div>
 </div>
 <div class="caption" >

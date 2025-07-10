@@ -8,23 +8,21 @@ category: large projects
 ---
 
 <figure>
-    <div class="row" class="center-role-form">
-        <div class="col">
-            <video loop="loop" autoplay="" playsinline="" muted="" id="mejs_6833802707345928_html5" preload="none" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/website_diffloop.mp4" style="margin: 0px; width: 100%; height: 100%;">
-            </video>
-        </div>
-        <div class="col">
-            <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
+  <div class="row" class="center-role-form">
+    <div class="col">
+      <video loop="loop" autoplay="" playsinline="" muted="" id="mejs_6833802707345928_html5" preload="none" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/website_diffloop.mp4" style="margin: 0px; width: 100%; height: 100%;">
+      </video>
     </div>
-    <figcaption class="caption">
-        Promotional video from <a href="https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US">VIMAGE</a>, highlighting the main features of the app. 
-    </figcaption>
+    <div class="col">
+        <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+  <figcaption class="caption">
+    Promotional video from <a href="https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US">VIMAGE</a>, highlighting the main features of the app. 
+  </figcaption>
 </figure>
 
 [VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an award-winning photo-editing software, with over **10 million** total downloads on google play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app's capabilities is shown in this promotional video:
-
-
 
 The results look nice and, if you have a keen eye for the ML tech, you will have noticed that the core of the project's success rests on decomposing the image into fore- and background parts, to allow for seamless modification of both parts.
 

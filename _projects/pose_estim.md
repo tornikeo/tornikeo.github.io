@@ -13,7 +13,7 @@ Written by: [@tornikeo](https://github.com/tornikeo) and [@GPT3](https://openai.
 
 <div class="row mt-3" class="center-role-form">
     <div class="col-12" >
-        <iframe src="https://tornikeo.github.io/holistic-mediapipe/" 
+        <iframe src="https://tornikeo.com/holistic-mediapipe/" 
         height="900" width="1200"  allow="camera" allowfullscreen frameborder="0"
         style="
             -webkit-transform:scale(.84);

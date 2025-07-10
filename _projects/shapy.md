@@ -81,7 +81,7 @@ Life isn't simple, and business usually isn't happy with just the given outputs 
 
 <div class="row mt-3" class="center-role-form">
     <div class="col-sm-6 mt-3 mt-md-0">
-        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/tornikeo/tornikeo.github.io/ed54538a0a338aa952e2230143db723becd56a39/assets/img/8_project/img_12.ply"></iframe>
+        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/tornikeo/tornikeo.com/ed54538a0a338aa952e2230143db723becd56a39/assets/img/8_project/img_12.ply"></iframe>
     </div>
 </div>
 <div class="caption" >

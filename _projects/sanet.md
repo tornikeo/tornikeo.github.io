@@ -9,7 +9,7 @@ category: personal
 
 Written by: [@tornikeo](https://github.com/tornikeo) and [@copilot](https://copilot.github.com/) 
 
-<iframe src="https://tornikeo.github.io/embed-stylize" height="720px" width="100%" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://tornikeo.com/embed-stylize" height="720px" width="100%" frameborder="0" allowfullscreen></iframe>
 
 ## SANet in TensorflowJS
 # Background
