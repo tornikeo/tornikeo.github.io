@@ -22,7 +22,7 @@ category: projects
     Per-frame 3D body shape estimation results - right: video from <a href="https://www.pexels.com/@vlada-karpovich">Vlada Karpovich</a>, left: video from <a href="https://www.pexels.com/@polina-tankilevitch/">Polina Tankilevitch</a> on Pexels.
 </div>
 
-The very first project at [Luxolis](http://luxolis.ai/) was concerned with using AI to estimate person's 3D *mesh* from a video stream. And, I mean an accurate, bodyshape aware estimation. 
+The very first project at [Luxolis](https://luxolis.ai/) was concerned with using AI to estimate person's 3D *mesh* from a video stream. And, I mean an accurate, bodyshape aware estimation. 
 
 To make absolutely clear what I mean by "bodyshape aware", here's an excerpt from the abstract of [SHAPY paper](https://ps.is.mpg.de/uploads_file/attachment/attachment/691/00928.pdf):
 
