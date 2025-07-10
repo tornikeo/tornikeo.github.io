@@ -2,7 +2,7 @@
 ---
 <!-- _layouts/bib.html -->
       <div class="row">
-        <div class="col-sm-2 abbr">
+        <!-- <div class="col-sm-2 abbr">
         {%- if entry.abbr -%}
           {%- if site.data.venues[entry.abbr] -%}
           <abbr class="badge"><a href="{{site.data.venues[entry.abbr].url}}">{{entry.abbr}}</a></abbr>
@@ -10,17 +10,14 @@
           <abbr class="badge">{{entry.abbr}}</abbr>
           {%- endif -%}
         {%- endif -%}
-        </div>
+        </div> -->
 
         <!-- Entry bib key -->
-        <div id="{{entry.key}}" class="col-sm-8">
-        {% if entry.type == "thesis" -%}
-          {{reference}}
-        {%- else %}
-          <!-- Title -->
-          <div class="title">{{entry.title}}</div>
-          <!-- Author -->
-          <div class="author">
+        <div id="{{entry.key}}">
+        <!-- Title -->
+        <div class="title">{{entry.title}}</div>
+        <!-- Author -->
+        <div class="author">
           {%- for author in entry.author_array -%}
             {%- assign author_is_self = false -%}
             {%- if author.last == site.scholar.last_name%}
@@ -86,7 +83,6 @@
           <div class="periodical">
             {{ periodical | strip }}
           </div>
-        {%- endif %}
         
           <!-- Links/Buttons -->
           <div class="links">
