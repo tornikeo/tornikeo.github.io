@@ -14,7 +14,7 @@ social: true  # includes social icons at the bottom of the page
 
 This website contains posts about some of my noteworthy projects, and my less noteworthy blogs.
 
-Shoot me an email at `tornikeo.dev [@] gmail [.] com`, I'm always interested in collaboration on these topics:
+Shoot me an email at `contact [@] tornikeo.com`, I'm always interested in collaboration on these topics:
 - GPU acceleration.
 - Cloud providers.
 - Large scale LLM training.
