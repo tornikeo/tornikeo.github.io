@@ -14,7 +14,7 @@ social: true  # includes social icons at the bottom of the page
 
 This website contains posts about some of my noteworthy projects, and my less noteworthy blogs.
 
-Shoot me an email at `contact [@] tornikeo.com`, or even better, [hop on my ✨discord server✨](https://discord.gg/rd3MMJNQ) for a coffee chat! I'm always interested in helping out in tech. Common topics I work with:
+Shoot me an email at `contact [@] tornikeo.com`, or even better, [hop on my ✨discord server✨](https://discord.gg/MuJxRh2dZG) for a coffee chat! I'm always interested in helping out in tech. Common topics I work with:
 - AI models and LLMs.
 - Cloud -- Google, Amazon, or Azure.
 - Custom GPU and CUDA wizardry.
