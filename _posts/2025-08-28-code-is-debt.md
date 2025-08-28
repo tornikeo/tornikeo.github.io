@@ -10,10 +10,10 @@ I like to answer this frequent question by way of a short parable. A parable of 
 
 Imagine two very similar companies. Both companies generate similar revenue and produce a similar SaaS product. The only difference between these companies is that Company A has 1 million lines of code and Company B only has 100 thousand lines of code. Which company is better?
 
-Clearly, the company with fewer lines of code is better. They have fewer lines of code to maintain and so they can iterate more quickly. All other things being equal, less code is better. This means that code is a form of debt. If you use an AI to generate code, you are effectively getting a debt—a debt of code.
+Clearly, the company with fewer lines of code is better. They have fewer lines of code to maintain and so they can iterate more quickly. All other things being equal, less code is better. This means that code is a form of debt. If you use an AI to generate code, you are effectively getting a debt -- a debt of code.
 
 Is it worth going into code debt? It depends. Debt can be both good or bad. If used correctly, debt can allow faster growth. Used incorrectly, it can lead to loss.
 
-This is what I think of AI coding tools. They allow you to easily get into code debt. That debt might pay off, or it might implode. It is up to you to get the correct debt—the tools are there.
+This is what I think of AI coding tools. They allow you to easily get into code debt. That debt might pay off, or your codebase might [implode](https://www.bbc.com/news/articles/ce87rer52k3o). It is up to you to get the correct debt, the tools are there.
 
-*Thanks to Ani Talakhadze for reading drafts of this*
+*Thanks to [Ani Talakhadze](https://www.linkedin.com/in/anitalakhadze/) for reading drafts of this*
