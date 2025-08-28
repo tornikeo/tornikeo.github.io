@@ -1,0 +1,22 @@
+# Ignore bundler config
+.bundle
+
+# Ignore local Ruby gems
+vendor/bundle
+
+# Ignore site build output
+_site
+
+# Ignore log files and temp files
+*.log
+tmp/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore node modules (if any)
+node_modules
+
+# Ignore byebug history
+.byebug_history
