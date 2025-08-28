@@ -22,15 +22,15 @@ category: large projects
   </figcaption>
 </figure>
 
-[VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an award-winning photo-editing software, with over **10 million** total downloads on google play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app's capabilities is shown in this promotional video:
+[VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an app that generates videos from a single photo. It **10 million** total downloads and a decent useage. 
 
 The results look nice and, if you have a keen eye for the ML tech, you will have noticed that the core of the project's success rests on decomposing the image into fore- and background parts, to allow for seamless modification of both parts.
 
 ## Details and requirements
 
 The core of the project consists of the following three parts:
-- Handling image I/O in a way that respects the end-user privacy
-- Creating an accurate depth map of the input RGB image.  
+- Handling image input/output
+- Generating a *depth map* of the input image.  
 - Deciding which pixels fall within the background and which within the foreground
 
 <div class="row">
