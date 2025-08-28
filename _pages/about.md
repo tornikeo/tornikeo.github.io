@@ -17,7 +17,7 @@ I'm a generalist [AI researcher](https://scholar.google.com/citations?user=Qnocf
 Shoot an email at `contact [@] tornikeo.com`, or talk to me on this [server](https://discord.gg/MuJxRh2dZG). I'm always interested in helping out people in tech. My areas of expertise:
 - Cloud -- Google, Amazon, or Azure.
 - Custom GPU and CUDA wizardry.
-- AI models and LLMs (training and tuning, **not** prompting).
+- Creating AI models
 
 ## selected projects
 
