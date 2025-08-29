@@ -9,9 +9,7 @@ last_name: Onoprishvili
 email: 
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
   tornikeo is a machine learning researcher, this is his website
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/" target="_blank">Jekyll</a> with <a href="https://github.com/alshedivat/al-folio">al-folio</a> theme.
-  Hosted by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a>.
+footer_text: 
 keywords: tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
@@ -83,7 +81,7 @@ panelbear_analytics:  # panelbear analytics site ID (format: XXXXXXXXX)
 
 blog_name: AI in the wild  # your blog must have a name for it to show up in the nav bar
 blog_description: Supplying AI tools to the masses
-permalink: /blog/:year/:title/
+permalink: /:title/
 
 # Pagination
 pagination:
@@ -185,7 +183,7 @@ sass:
 # -----------------------------------------------------------------------------
 
 jekyll-archives:
-  enabled: [year, tags, categories] # enables year, tag and category archives (remove if you need to disable one of them). 
+  enabled: [tags, categories] # enables year, tag and category archives (remove if you need to disable one of them). 
   layouts:
     year: archive-year
     tag: archive-tag
