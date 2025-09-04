@@ -28,6 +28,7 @@ while True:
 
 Another example. In this case, an agent interacts with the user via `print` and `input`: 
 
+For example, one of the most basic agent is the following:
 ```py
 context = '...'
 while True:
