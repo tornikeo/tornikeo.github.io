@@ -15,3 +15,10 @@ Clearly, the company with fewer lines of code is better off. They have fewer lin
 Is it worth going into code debt? It depends. Debt can be both good or bad, it might have interest or be interest-free. Debt can also allow faster growth or it can cause your project to [implode](https://www.bbc.com/news/articles/ce87rer52k3o). In all cases it is important to have easy access to these debt-generating tools. It is still up to you to generate the code debt responsibly.
 
 *Thanks to [Ani Talakhadze](https://www.linkedin.com/in/anitalakhadze/) for reading drafts of this*
+
+<p>
+  💬 Discuss this post on 
+  <a href="https://news.ycombinator.com/item?id=45085318" target="_blank" rel="noopener">
+    Hacker News ↗
+  </a>
+</p>
