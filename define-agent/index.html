@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | Define Agent</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="Define what an AI Agent is and what it isn't." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -32,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22https://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/define-agent/">
     
     <!-- Dark Mode -->
     
@@ -105,16 +105,78 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <!-- page.html -->
+      <!-- _layouts/post.html -->
+
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">Define Agent</h1>
+    <p class="post-meta">September 3, 2025</p>
+    <p class="post-tags">
+      <a href="/blog/2025"> <i class="fas fa-calendar fa-sm"></i> 2025 </a>
+
+    </p>
   </header>
 
-  <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+  <article class="post-content">
+    <p>I like to use words that are well-defined. “AI Agent” and “Agent” are words that I often encounter, but I feel are not well-defined. This is what I think when I hear the word “Agent”.</p>
+
+<p>An AI Agent is a program with an llm-conditional loop structure. This program must contain the following parts:</p>
+
+<ol>
+  <li>A large language model (LLM). An LLM simply is a <code class="language-plaintext highlighter-rouge">def llm(context: str) -&gt; str:</code> function.</li>
+  <li>A tool. In context of Agents, a tool is a <code class="language-plaintext highlighter-rouge">def tool(input: str) -&gt; Optional[Any]:</code> function. A tool use can include calling an LLM or another tool as a sub-step. There are different tools:
+    <ul>
+      <li>Conditional tool is a <code class="language-plaintext highlighter-rouge">def conditional(input: str) -&gt; bool</code>.</li>
+      <li>Numeric tool is a <code class="language-plaintext highlighter-rouge">def numeric(input: str) -&gt; int | float</code>.</li>
+      <li>Tools can return <code class="language-plaintext highlighter-rouge">None</code> or just wait, or simply do nothing.</li>
+    </ul>
+  </li>
+  <li>An llm-conditional loop is a program loop where the looping condition depends on the output of an LLM.</li>
+</ol>
+
+<p>For example, one of the most basic agent is the following:</p>
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">conditional</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+</code></pre></div></div>
+
+<p>The agent could include a tool that interacts with the user <code class="language-plaintext highlighter-rouge">print()</code> or <code class="language-plaintext highlighter-rouge">input()</code>:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">conditional</span><span class="p">(</span><span class="n">output</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">context&gt;</span><span class="sh">'</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">you&gt;</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Below are examples of programs that look like agents, but are <em>not</em> agents by this definition:</p>
+
+<p>Programs that do not include an llm-conditional loop. The loop condition is <code class="language-plaintext highlighter-rouge">range(100)</code> does not depend on the output of an LLM. For instance:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="c1"># Looping is independent of llm output
+</span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">context&gt;</span><span class="sh">'</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">you&gt;</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Programs that do not contain an <code class="language-plaintext highlighter-rouge">llm</code> function. I don’t consider <code class="language-plaintext highlighter-rouge">llm</code> <em>output quality</em> to be a determinator. An <code class="language-plaintext highlighter-rouge">llm</code> can be as simple as:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="sh">"</span><span class="s">I</span><span class="sh">'</span><span class="s">m a teapot.</span><span class="sh">"</span>
+</code></pre></div></div>
+
+<p>This how  AI Agent is defined. When I say or read the word “Agent”, “Agentic AI”, “LLM Agent”, this is what I think it means.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/" target="_blank" rel="noopener noreferrer">Ani Talakhadze</a> for reading drafts of this</em></p>
 
   </article>
 
