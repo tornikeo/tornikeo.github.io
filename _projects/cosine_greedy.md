@@ -1,23 +1,42 @@
 ---
 layout: page
 title: "SimMS: GPU-accelerated Cosine Similarity"
-description: GPU acceleration can make cosine similarity searches in metabolomics data up to 1700x faster, with open-source code and practical implementation details
+description: The fastest search engine for chemicals
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/cuda_cube.jpg
 importance: 1
 category: large projects
 ---
 
-## Intro
-Metabolomics is a scientific field that is suffering from success. This field of bioinformatics enjoys access to vast quantities of high-quality, publicly available mass spectral data. And this is exactly the problem: the size of the available data makes search a real slog, even for the best systems. Fortunately, there's something very special about the search: the core algorithm is embarrassingly parallel. We exploited this property to make search **1700x** faster using NVIDIA GPUs. We also wrote a [paper](https://doi.org/10.1093/bioinformatics/btaf081) about it and [open-sourced the code](https://github.com/PangeAI/simms).
+Search engines are important when there's an abundance of data. Chemistry, just like the internet, contains a sea of loosely-related chemical experiments. These experiments are published in large online [repositories](https://ccms-ucsd.github.io/GNPSDocumentation/) that can reach petabytes in size.
 
-If you want to learn more about this field, check out "Mass Spectrometry: Principles and Applications" by Hoffmann and Stroobant. I'll instead jump straight into the computational algorithm.
+Internet pages are linked using `<a href="...">` tags. Chemicals are linked by their shapes. Finding related chemicals is much more complicated than to discover related websites. 
 
-## Cosine similarity
-The algorithm is called Cosine Similarity. It calculates (in percentage %) how similar two mass spectra are. It consists of four steps:
+Instead two chemical experiments (called "mass spectra") are compared using an algorithm called "cosine greedy":
 
-![](https://github.com/tornikeo/cdn/raw/master/assets/cosine_greedy/cosine.png)
+<!-- ** Histogram with blue peaks and red peaks, histograms get overlapped, close peaks get toleranced, divide toleranced peaks with everything equals score ** -->
 
-We start with two mass spectra: query and reference. Spectra consist of two arrays, a mass array (called `mz`), and an intensity array. The second step is to find all mass values that are close. The "good match" threshold is a tunable parameter. In the third step, we sort the matched mass pairs by their intensity product. Finally, we choose the best combination of pairs to get the score. As an algorithm, this looks like the following:
+![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-anim.svg)
+
+There are no *free* shortcuts to this algorithm. You can [approximate it](https://github.com/biorack/blink) but this results in worse search results. If you use the [exact algorithm](https://matchms.readthedocs.io/en/latest/?badge=latest#example), a single search query will take a *month* to run. 
+
+## The solution
+
+[SimMS](https://github.com/PangeAI/simms) uses the *exact* algorithm and simply runs it on an NVIDIA GPU. On a single H100, SimMS is x1700 faster than an `i9-14900HX` CPU. On an RTX4090 it is x800 faster. It is 100% exact. 
+
+The secret to this performance is that SimMS works in batches, while the CPU only works in items. SimMS compares a batch of 2048 * 2048  chemicals in one step:
+
+<!-- ** Grid of chemicals: red cell moves (this is CPU) and calculates each point at a time, Grid of chemicals red block moves (this is GPU) and calculates many in one shot ** -->
+![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-batch.svg)
+
+SimMS is simply the cosine greedy but applied in parallel on batches of chemicals. The larger the batch, the better the performance.
+
+## Details and code
+
+Comparing chemicals with cosine is more involved than the above image shows. Each chemical is stored in memory as a pair of two arrays called `mz` and `intensity`. Comparing two chemicals involves the following 4 steps:
+
+![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-details.svg)
+
+Or, if written in Python, the following:
 
 ```py
 # File cosine_similarity.py
@@ -60,10 +79,11 @@ for i, rspec in enumerate(rlist):
     matrix[i,j] = cosine_similarity(rspec, qspec)
 ```
 
-That loop, even on the best hardware and hundreds of CPUs, takes **weeks** to complete. The program we developed works in **minutes**, using a single NVIDIA GPU. And the fun thing is, we didn't even change the algorithm. The GPU program outputs are exact—they are not an approximation.
+That loop, even on the best hardware and hundreds of CPUs, takes **weeks** to complete. The program we developed works in **minutes**, using a single NVIDIA GPU. And the fun thing is, we didn't even change the algorithm. The GPU program outputs are exact, they are not an approximation.
 
 ## Implementation
-So, how does this work? The idea was pretty simple—NVIDIA GPUs are famous for their ability to run parallel programs really quickly. If you look at the `matrix_similarity.py` code above, you will notice that all the `matrix[i,j]` entries can be computed independently, i.e., in parallel. So all we had to do was figure out how to fit this problem onto an NVIDIA GPU. Below is a visual guide on how we fit the problem to a GPU:
+
+So, how does this work? The idea was pretty simple, NVIDIA GPUs are famous for their ability to run parallel programs really quickly. If you look at the `matrix_similarity.py` code above, you will notice that all the `matrix[i,j]` entries can be computed independently, i.e., in parallel. So all we had to do was figure out how to fit this problem onto an NVIDIA GPU. Below is a visual guide on how we fit the problem to a GPU:
 
 ![](https://github.com/tornikeo/cdn/raw/master/assets/cosine_greedy/gpu_run.png)
 
@@ -81,14 +101,14 @@ for references_chunk in batch(references, batch_size=3): # 3 per batch; in pract
     # We have to pre-allocate outputs for GPU to write in
     batch_results = empty_array(2, 3) # 3 references and 2 queries
     
-    # Run GPU 🔥🔥🔥
+    # Launch GPU kernel
     kernel(references_batch, queries_batch, batch_results)
 
     # Transfer batch matrix similarity back to CPU
     batch_results.to_cpu()
 ```
 
-This is a simplified version of what is [really happening](https://github.com/pangeai/simms/blob/main/simms/similarity/spectrum_similarity_functions.py). On any decent GPU, like an RTX4090, Tesla V100, or even RTX2070, this approach is at least **200x** faster than a CPU. If you test this on an H100, you will see a **1700x** speedup compared to a CPU. This approach makes it possible to find some really neat connections between massive datasets of mass spectra on a shoestring budget. You can even use it for free, with [a Google Colab notebook](https://colab.research.google.com/github/PangeAI/simms/blob/main/notebooks/samples/colab_tutorial_pesticide.ipynb).
+This is a simplified version of what [really happens](https://github.com/pangeai/simms/blob/main/simms/similarity/spectrum_similarity_functions.py). On any decent GPU, like an RTX4090, Tesla V100, or even RTX2070, this approach is at least **200x** faster than a CPU. If you test this on an H100, you will see a **1700x** speedup compared to a CPU. This approach makes it possible to find some really neat connections between massive datasets of mass spectra on a shoestring budget. You can even use it for free, with [a Google Colab notebook](https://colab.research.google.com/github/PangeAI/simms/blob/main/notebooks/samples/colab_tutorial_pesticide.ipynb).
 
 ## Conclusion
 
