@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "SimMS: GPU-accelerated Cosine Similarity"
-description: The fastest search engine for chemicals
+title: "SimMS: GPU-Accelerated Cosine Similarity"
+description: Fast chemical search with GPU cosine similarity.
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/cuda_cube.jpg
 importance: 1
 category: large projects

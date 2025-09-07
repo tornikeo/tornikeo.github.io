@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Stable diffusion in serverless mode
-description: AI apps require renting an expensive GPU server. Serverless GPUs can provide a cheap alternative!
+title: Stable Diffusion in Serverless Mode
+description: Run diffusion models on serverless GPUs.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/07ylZV6.mp4
 importance: 3
 category: personal

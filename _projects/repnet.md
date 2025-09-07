@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Repetition counting - for fitness!
-description: Automatically enumerate reps and sets from a video!
+title: Repetition Counting for Fitness
+description: Automatically count reps and sets from video.
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/N9opu9d.gif
 importance: 6
 category: projects

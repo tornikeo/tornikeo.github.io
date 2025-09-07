@@ -1,17 +1,11 @@
 ---
 layout: page
-title: Beating Tox21 challenge with <b>way</b> too many parameters
-description: "Task: predict all 1.5k possible toxic effects of a given compound, given its name. <br> Solution: Deep Learning"
+title: Beating Tox21 Challenge
+description: Predict toxic side-effects of new drugs.
 img: assets/img/tox21-model-arch.png
 importance: 20
 category: projects
 ---
-
-Written by [@tornikeo](https://github.com/tornikeo) and [@copilot](https://copilot.github.com)
-
-This is one of my favourite projects from 2021. So, naturally, I'd like everyone reading this to understand the task at hand as well as a glimpse into how my solution works :smile:. 
-
-## Introduction
 
 When a pharmaceutical company announces a groundbreaking new drug, usually people don't think too hard about all the hard work and funding that went into developing that drug. What people do notice, however, is the *price*. New drugs cost a lot more than the generic over-the-shelf drugs, e.g aspirin. This is because the pharma has to cover the development expenses -- including making sure that the drug is safe for human consumption. 
 

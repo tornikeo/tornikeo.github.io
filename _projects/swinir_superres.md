@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Image super-resolution
-description: 4x your image in both dimensions, for free!
+title: Image Super-Resolution
+description: 4x image upscaling with SwinIR.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4
 importance: 3
 category: personal

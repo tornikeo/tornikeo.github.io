@@ -1,7 +1,7 @@
 ---
 layout: page
-title: 2D material detection for robotic control
-description: 2D materials are the future of computing. Building them, however requires huge human labor - can we automate this?
+title: 2D Material Detection for Robotic Control
+description: Automate 2D material detection for robotics.
 video: https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/aa-sample.webm
 importance: 2
 category: large projects

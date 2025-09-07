@@ -1,12 +1,11 @@
 ---
 layout: page
-title: 3D body shape estimation from video
-description: Use your smartphone camera to estimate person's precise body shape from a video.
+title: 3D Body Shape Estimation from Video
+description: Estimate body shape from video with your phone.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/eLcAtDA.mp4
 importance: 5
 category: projects
 ---
-
 
 # Intro
 

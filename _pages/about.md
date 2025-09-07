@@ -12,12 +12,12 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm a generalist [AI researcher](https://scholar.google.com/citations?user=QnocfnMAAAAJ&hl=en) and [software engineer](https://github.com/tornikeo/), and I host my writing on tech and my past projects here. I've built a lot of tools for startups: [Search engine for chemicals](https://github.com/PangeAI/simms), [Robotic control for nanoflakes](https://github.com/tornikeo/atomic-architects), [AI video editor for Investigators](https://tornikeo.com/projects/investigation_ve/).
+I'm an AI engineer. I regularly post technical writing here. I've built tools for startups: [the fastest open-source search engine for chemicals](projects/cosine_greedy/), [LLM for chemistry](projects/spectrums/) and the [backend of VIMAGE](/projects/vimage/).
 
 Shoot an email at `contact [@] tornikeo.com`, or talk to me on this [server](https://discord.gg/MuJxRh2dZG). I'm always interested in helping out people in tech. My areas of expertise:
 - Cloud -- Google, Amazon, or Azure.
 - Custom GPU and CUDA wizardry.
-- AI models and LLMs (training and tuning, **not** prompting).
+- Engineering AI systems (AI model, hardware, and, serving).
 
 ## selected projects
 

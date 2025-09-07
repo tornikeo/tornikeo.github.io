@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Deep Dream with TFJS
-description: Why pay $5 subscription fee when you can deepdream images in your browser?
+description: Deepdream images in your browser for free.
 img: assets/img/deepdream-monke.png
 importance: 20
 category: personal

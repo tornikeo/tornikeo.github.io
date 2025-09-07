@@ -7,15 +7,12 @@
     <a href="{{ project.url | relative_url }}">
       {%- endif %}
       <div class="card hoverable">
-        {%- if project.img %}
-        {%- include figure.html
-          path=project.img
-          alt="project thumbnail" -%}
-        {%- elsif project.video %}
-          {%- include video.html
-            path=project.video
-            alt="project thumbnail" -%}
-        {%- endif %}
+        {%- assign thumb_path = project.img | default: project.video -%}
+        {% if thumb_path %}
+          {% include media-thumb.html
+            path=thumb_path
+            caption=project.caption %}
+        {% endif %}
         <div class="card-body">
           <h2 class="card-title">{{ project.title }}</h2>
           <p class="card-text">{{ project.description }}</p>

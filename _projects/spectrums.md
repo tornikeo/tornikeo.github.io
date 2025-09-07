@@ -1,7 +1,7 @@
 ---
 layout: page
-title: "SpectruMS: new foundation model for mass spectrometry"
-description: SpectruMS is the most ambitious, high-budget project involving custom LLM development and API deployment for analytical chemistry I've worked on to-date.
+title: "SpectruMS: Foundation Model for Mass Spectrometry"
+description: AI model for mass spectrometry data.
 img: https://github.com/tornikeo/cdn/raw/master/assets/spectrums/spectrums-thumb.svg
 importance: 1
 category: large projects

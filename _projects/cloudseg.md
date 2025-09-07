@@ -1,7 +1,7 @@
 ---
 layout: page
-title: 3D mesh segmentation
-description: Analyze and partition indoor 3D spaces into 200 different classes, using transformers!
+title: 3D Mesh Segmentation
+description: Segment indoor 3D spaces with transformers.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/TV10o0g.mp4
 importance: 5
 category: large projects
