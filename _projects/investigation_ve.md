@@ -18,7 +18,7 @@ For instance, shown below is a sample video where we want to track three people 
 
 {% include video.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/airport.mp4" caption="Blurring everything except the three people in this video is a lot of work. The aim of this project is to automate this. (Video by Kelly from [Pexels](https://www.pexels.com/video/bustling-airport-terminal-with-travelers-and-sunlight-32649236/))." width="80%" %}
 
-These tasks are typically unavoidable and soul-crushing parts of the job. But with the arrival of new video-centric models, like Meta's [Segment Anything 2](https://ai.meta.com/sam2/) (SAM2), this has changed.
+These tasks are typically unavoidable and can be soul-crushing parts of the job. However, with the arrival of new video-centric models, such as Meta's [Segment Anything 2](https://ai.meta.com/sam2/) (SAM2), this has changed.
 
 With SAM2, it is now possible to reliably track objects and people in a video.
 
@@ -32,7 +32,7 @@ The tool allows automatic tracking of selected objects and is robust against occ
 
 {% include video.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/airport_masked.mp4" caption="We track and highlight the only three persons of interest, with SAM2." width="80%" %}
 
-Here's another pair of videos where there's even more significant occlusion, with an even longer tracking time. The original:
+Here’s another pair of videos where there is even more significant occlusion, with an even longer tracking time. The original:
 
 {% include video.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/trump_tower.mp4" caption="Video by CityXcape from [Pexels](https://www.pexels.com/video/security-at-the-entrance-to-trump-tower-2801200/)" width="80%" %}
 
@@ -40,6 +40,6 @@ With just a few clicks, we select three guards and proceed with tracking. We rem
 
 {% include video.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/trump_tower_masked.mp4" caption="Results of the auto-background removal feature, with SAM2." width="80%" %}
 
-Using this video editing tool is easy. Selecting a face and tracking it is done with just a few mouse clicks. A button allows for the selection of all things of interest. For the above video, we only needed 12 clicks (marked on the timeline as blue, orange, and cyan dots) to select the three guards. The interface allows easy visualization and correction of the marks.
+Using this video editing tool is easy. Selecting a face and tracking it can be done with just a few mouse clicks. A button allows for the selection of all items of interest. For the above video, we only needed 12 clicks (marked on the timeline as blue, orange, and cyan dots) to select the three guards. The interface allows for easy visualization and correction of the marks.
 
 {% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/trump_tower_gui.png" class="img-fluid rounded z-depth-1" zoomable=false caption="Example of the graphical application that allows tracking objects inside a video—in this case, we needed only 12 clicks for the three guards." %}

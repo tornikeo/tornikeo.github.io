@@ -2,7 +2,7 @@
 layout: page
 title: "SimMS: GPU-Accelerated Cosine Similarity"
 description: Fast chemical search with GPU cosine similarity.
-img: https://storage.googleapis.com/tornikeo-portfolio-cdn/cuda_cube.jpg
+img: https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-batch-thum.svg
 importance: 1
 category: large projects
 ---

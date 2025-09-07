@@ -2,7 +2,7 @@
 layout: page
 title: "SpectruMS: Foundation Model for Mass Spectrometry"
 description: AI model for mass spectrometry data.
-img: https://github.com/tornikeo/cdn/raw/master/assets/spectrums/spectrums-thumb.svg
+img: https://raw.githubusercontent.com/tornikeo/cdn/master/assets/spectrums/spectrums-thumb.svg
 importance: 1
 category: large projects
 ---
