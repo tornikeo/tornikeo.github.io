@@ -10,9 +10,9 @@ An agent is a program that contains an LLM-conditioned loop structure. Let's def
 
 1. A large language model (LLM). An LLM is simply a `def llm(context: str) -> str:` function.
 2. A tool. In the context of agents, a tool is a `def tool(input: str) -> Optional[Any]:` function. A tool use can include (on the inside) an LLM or another tool. Some example tools:
-    * Conditiona tool. This is a `def conditional(input: str) -> bool`.
+    * Conditional tool. This is a `def conditional(input: str) -> bool`.
     * Numeric tool. This can be a `def numeric(input: str) -> int`.
-    * Tools can return `None`, sleep, and have inner state. 
+    * Tools can return `None`, pause execution (e.g., sleep), and maintain internal state. 
 3. An LLM-conditioned loop. This is a programming loop (e.g. `for`, `while`) where the looping condition depends on the output of the LLM. 
 
 For example, this simple Python program is an agent:
@@ -45,7 +45,7 @@ The following program doesn't include an LLM-conditioned loop. It contains a loo
 
 ```py
 context = '...'
-for _ in range(100): # Looping is independent of LL output
+for _ in range(100): # Looping is independent of LLM output
     output = llm(context)
     context += output
     print('context>', output)
@@ -60,7 +60,7 @@ while True:
     query = input('you>')
     if conditional(query):
         break
-    context =+ query
+    context += query
     response = llm(context)
     print(output)
     context += response
@@ -68,6 +68,6 @@ while True:
 
 In fact, this program is a chatbot. The difference between a chatbot and an agent is who controls the looping condition. 
 
-This definition clearly leaves a lot of room for ambiguity. Clearly one can readily come up with examples that show how "wrong" this is. This post is simply the best-effort attempt to put a definition on a word so often said but so rarely understood.
+This definition clearly leaves a lot of room for ambiguity. This post is simply the best-effort attempt to put a definition on a word so often said but so rarely understood.
 
 *Thanks to [Ani Talakhadze](https://www.linkedin.com/in/anitalakhadze/) for reading drafts of this*
