@@ -9,10 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | blog</title>
+    <title>Tornike  Onoprishvili | SpectruMS: Foundation Model for Mass Spectrometry</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="tornikeo is a machine learning researcher, this is his website
-" />
+    <meta name="description" content="AI model for mass spectrometry data." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -33,7 +32,7 @@
     <link rel="shortcut icon" href="data:image/svg+xml,<svg xmlns=%22https://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚛️</text></svg>">
     
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/blog/">
+    <link rel="canonical" href="https://tornikeo.com/projects/spectrums/">
     
     <!-- Dark Mode -->
     
@@ -81,19 +80,19 @@
                 </li>
                 
               <!-- Blog -->
-              <li class="nav-item active">
-                <a class="nav-link" href="/blog/">blog<span class="sr-only">(current)</span></a>
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
               </li>
 
               <!-- Resume: Direct link to PDF asset -->
               <li class="nav-item">
-                <a class="nav-link" href="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/resume/tornikeo.pdf">resume
+                <a class="nav-link" href="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/resume/tornikeo.pdf" target="_blank" rel="noopener noreferrer">resume
                 </a>
               </li>
 
               <!-- Toggle theme mode -->
-              <div class = "toggle-container">
-                <a id = "light-toggle">
+              <div class="toggle-container">
+                <a id="light-toggle">
                   <i class="fas fa-moon"></i>
                   <i class="fas fa-sun"></i>
                 </a>
@@ -106,110 +105,25 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <div class="post">
+      <!-- page.html -->
+<div class="post">
 
-  <div class="header-bar">
-    <h1>AI in the wild</h1>
-    <h2>Supplying AI tools to the masses</h2>
-  </div>
+  <header class="post-header">
+    <h1 class="post-title">SpectruMS: Foundation Model for Mass Spectrometry</h1>
+    <p class="post-description">AI model for mass spectrometry data.</p>
+  </header>
+
+  <article>
+    <p>AI training is similar to file compression (think <code class="language-plaintext highlighter-rouge">.zip</code>). Both tools make large files smaller. The added benefit of AI that it makes the compressed information more easily searchable.</p>
+
+<p><a href="https://github.com/tornikeo/cdn/raw/master/assets/spectrums/iccs_presentation.pdf" target="_blank" rel="noopener noreferrer">SpectruMS</a> is an attempt of Pagea Bio to <strong>compress</strong> all of <a href="https://gnps.ucsd.edu/" target="_blank" rel="noopener noreferrer">GNPS</a>, <a href="https://massbank.eu/" target="_blank" rel="noopener noreferrer">Massbank</a>, <a href="https://pubchem.ncbi.nlm.nih.gov/" target="_blank" rel="noopener noreferrer">PubChem</a> and more into a single AI model. SpectruMS compressed petabytes of chemical data into a single, small, <a href="https://huggingface.co/docs/transformers/en/model_doc/bart" target="_blank" rel="noopener noreferrer">BART</a> model:</p>
+
+<p><img src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/spectrums/spectrums-squish.svg" alt=""></p>
+
+<p>I was there to design virtually every aspect of SpectruMS, from data curation, to AI training, to babysitting the <a href="https://en.wikipedia.org/wiki/Tensor_Processing_Unit" target="_blank" rel="noopener noreferrer">TPU</a> pod to deployment and serving on AWS.</p>
 
 
-  <ul class="post-list">
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/define-agent/">Define Agent</a>
-        
-      </h3>
-      <p>Define what an AI agent is and what it isn't.</p>
-      <p class="post-meta"> 4 min read &nbsp; &middot; &nbsp;
-        September 3, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
-          
-
-          
-    </p>
-    </li>
-
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/code-is-debt/">Code is Debt</a>
-        
-      </h3>
-      <p>Code is debt and LLMs create it</p>
-      <p class="post-meta"> 2 min read &nbsp; &middot; &nbsp;
-        August 28, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
-          
-
-          
-    </p>
-    </li>
-
-    
-
-    
-    
-    
-    
-
-    <li>
-      <h3>
-        
-          <a class="post-title" href="/you-should-learn-gpu/">You should learn GPU programming</a>
-        
-      </h3>
-      <p>Now is the best time to learn programming GPUs</p>
-      <p class="post-meta"> 2 min read &nbsp; &middot; &nbsp;
-        July 8, 2025
-      </p>
-      <p class="post-tags">
-        <a href="/blog/2025">
-          <i class="fas fa-calendar fa-sm"></i> 2025 </a>
-
-          
-
-          
-    </p>
-    </li>
-
-    
-  </ul>
-
-  <nav aria-label="Blog page naviation">
-  <ul class="pagination pagination-lg justify-content-center">
-    <li class="page-item disabled">
-      <a class="page-link" href="" tabindex="-1" aria-disabled="">Newer</a>
-    </li><li class="page-item active"><a class="page-link" href="/blog/index.html" title="blog">1</a></li>
-      <li class="page-item "><a class="page-link" href="/blog/page/2/index.html" title="blog - page 2">2</a></li>
-      <li class="page-item ">
-      <a class="page-link" href="/blog/page/2/">Older</a>
-    </li>
-  </ul>
-</nav>
+  </article>
 
 </div>
 
