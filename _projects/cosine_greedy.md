@@ -17,7 +17,9 @@ Search engines like Google, Bing, and GoDaddy find a list of webpages given sear
 
 Similar chemicals produce similar mass spectra, and mass spectra of chemicals are relatively easy to obtain. This makes searching and comparing mass spectra an important aspect of chemical discovery. 
 
-Unfortunately, Cosine Greedy is computationally *very* expensive at scale. Running a Cosine Greedy algorithm for a single search query can take over a *month* of CPU time. To solve the computational problem, some researchers tried [to approximate it](https://github.com/biorack/blink) to trade quality for speed. In many applications, however, the [exact algorithm](https://matchms.readthedocs.io/en/latest/?badge=latest#example) is required. 
+![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/easy-comp.svg)
+
+Unfortunately, Cosine Greedy is *computationally* very expensive at scale. Running a Cosine Greedy algorithm for a single search query can take over a *month* of CPU time. To solve the computational problem, some researchers tried [to approximate it](https://github.com/biorack/blink) to trade quality for speed. In many applications, however, the [exact algorithm](https://matchms.readthedocs.io/en/latest/?badge=latest#example) is required. 
 
 
 ## The solution
