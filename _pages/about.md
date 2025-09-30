@@ -12,9 +12,9 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true  # includes social icons at the bottom of the page
 ---
 
-I'm an AI engineer. I regularly post technical writing here. I've built tools for startups: [the fastest open-source search engine for chemicals](projects/cosine_greedy/), [LLM for chemistry](projects/spectrums/) and the [backend of VIMAGE](/projects/vimage/).
+I'm an AI engineer. I regularly post technical content here. I've built tools for startups: [the fastest open-source search engine for chemicals](projects/cosine_greedy/), [LLM for chemistry](projects/spectrums/) and the [backend of VIMAGE](/projects/vimage/).
 
-Shoot an email at `contact [@] tornikeo.com`, or talk to me on this [server](https://discord.gg/MuJxRh2dZG). I'm always interested in helping out people in tech. My areas of expertise:
+Talk to me on [Linkedin](https://www.linkedin.com/in/tornikeo/), [Discord](https://discord.gg/qppBGrQD) or shoot an email at `contact [@] tornikeo.com`. I'm always interested in helping out people in tech. My areas of expertise:
 - Cloud -- Google, Amazon, or Azure.
 - Custom GPU and CUDA wizardry.
 - Engineering AI systems (AI model, hardware, and, serving).

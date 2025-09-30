@@ -24,7 +24,7 @@ Unfortunately, Cosine Greedy is *computationally* very expensive at scale. Runni
 
 ## The solution
 
-[SimMS](https://github.com/PangeAI/simms) uses the *exact* Cosine Greedy algorithm but runs it on an NVIDIA GPU. This leads to some incredible speedups. Using just one H100, SimMS executes **1700x** faster than an `i9` CPU. SimMS runs on smaller gaming RTX4090 GPUs **800x** faster. These performance gains come from the way SimMS fits onto the GPU hardware, instead of algorithmic tricks.
+[SimMS](https://github.com/PangeAI/simms) is solves this computational problem. SimMS uses the *exact* Cosine Greedy algorithm but runs it on an NVIDIA GPU. This leads to some incredible speedups. Using just one H100, SimMS executes **1700x** faster than an `i9` CPU. SimMS runs on smaller gaming RTX4090 GPUs **800x** faster. These performance gains come from the way SimMS fits onto the GPU hardware, instead of algorithmic tricks.
 
 The first reason for the performance is that SimMS works in batches of data, while the CPU only works on individual pairs of data. SimMS by default compares a batch of 2048 * 2048 chemicals in one step:
 
