@@ -13,7 +13,7 @@ AI training is similar to file compression (think `.zip`). Both tools make large
 
 ![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/spectrums/spectrums-squish.svg)
 
-At [Pangea Bio](https://www.pangeabio.com/), SpectruMS was developed from the very start. From data curation, to AI training, to babysitting the [TPU](https://en.wikipedia.org/wiki/Tensor_Processing_Unit), to deployment and serving on AWS. What followed was the day-to-day experience of dealing with such projects and recommendations on approaching this.
+At [Pangea Bio](https://www.pangeabio.com/), SpectruMS was developed essentially from scratch. Every step, data curation, AI training, babysitting the [TPU](https://en.wikipedia.org/wiki/Tensor_Processing_Unit), deployment and serving on AWS was done in-house. What follows is my day-to-day experience of dealing with this project and my recommendations on approaching this.
 
 ## Define metrics early
 
@@ -38,13 +38,13 @@ But wasn't this about training a foundation model for mass spectrometry? Indeed!
 
 ![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/spectrums-lazy.svg)
 
-The problem of predicting `mass spectra -> chemical` was reframed into a [question-answering problem](https://huggingface.co/docs/transformers/en/tasks/question_answering). Basically, both the `mass spectra` and the `chemical` were turned into long texts, and for each `mass spectra` as input, the model was trained to output the `chemical` as deepSMILES as text.
+The problem of predicting `mass spectra -> chemical` was reframed into a [question-answering problem](https://huggingface.co/docs/transformers/en/tasks/question_answering). Basically, both the `mass spectra` and the `chemical` were turned into long texts, and for each `mass spectra` as input, the model was trained to output the `chemical` as deepSMILES as text. A simple text-to-text model.
 
-Why did this make sense? Because writing your own training pipeline and making it efficient was a lot of effort (weeks, months even) and a lot of wasted cash. And it made a lot of sense to lean on the existing tools. If the AI project problem could be reframed as a language modelling problem, weeks of development time would be saved. And this was exactly what was done at Pangea. 
+Why did this make sense? Because writing your own training pipeline and making it efficient is a lot of effort (weeks, months even) and a lot of wasted cash. And it makes a lot of sense to lean on the existing open-source tools. If the AI problem can be reframed as a language modelling problem, weeks of development time can be saved. And this was exactly what was done at Pangea. 
 
-The training was reframed into a [fine-tuning for question-answering](https://huggingface.co/learn/llm-course/en/chapter7/7) tutorial. And the BART pretraining was reframed to a [masked language modelling](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_mlm.py) over a corpus of stringified MS/MS data and chemical deepSMILES. 
+The training was reframed into basically the [fine-tuning for question-answering](https://huggingface.co/learn/llm-course/en/chapter7/7) tutorial. And the [BART](https://huggingface.co/docs/transformers/en/model_doc/bart) [masked language modelling](https://github.com/huggingface/transformers/blob/main/examples/pytorch/language-modeling/run_mlm.py) pretraining over a corpus of stringified MS/MS data and chemical deepSMILES was done. 
 
-A [BART](https://huggingface.co/docs/transformers/en/model_doc/bart) model architecture was chosen for this task instead of a [GPT](https://huggingface.co/docs/transformers/en/model_doc/openai-gpt), even though GPT would've been more efficient. In the end, what mattered most was the quality and amount of data and not the model architecture. More on that later.
+A BART model architecture was chosen for this task instead of a [GPT](https://huggingface.co/docs/transformers/en/model_doc/openai-gpt), even though GPT would've been (in my opinion) more efficient and easier. In the end, what mattered most was the quality and amount of data and not the model architecture. More on that later.
 
 In essence, the inference looked like this function:
 
@@ -70,7 +70,7 @@ TPUs were slow to start, the errors were (if logs could even be accessed) crypti
 
 ![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/spectrums-tpus.svg)
 
-The TPU situation was so bad that even though the team was offered some $100k in Google cloud credits, the management team still decided to move away from using TPUs. Even the fine-tuning part for question-answering (read: question-in-ms/ms answer in deepSMILES) was done away from TPUs and on an A100 instance on Google Cloud.
+The TPU situation was so bad that even though the team was offered some $100k in Google cloud credits, the team lead still decided to move away from using TPUs. Even the fine-tuning part for question-answering (read: question-in-ms/ms answer in deepSMILES) was done away from TPUs and on an A100 instance on Google Cloud.
 
 ## It is easy to burn a lot of cash
 
@@ -78,7 +78,7 @@ And not only on GPUs or TPUs, mind you. When working with a lot of data (there w
 
 ![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/aws-burning.svg)
 
-In one minor accident, $2.5k went aflame on AWS, because of S3. Essentially, a lot of data was written into an S3 Glacier Deep Archive storage. During data processing, one of the workflows accidentally read a large portion of that data. On S3 Glacier, the pricing was not for storage but per GB read. The workflow read $2.5k worth of data. The billing for that day looked like a Dirac function:
+In one accident, $2.5k went aflame on AWS, because of S3. Essentially, a lot of data was written into an S3 Glacier Deep Archive storage. During data processing, one of the workflows accidentally read a large portion of that data. On S3 Glacier, the pricing was not for storage but per GB read. The workflow read $2.5k worth of data. The billing for that day looked like a Dirac function:
 
 ![](https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/aws-burning(1).svg)
 
