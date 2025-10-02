@@ -18,14 +18,7 @@ category: large projects
 
 [VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an early image-to-video AI application, with over **10 million** total downloads on Google Play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app's capabilities is shown in this promotional video:
 
-<figure>
-    <div class="col">
-        <iframe width="100%" height="400px" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-  <figcaption class="caption">
-    Promotional video from <a href="https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US">VIMAGE</a>, highlighting the main features of the app. 
-  </figcaption>
-</figure>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU?si=7DdMSeO9z32Bgg9l" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 The app works by decomposing an uploaded image into two parts: foreground and background, and manipulating the two parts to add effects like a parallax. Even though the technology behind this is simple, the results (as seen above) look quite impressive.
 
