@@ -256,6 +256,7 @@ jekyll-diagrams:
 enable_google_analytics:    false  # enables google analytics
 enable_panelbear_analytics: false  # enables panelbear analytics
 enable_google_verification: false  # enables google site verification
+enable_vercel_analytics:    true   # enables vercel analytics
 enable_bing_verification:   false  # enables bing site verification
 enable_masonry:             true   # enables automatic project cards arangement
 enable_math:                true   # enables math typesetting (uses MathJax)
@@ -267,7 +268,6 @@ enable_navbar_social:       false  # enables displaying social links in the
 enable_project_categories:  true   # enables categorization of projects into
                                    # multiple categories
 enable_medium_zoom:         true   # enables image zoom feature (as on medium.com)
-
 
 # -----------------------------------------------------------------------------
 # Library versions

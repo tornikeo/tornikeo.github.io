@@ -16,11 +16,12 @@ layout: default
           {% if page.profile -%}
           <div class="profile float-{%- if page.profile.align == 'left' -%}left{%- else -%}right{%- endif -%}">
             {%- if page.profile.image %}
-              {%- assign profile_image_path = page.profile.image | prepend: 'assets/img/' -%}
-              {% include figure.html 
-              path=profile_image_path 
-              class="img-fluid z-dept-1 rounded"
-              alt=page.profile.image -%}
+            <picture>
+              <source media="(max-width: 480px)" srcset="assets/img/variants/profile-mobile.jpg">
+              <source media="(max-width: 768px)" srcset="assets/img/variants/profile-tablet.jpg">
+              <source media="(max-width: 1024px)" srcset="assets/img/variants/profile-small.jpg">
+              <img src="assets/img/profile.jpg" alt="Profile" loading="lazy">
+            </picture>
             {% endif -%}
             {%- if page.profile.address %}
             <div class="address">

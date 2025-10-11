@@ -15,4 +15,10 @@
     window.panelbear = window.panelbear || function() { (window.panelbear.q = window.panelbear.q || []).push(arguments); };
     panelbear('config', { site: '{{site.panelbear_analytics}}' });
   </script>
+  {%- endif -%}
+  {%- if site.enable_vercel_analytics -%}
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 {%- endif -%}
