@@ -18,3 +18,5 @@ In short, every language that is used sufficiently frequently will become de fac
 What about vibecoding? Isn't it a sort of wobbly programming language? Surely enough, as software using it becomes useful, [prompts](https://gist.github.com/agokrani/919b536246dd272a55157c21d46eda14) become more and more like a type-safe language.
 
 Maybe this carcinization of programming is a byproduct of the complexity of the world? You can't really avoid it once you want your software to actually do useful things.
+
+*Thanks to [Ani Talakhadze](https://www.linkedin.com/in/anitalakhadze/) for reading drafts of this*
