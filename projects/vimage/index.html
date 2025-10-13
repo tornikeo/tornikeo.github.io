@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | VIMAGE: Accelerate, Simplify, Deploy</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="Scalable GPU-backed solution on Google Cloud." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -35,7 +35,7 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/projects/vimage/">
     
     <!-- Dark Mode -->
     
@@ -112,12 +112,96 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">VIMAGE: Accelerate, Simplify, Deploy</h1>
+    <p class="post-description">Scalable GPU-backed solution on Google Cloud.</p>
   </header>
 
   <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+    <figure>
+  <div class="center-role-form">
+    <div class="col">
+      <video loop="loop" autoplay="" playsinline="" muted="" id="mejs_6833802707345928_html5" preload="none" src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-cropped-tiny.webm" style="margin: 0px; width: 100%; height: 100%;">
+      </video>
+    </div>
+  </div>
+</figure>
+
+<p><a href="https://play.google.com/store/apps/details?id=com.vimage.android&amp;hl=en&amp;gl=US" target="_blank" rel="noopener noreferrer">VIMAGE</a> is an early image-to-video AI application, with over <strong>10 million</strong> total downloads on Google Play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app’s capabilities is shown in this promotional video:</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU?si=7DdMSeO9z32Bgg9l" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen=""></iframe>
+
+<p>The app works by decomposing an uploaded image into two parts: foreground and background, and manipulating the two parts to add effects like a parallax. Even though the technology behind this is simple, the results (as seen above) look quite impressive.</p>
+
+<h2 id="project-requirements">Project Requirements</h2>
+
+<p>The core of the project consists of the following three parts:</p>
+<ul>
+  <li>Handling image I/O in a way that respects end-user privacy</li>
+  <li>Creating an accurate depth map of the input RGB image</li>
+  <li>Deciding which pixels fall within the background and which within the foreground</li>
+</ul>
+
+<div class="row">
+    <div class="col">
+        <div class="container">
+
+    <figure class="cd-image-container" style="width: 500px;">
+        <img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/4r6AxEC.png" alt="Original Image">
+		<span class="cd-image-label" data-type="original">Depth map</span>
+        
+		<div class="cd-resize-img"> <!-- the resizable image on top -->
+			<img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Z78wJUV.png" alt="Modified Image">
+			<span class="cd-image-label" data-type="modified">Raw image</span>
+		</div>
+        
+		<span class="cd-handle"></span>
+	</figure> <!-- cd-image-container -->
+</div>
+    </div>
+</div>
+<div class="caption">
+    Creating an accurate depth map from an RGB image is a very important step in background separation.
+</div>
+
+<p>In addition, there were other business restrictions in place:</p>
+
+<ul>
+  <li>Prioritize cost saving</li>
+  <li>Ensure scalability - the app had frequent usage spikes</li>
+  <li>Make the app faster</li>
+  <li>Add basic Firebase authentication</li>
+  <li>Host all of it on Google Cloud Platform to make use of credits</li>
+</ul>
+
+<h2 id="implementation">Implementation</h2>
+
+<p>The most pressing constraint of this project was the GPU requirements of the core layer of the project. This, coupled with the scalability requirements (i.e., a fully managed GPU provider platform), narrowed down our choice of compute providers significantly. At this stage, we had just three options:</p>
+
+<ul>
+  <li>Set up a manual lightweight server that allocates and deallocates GPU-powered VMs from <code class="language-plaintext highlighter-rouge">Google Cloud Compute</code> service.</li>
+  <li>Investigate the <code class="language-plaintext highlighter-rouge">Google Cloud Run Anthos</code> service (which reportedly provides serverless GPUs).</li>
+  <li>Investigate whether <code class="language-plaintext highlighter-rouge">Google Cloud Vertex AI</code> could be used for our requirements.</li>
+</ul>
+
+<p>To avoid a costly research phase, we consulted with a certified Google Cloud architect and, with their insight, decided to go with the <code class="language-plaintext highlighter-rouge">Vertex AI</code> service. The rough outline of the project was specified during a packed one-hour-long meeting:</p>
+
+<ul>
+  <li>Use <code class="language-plaintext highlighter-rouge">Vertex AI Endpoint</code> to access the cheapest GPU VM (T4 GPU instance backed with N2-family CPU).</li>
+  <li>Leverage the scalability of <code class="language-plaintext highlighter-rouge">Vertex AI Endpoints</code>. VAIE is scalable by default but is constrained to have <strong>at least one instance always running</strong>. Usually, this means a monthly bill of around $300, and for personal, ultra-low-use projects, this kind of bill is a big no-no. However, given our customer’s access to a large amount of budget, this price was of no concern.</li>
+</ul>
+
+<p>However, VAIE also comes with a few drawbacks. Namely:</p>
+<ul>
+  <li>All the requests must be <a href="https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#request_requirements" target="_blank" rel="noopener noreferrer">smaller than 1.5 MB in size</a>.</li>
+  <li>
+<a href="https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#request_requirements" target="_blank" rel="noopener noreferrer">All requests have to be in plain JSON</a>.</li>
+  <li>
+<a href="https://cloud.google.com/vertex-ai/docs/predictions/custom-container-requirements#publishing" target="_blank" rel="noopener noreferrer">The container has to be hosted on <code class="language-plaintext highlighter-rouge">Google Cloud Containers</code> service</a>.</li>
+</ul>
+
+<h2 id="reflections">Reflections</h2>
+
+<p>The VIMAGE project was the first large-scale project I worked on that had active users from day one. The application backend profiling, bottleneck identification, and optimizations were the easiest parts to complete. Basic security and authentication, to my surprise, were even easier to add. The most time-consuming part was babysitting the Vertex AI deployments. I find it mind-boggling just how suboptimal the backend implementation was as it was presented to me. I think with this project I’ve learned a very valuable lesson in designing successful applications: make it work first, and you can make it optimal later.</p>
 
   </article>
 

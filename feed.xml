@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="https://tornikeo.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://tornikeo.com/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-10-13T06:41:28+00:00</updated><id>https://tornikeo.com/feed.xml</id><title type="html">blank</title><subtitle>tornikeo is a machine learning researcher, this is his website
+</subtitle><entry><title type="html">Why did Meta Superintelligence Lab publish an obscure AI paper?</title><link href="https://tornikeo.com/refrag/" rel="alternate" type="text/html" title="Why did Meta Superintelligence Lab publish an obscure AI paper?" /><published>2025-10-12T00:00:00+00:00</published><updated>2025-10-12T00:00:00+00:00</updated><id>https://tornikeo.com/refrag</id><content type="html" xml:base="https://tornikeo.com/refrag/"><![CDATA[<p>Things are taking an interesting turn at <a href="https://en.wikipedia.org/wiki/Meta_Superintelligence_Labs">Meta Superintelligence Labs</a>
+(MSI). The <a href="https://arxiv.org/pdf/2509.01092">debut paper</a> from this AI lab is about making <a href="https://research.ibm.com/blog/retrieval-augmented-generation-RAG">retrieval augmented generation (RAG)</a> <strong>30x faster</strong> without any accuracy loss. This might be surprising because MSI employs some of the most ambitious and successful AI researchers and founders on the planet right now, and the first paper they publish is just a well-known RAG method, only faster. Compare this with <a href="https://openai.com/index/sora-2/">OpenAI publishing Sora 2</a> just weeks ago and the wow-effect it had!</p>
+
+<p>But why bother accelerating RAG? Well, most of my business AI engineering <a href="https://tornikeo.com/projects/">tasks</a> involved, in one way or another, a RAG pipeline over thousands of documents. RAG is, as far as I know, the most widely applied AI method by businesses to actually make money. Building RAGs, maintaining them, tuning them, and updating them are all so vitally important that I could see it becoming a profession at some point. Businesses love RAGs and they pay for RAGs because RAGs make information search easier and they turn a real return on investment.</p>
+
+<p>But RAGs are <strong>incredibly slow</strong>, and so the paper addressing this problem is really business-oriented. All of the businesses I’ve built RAGs for stand to directly benefit from this paper. It’s not even a question of “How do we monetize this?”, but “When do we update our RAGs to this?”.</p>
+
+<p>The method (called “<a href="https://arxiv.org/abs/2509.01092">REFRAG</a>”) is also simple to explain. The core insight can be summarized in just a couple of sentences:</p>
+<ol>
+  <li>During a traditional RAG pipeline, the text corpus is turned into vectors using an <a href="https://en.wikipedia.org/wiki/Embedding_(machine_learning)">embedding model</a> and stored in vector databases like <a href="https://www.pinecone.io/">Pinecone</a>, <a href="https://www.trychroma.com/">Chroma</a>, or <a href="https://github.com/facebookresearch/faiss">FAISS</a>.</li>
+  <li>When the user asks a question, the vector database finds relevant pieces of text by retrieving the texts from the vector database and injecting the texts in the context of an AI model like <a href="https://openai.com/chatgpt/">ChatGPT</a>.</li>
+  <li>But then embedding happens twice, once by the embedding model and a second time by the ChatGPT itself!</li>
+  <li><strong>The core insight is that these two embeddings can be replaced with just a single embedding. Avoiding unnecessary re-embedding allows the RAG pipeline to become 30x faster.</strong></li>
+</ol>
+
+<p>A world-class AI lab just published work that will largely go unnoticed by the public, while solving an actual business issue and driving real value. This is the kind of AI research that is sustainable and can validate the global bet on AI. It’s exciting to see what the Meta Superintelligence team will publish next.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/">Ani Talakhadze</a> for reading drafts of this</em></p>
+
+<p>
+  💬 Discuss this post on 
+  <a href="https://news.ycombinator.com/item?id=45565391" target="_blank" rel="noopener">
+    Hacker News ↗
+  </a>
+</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Things are taking an interesting turn at Meta Superintelligence Labs (MSI). The debut paper from this AI lab is about making retrieval augmented generation (RAG) 30x faster without any accuracy loss. This might be surprising because MSI employs some of the most ambitious and successful AI researchers and founders on the planet right now, and the first paper they publish is just a well-known RAG method, only faster. Compare this with OpenAI publishing Sora 2 just weeks ago and the wow-effect it had!]]></summary></entry><entry><title type="html">Carcinization of programming</title><link href="https://tornikeo.com/carcinization-of-programming/" rel="alternate" type="text/html" title="Carcinization of programming" /><published>2025-09-28T00:00:00+00:00</published><updated>2025-09-28T00:00:00+00:00</updated><id>https://tornikeo.com/carcinization-of-programming</id><content type="html" xml:base="https://tornikeo.com/carcinization-of-programming/"><![CDATA[<p>Every language either is strongly typed or becomes one after sufficient use.</p>
+
+<p>All languages seem to do this, not just programming languages. Examples:</p>
+
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Legal_English">Legalese</a> is close to being a type-safe English (…and is maddeningly verbose).</li>
+  <li>Java was, is and will be strongly typed (and is, similarly, verbose). I am not aware of any tool that removes typing from Java.</li>
+  <li>JavaScript isn’t strongly typed, but now everything I interact with recommends using TypeScript instead (TypeScript is incredibly verbose).</li>
+  <li>Python isn’t strongly typed, and now with so many Python projects around, types and type-safety become important (and bet your ass it will be verbose).</li>
+</ul>
+
+<p>In short, every language that is used sufficiently frequently will become de facto type-safe and verbose. Just like <a href="https://en.wikipedia.org/wiki/Carcinisation">carcinization</a>, type-safetization seems inevitable.</p>
+
+<p>What about vibecoding? Isn’t it a sort of wobbly programming language? Surely enough, as software using it becomes useful, <a href="https://gist.github.com/agokrani/919b536246dd272a55157c21d46eda14">prompts</a> become more and more like a type-safe language.</p>
+
+<p>Maybe this carcinization of programming is a byproduct of the complexity of the world? You can’t really avoid it once you want your software to actually do useful things.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/">Ani Talakhadze</a> for reading drafts of this</em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Every language evolves into a type-safe language after a while]]></summary></entry><entry><title type="html">Define Agent</title><link href="https://tornikeo.com/define-agent/" rel="alternate" type="text/html" title="Define Agent" /><published>2025-09-03T00:00:00+00:00</published><updated>2025-09-03T00:00:00+00:00</updated><id>https://tornikeo.com/define-agent</id><content type="html" xml:base="https://tornikeo.com/define-agent/"><![CDATA[<p>I like to use words that are well-defined and broadly understood. “AI Agent” and “Agent” are neither. Below is my best attempt at defining what exactly “AI Agent” means and what it doesn’t mean.</p>
+
+<p>An agent is a program that contains an LLM-conditioned loop structure. Let’s define the parts first:</p>
+
+<ol>
+  <li>A large language model (LLM). An LLM is simply a <code class="language-plaintext highlighter-rouge">def llm(context: str) -&gt; str:</code> function.</li>
+  <li>A tool. In the context of agents, a tool is a <code class="language-plaintext highlighter-rouge">def tool(input: str) -&gt; Optional[Any]:</code> function. A tool use can include (on the inside) an LLM or another tool. Some example tools:
+    <ul>
+      <li>Conditional tool. This is a <code class="language-plaintext highlighter-rouge">def conditional(input: str) -&gt; bool</code>.</li>
+      <li>Numeric tool. This can be a <code class="language-plaintext highlighter-rouge">def numeric(input: str) -&gt; int</code>.</li>
+      <li>Tools can return <code class="language-plaintext highlighter-rouge">None</code>, pause execution (e.g., sleep), and maintain internal state.</li>
+    </ul>
+  </li>
+  <li>An LLM-conditioned loop. This is a programming loop (e.g. <code class="language-plaintext highlighter-rouge">for</code>, <code class="language-plaintext highlighter-rouge">while</code>) where the looping condition depends on the output of the LLM.</li>
+</ol>
+
+<p>For example, this simple Python program is an agent:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>   <span class="c1"># llm
+</span>    <span class="k">if</span> <span class="nf">conditional</span><span class="p">(</span><span class="n">output</span><span class="p">):</span> <span class="c1"># Conditional loop, also a `conditional()` tool call
+</span>        <span class="k">break</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+</code></pre></div></div>
+
+<p>Another example. In this case, an agent interacts with the user via <code class="language-plaintext highlighter-rouge">print</code> and <code class="language-plaintext highlighter-rouge">input</code>:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">conditional</span><span class="p">(</span><span class="n">output</span><span class="p">):</span> <span class="c1"># Notice that loop depends on the llm as well as the user
+</span>        <span class="k">break</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">context&gt;</span><span class="sh">'</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">you&gt;</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Let’s see some examples of programs that are <em>not</em> agents.</p>
+
+<p>The following program doesn’t include an LLM-conditioned loop. It contains a loop, but the loop does not depend on the output of the LLM.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span> <span class="c1"># Looping is independent of LLM output
+</span>    <span class="n">output</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">output</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sh">'</span><span class="s">context&gt;</span><span class="sh">'</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">you&gt;</span><span class="sh">'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This final example contains a conditional loop, but the conditional depends on the user, not the LLM. Therefore this is not an agent:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">context</span> <span class="o">=</span> <span class="sh">'</span><span class="s">...</span><span class="sh">'</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">query</span> <span class="o">=</span> <span class="nf">input</span><span class="p">(</span><span class="sh">'</span><span class="s">you&gt;</span><span class="sh">'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">conditional</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+        <span class="k">break</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">query</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="nf">llm</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">context</span> <span class="o">+=</span> <span class="n">response</span>
+</code></pre></div></div>
+
+<p>In fact, this program is a chatbot. The difference between a chatbot and an agent is who controls the looping condition.</p>
+
+<p>This definition clearly leaves a lot of room for ambiguity. This post is simply the best-effort attempt to put a definition on a word so often said but so rarely understood.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/">Ani Talakhadze</a> for reading drafts of this</em></p>]]></content><author><name></name></author><summary type="html"><![CDATA[Define what an AI agent is and what it isn't.]]></summary></entry><entry><title type="html">Code is Debt</title><link href="https://tornikeo.com/code-is-debt/" rel="alternate" type="text/html" title="Code is Debt" /><published>2025-08-28T00:00:00+00:00</published><updated>2025-08-28T00:00:00+00:00</updated><id>https://tornikeo.com/code-is-debt</id><content type="html" xml:base="https://tornikeo.com/code-is-debt/"><![CDATA[<p>“Tornike, what do you think of AI coding tools?”</p>
+
+<p>I like to answer this frequent question by way of an example. An example of two companies. It goes something like this:</p>
+
+<p>Imagine two very similar companies. Both companies generate similar revenue and produce a similar software product. The only difference between these companies is that Company A uses 1 million lines of code and Company B uses 100 thousand lines of code. Which company is <em>better off</em>?</p>
+
+<p>Clearly, the company with fewer lines of code is better off. They have fewer lines of code and so they can understand and modify their code more quickly. All other things being equal, less code is better. Put another way code is a form of debt. If you use an AI to generate code, you are effectively getting a debt – a debt of code.</p>
+
+<p>Is it worth going into code debt? It depends. Debt can be both good or bad, it might have interest or be interest-free. Debt can also allow faster growth or it can cause your project to <a href="https://www.bbc.com/news/articles/ce87rer52k3o">implode</a>. In all cases it is important to have easy access to these debt-generating tools. It is still up to you to generate the code debt responsibly.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/">Ani Talakhadze</a> for reading drafts of this</em></p>
+
+<p>
+  💬 Discuss this post on 
+  <a href="https://news.ycombinator.com/item?id=45085318" target="_blank" rel="noopener">
+    Hacker News ↗
+  </a>
+</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Code is debt and LLMs create it]]></summary></entry><entry><title type="html">You should learn GPU programming</title><link href="https://tornikeo.com/you-should-learn-gpu/" rel="alternate" type="text/html" title="You should learn GPU programming" /><published>2025-07-08T00:00:00+00:00</published><updated>2025-07-08T00:00:00+00:00</updated><id>https://tornikeo.com/you-should-learn-gpu</id><content type="html" xml:base="https://tornikeo.com/you-should-learn-gpu/"><![CDATA[<p>It is a good time to learn GPU programming, and I’m here to convince you to do just that. Here’s why you should do it.</p>
+
+<p>GPUs are a widely available hardware that fits some computational problems just perfectly. AI happens to be one of these. Knowing how to program GPUs, and knowing what GPUs can and can not do will add a nice engineering tool to your belt. Not all problems can be solved on GPUs, but at times it can get you that <a href="https://github.com/PangeAI/simms">1700x speedup</a>.</p>
+
+<p>GPUs get outdated quickly, but remain powerful compared to even newer CPUs. This means that any software written for GPUs <strong>becomes more valuable</strong> over time. Here’s a concrete example:</p>
+
+<p><img src="https://github.com/tornikeo/cdn/raw/master/assets/thesis/gpu_vs_cpu_scaling.png" alt="" /></p>
+
+<p>The same computational task, when solved with newer GPUs, achieves exponentially larger speedups.</p>
+
+<p>The most interesting scientific algorithms are often those that are too computationally expensive to use. They are interesting precisely because most researchers can’t afford to run them. Sometimes, these algorithms “fit” well on an AI-oriented GPU, like an H100. When an algorithm fits on a GPU, it can become 100x or even 1000x faster compared to running on a CPU. A single GPU can then produce results comparable to those of a university supercomputer—or even several. When this happens, the algorithm becomes more accessible, opening the gates for others.</p>
+
+<p>Now is the best time to learn GPU programming. Take an intractable-but-useful scientific algorithm and rewrite it for the GPU. Write a paper about your process. Publish it. As GPU hardware advances, your reimplementation will become the most accessible gateway to computation for researchers.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Now is the best time to learn programming GPUs]]></summary></entry><entry><title type="html">Daily scribbles - on choosing right LLM shapes for GPUs</title><link href="https://tornikeo.com/daily-transfomer-perf/" rel="alternate" type="text/html" title="Daily scribbles - on choosing right LLM shapes for GPUs" /><published>2025-01-22T00:00:00+00:00</published><updated>2025-01-22T00:00:00+00:00</updated><id>https://tornikeo.com/daily-transfomer-perf</id><content type="html" xml:base="https://tornikeo.com/daily-transfomer-perf/"><![CDATA[<p>A100 memory hierarchy - what’s are “perfect” model shape for A100?
+A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?</p>
+
+<p>There’s a thing called <a href="https://github.com/vllm-project/vllm">vLLM</a>. Inference and serving engine for LLMs.</p>
+
+<p>vLLM was built around <strong>PagedAttention</strong> algorithm. Introduced in <a href="https://arxiv.org/abs/2309.06180">paper</a>. What’s a <strong>KV cache</strong>?</p>
+
+<blockquote>
+  <p>KV cache. This is a method for better inference performance. From <a href="https://huggingface.co/blog/kv-cache-quantization">HF</a>. When you are generating long text, a typical autoreg transformer will predict a token by looking at all previous 999 tokens. Then it will predict next token, by looking at previous token and previous 999 tokens. Maybe older tokens could be reused somehow?</p>
+</blockquote>
+
+<p><img src="https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/blog/kv_cache_quantization/kv-cache-optimization.png" alt="" /></p>
+
+<p>Basically, queries grow downwards (new token = new row), and keys grow leftwards (new token = new column), and values also grow downwards (new token = new row). For processing new token, we only need last row of Q, but full K, V, due to how matrix multiplication works. <em>But</em>, we can simply restore previous K, V, instead of re-computing them. Extra memory, but less compute.</p>
+
+<blockquote>
+  <p>PagedAttention explained on <a href="https://huggingface.co/docs/text-generation-inference/en/conceptual/paged_attention">HF</a>, is a method for inference performance. It optimizes the KV cache, by using lessons from how OS hanldes memory Paging.</p>
+</blockquote>
+
+<p>Amazon’s LLM, rufus was cooked up on top of vLLM.</p>
+
+<p>vLLM supports models up to scale of 405B params, LLAMA 3.1.</p>
+
+<p>Serving is simple <code class="language-plaintext highlighter-rouge">pip install vllm</code> and <code class="language-plaintext highlighter-rouge">vllm serve meta-llama/Llama-3.1-8B</code>. 
+As a python package <code class="language-plaintext highlighter-rouge">vllm</code> has a simple-ish programming API for querying models.</p>
+
+<p>Back to original article.</p>
+
+<p><strong>Mixture of Experts</strong>? <strong>Speculative Decoding</strong>?</p>
+
+<p>There’s the claim: “the most foundamental fact that transformer inference is memory bound”. Let’s see.</p>
+
+<p>===</p>
+
+<p>Preliminaries. GPU memory architecture. A100 80GB SXM has 108 Streaming multiprocessors (SMs), 40MB L2 cache.</p>
+
+<p>When doing inference i.e. <code class="language-plaintext highlighter-rouge">model.generate(prompt)</code> these things happen:</p>
+<ol>
+  <li>Load layer matrices from HBM to L2 to SM.</li>
+  <li>Do matmul, and use tensor cores</li>
+</ol>
+
+<p>Loading part takes much longer than tensor core part.</p>
+
+<p>Suppose we have A100:</p>
+<ul>
+  <li>108 SM, DRAM 80 G, 40M L2 cache</li>
+  <li>bf16 tensor core: 312 tflops</li>
+  <li>DRAM mem bw, 2.039 TB/s</li>
+</ul>
+
+<p>If model is larger than 80GB, it’s split up:</p>
+<ul>
+  <li>Connection by NVLink 300GB/s = 0.3 T/sec</li>
+</ul>
+
+<p>See the problem? 312 TFLOPS » 2.03 TB/s » 0.3 TB/s  » 0.006 TB/s</p>
+
+<p>This seems to show that memory is the main bottleneck. Or is it?</p>
+
+<p>A100 prefers doing 312 operations per each 2.039 loaded bytes. How on <em>Earth</em> can you do 312 operations for approximately 2 bytes?</p>
+
+<p>The matrix multiplication with 2 N-square matrices, has arithmetic intensity proportional to N. Therefore, larger matrix sizes might actually be compute bound. This also means that there’s some sweet-spot matmul size that the GPU likes most.</p>
+
+<p>This also means that any op that is elementwise (e.g. activaions) will always be memory bound. For example:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 512, is compute bound</li>
+  <li><code class="language-plaintext highlighter-rouge">nn.Linear(1024, 4096)</code>, batch size 1, is memory bound</li>
+</ul>
+
+<p><strong>Kernel fusion</strong> works between an <code class="language-plaintext highlighter-rouge">nn.Linear</code> and a <code class="language-plaintext highlighter-rouge">nn.Relu</code>, or any other activation. Since activation is mem bound, and elementwise, we can immediately apply relu inside CUDA kernel, before returning output to HBM.</p>
+
+<p>Aha. Interesting bit. About online inference. Throughput vs latency:</p>
+<ul>
+  <li>Offline: if we are evaluating the model (offline), and no user waits at the end of the screen, we should increase batch size.</li>
+  <li>Online: if user is waiting, the optimal speed to generate next token is the average human read speed, in tokens. Otherwise human might complain.</li>
+</ul>]]></content><author><name></name></author><category term="daily-scribbles" /><summary type="html"><![CDATA[A100 memory hierarchy - what’s are “perfect” model shape for A100? A100 memory hierarchy - what’s are optimal transformer shapes for NVIDIA GPUs?]]></summary></entry><entry><title type="html">Google TPUs</title><link href="https://tornikeo.com/tpu/" rel="alternate" type="text/html" title="Google TPUs" /><published>2024-12-19T00:00:00+00:00</published><updated>2024-12-19T00:00:00+00:00</updated><id>https://tornikeo.com/tpu</id><content type="html" xml:base="https://tornikeo.com/tpu/"><![CDATA[<h1 id="introduction">Introduction</h1>
+
+<p>Google’s Tensor Processing Units (TPUs) are custom accelerators designed for large-scale machine learning workloads. Unlike CPUs and GPUs, TPUs use a unique systolic array architecture to maximize throughput for matrix operations, making them ideal for deep learning tasks. This post is a practical walkthrough of TPU architecture, setup, and usage, with tips for maximizing performance and minimizing cost.</p>
+
+<h2 id="summary">Summary</h2>
+
+<ul>
+  <li>TPUs excel at large, static-shape matrix multiplications, making them perfect for transformer models and similar architectures.</li>
+  <li>JAX is the preferred framework for TPUs; PyTorch and TensorFlow have less robust support.</li>
+  <li>Efficient TPU usage requires careful attention to data layout, shape, and storage.</li>
+  <li>Google Cloud provides several TPU versions, each with different capabilities and pricing.</li>
+  <li>Automating setup and teardown is crucial to avoid unnecessary costs.</li>
+</ul>
+
+<h1 id="tpu-architecture-overview">TPU Architecture Overview</h1>
+
+<ol>
+  <li>CPUs have a single fast processor, limited by memory bandwidth.</li>
+  <li>GPUs contain many small cores and high memory bandwidth.</li>
+  <li>TPUs, e.g., v3, feature two 128x128 systolic ALUs—grids of ALUs optimized for matrix operations.</li>
+</ol>
+
+<p>The following animation shows how network weights are laid out inside a TPU:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image4_5pfb45w.gif" alt="" /></p>
+
+<p>And this animation shows the systolic movement of data inputs into TPUs:</p>
+
+<p><img src="https://cloud.google.com/static/tpu/docs/images/image1_2pdcvle.gif" alt="" /></p>
+
+<p>These animations illustrate how TPUs perform pairwise convolutions between all weights and inputs. Notably, TPUs minimize slow HBM (High Bandwidth Memory) access by passing data directly between ALUs, both vertically (inputs) and horizontally (accumulated results). This design enables high throughput for large matrix multiplications.</p>
+
+<h1 id="practical-recommendations">Practical Recommendations</h1>
+
+<ul>
+  <li>Avoid reshape operations; keep tensor shapes constant, as shapes are compiled into the model.</li>
+  <li>Use large matrices with dimensions as multiples of 8 for best performance.</li>
+  <li>Prefer matrix multiplications; other operations (add, sub, reshape) are slower.</li>
+</ul>
+
+<h1 id="system-architecture-and-key-terms">System Architecture and Key Terms</h1>
+
+<h2 id="tpu-related-terms">TPU-related Terms</h2>
+
+<ul>
+  <li><strong>Batch Inference</strong>: On-demand, but slow.</li>
+  <li><strong>TensorCore (TC)</strong>: Contains matrix-multiply units (MXUs), vector, and scalar units. MXUs are 128x128 or 256x256.</li>
+  <li><strong>TPU Cube</strong>: Topology of interconnected TPUs (v4+).</li>
+  <li><strong>Multislice</strong>: Connection between multiple TPU slices.</li>
+  <li><strong>Queued Resource</strong>: Manages requests for TPU environments.</li>
+  <li><strong>Host/Sub-host</strong>: Linux VM(s) controlling TPUs; a host can manage multiple TPUs.</li>
+  <li><strong>Slice</strong>: Collection of chips connected via fast interconnects (ICI).</li>
+  <li><strong>SparseCore</strong>: Specialized hardware for large embedding tables (v5+).</li>
+  <li><strong>TPU Pod</strong>: Cluster of TPUs for large-scale training.</li>
+  <li><strong>TPU VM/Worker</strong>: Linux VM with direct TPU access.</li>
+  <li><strong>TPU Versions</strong>: Each generation differs significantly in architecture and capabilities.</li>
+</ul>
+
+<h1 id="tpu-versions-and-specs">TPU Versions and Specs</h1>
+
+<h2 id="tpu-v6e">TPU v6e</h2>
+<ul>
+  <li>1 TC per chip, 2 MXUs per TC</li>
+  <li>32GB memory, 1640 Gbps BW, 918 TFLOPs</li>
+  <li>Max pod: 256 chips, 8960 TPUs</li>
+</ul>
+
+<h2 id="tpu-v5p">TPU v5p</h2>
+<ul>
+  <li>95GB memory, 2765 Gbps BW, 459 TFLOPs</li>
+  <li>Max pod: 8960 TPUs</li>
+</ul>
+
+<h2 id="tpu-v5e">TPU v5e</h2>
+<ul>
+  <li>16GB memory, 819 Gbps BW, 197 TFLOPs</li>
+  <li>Max pod: 256 chips</li>
+</ul>
+
+<h2 id="tpu-v4">TPU v4</h2>
+<ul>
+  <li>32GB memory, 1200 Gbps BW, 275 TFLOPs</li>
+  <li>Max pod: 4096 chips</li>
+</ul>
+
+<h1 id="tpu-vm-images-and-hardware">TPU VM Images and Hardware</h1>
+
+<p>Default VM image: <code class="language-plaintext highlighter-rouge">tpu-ubuntu2204-base</code>. Example VM specs for v5litepod-1:</p>
+<ul>
+  <li>1 v5e TPU, 24 CPUs, 48GB RAM</li>
+  <li>Larger pods scale up CPU/RAM and NUMA nodes</li>
+</ul>
+
+<h1 id="regions-and-zones">Regions and Zones</h1>
+
+<ul>
+  <li>EU: <code class="language-plaintext highlighter-rouge">europe-west4</code></li>
+  <li>v6e: <code class="language-plaintext highlighter-rouge">us-east1-d</code>, <code class="language-plaintext highlighter-rouge">us-east5-b</code></li>
+</ul>
+
+<h1 id="supported-models">Supported Models</h1>
+
+<p>Google’s <a href="https://github.com/AI-Hypercomputer/maxtext">MaxText</a> repo provides optimized TPU training code for Llama2, Mistral, Gemma, etc., using JAX.</p>
+
+<h1 id="getting-started-requesting-and-using-tpus">Getting Started: Requesting and Using TPUs</h1>
+
+<ol>
+  <li>Enable “Cloud TPU” in Google Cloud.</li>
+  <li>Request quota for your desired TPU type and zone.</li>
+  <li>Use <code class="language-plaintext highlighter-rouge">gcloud</code> to provision, monitor, and SSH into TPU VMs.</li>
+  <li>Always delete resources when done to avoid charges.</li>
+</ol>
+
+<p>Example setup and teardown commands:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set up environment variables</span>
+<span class="nb">export </span><span class="nv">PROJECT_ID</span><span class="o">=</span> <span class="c"># your project</span>
+<span class="nb">export </span><span class="nv">SERVICE_ACCOUNT</span><span class="o">=</span>xyz-compute@developer.gserviceaccount.com
+<span class="nb">export </span><span class="nv">RESOURCE_NAME</span><span class="o">=</span>v5litepod-1-resource
+
+<span class="c"># Authenticate and enable TPUs</span>
+gcloud auth login
+gcloud services <span class="nb">enable </span>tpu.googleapis.com
+gcloud beta services identity create <span class="nt">--service</span> tpu.googleapis.com <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span>
+
+<span class="c"># Request a TPU node</span>
+gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span>
+
+<span class="c"># Check status</span>
+gcloud alpha compute tpus queued-resources describe <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a
+
+<span class="c"># SSH into TPU node</span>
+gcloud alpha compute tpus tpu-vm ssh v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span>  us-central1-a
+
+<span class="c"># Delete TPU resource</span>
+gcloud alpha compute tpus queued-resources delete v5litepod-1-resource <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="nt">--force</span> <span class="nt">--quiet</span>
+</code></pre></div></div>
+
+<h1 id="exploring-the-tpu-vm">Exploring the TPU VM</h1>
+
+<ul>
+  <li>Check disk space: <code class="language-plaintext highlighter-rouge">df -h</code></li>
+  <li>List hardware: <code class="language-plaintext highlighter-rouge">lspci</code></li>
+  <li>CPU info: <code class="language-plaintext highlighter-rouge">hwinfo | less</code> or <code class="language-plaintext highlighter-rouge">nproc</code></li>
+  <li>RAM: <code class="language-plaintext highlighter-rouge">cat /proc/meminfo | grep MemTotal</code></li>
+</ul>
+
+<h1 id="installing-packages">Installing Packages</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install </span>torch_xla[tpu] <span class="nt">-f</span> https://storage.googleapis.com/libtpu-releases/index.html
+pip <span class="nb">install </span>torch_xla[pallas]
+pip <span class="nb">install </span>timm
+</code></pre></div></div>
+
+<h1 id="automating-setup-with-startup-scripts">Automating Setup with Startup Scripts</h1>
+
+<p>You can use a startup script to automate package installation and environment setup:</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcloud alpha compute tpus queued-resources create <span class="nv">$RESOURCE_NAME</span> <span class="se">\</span>
+     <span class="nt">--node-id</span> v5litepod <span class="se">\</span>
+     <span class="nt">--project</span> <span class="nv">$PROJECT_ID</span> <span class="se">\</span>
+     <span class="nt">--zone</span> us-central1-a <span class="se">\</span>
+     <span class="nt">--accelerator-type</span> v5litepod-1 <span class="se">\</span>
+     <span class="nt">--runtime-version</span> v2-alpha-tpuv5-lite <span class="se">\</span>
+     <span class="nt">--valid-until-duration</span> 1d <span class="se">\</span>
+     <span class="nt">--service-account</span> <span class="nv">$SERVICE_ACCOUNT</span> <span class="se">\</span>
+     <span class="nt">--metadata</span> startup-script<span class="o">=</span><span class="s1">'#! /bin/bash
+      pip install torch_xla[tpu] -f https://storage.googleapis.com/libtpu-releases/index.html
+      pip install torch_xla[pallas]
+      pip install timm
+      EOF'</span>
+</code></pre></div></div>
+
+<h1 id="storage-options">Storage Options</h1>
+
+<ul>
+  <li><strong>Boot Disk</strong>: 100GB by default; usable for small datasets.</li>
+  <li><strong>Persistent Disk (PD)</strong>: Add for larger, persistent storage.</li>
+  <li><strong>Cloud Storage (<code class="language-plaintext highlighter-rouge">gs://</code>)</strong>: Unlimited size, but slower than PD.</li>
+  <li><strong>GCSFUSE</strong>: Mount a bucket as a local directory for easy access.</li>
+  <li><strong>Filestore</strong>: High-performance, but minimum 1TB.</li>
+</ul>
+
+<h1 id="training-and-inference">Training and Inference</h1>
+
+<ul>
+  <li>Use JAX for best TPU support.</li>
+  <li>For multi-host pods, use <code class="language-plaintext highlighter-rouge">--worker=all</code> to run commands on all VMs.</li>
+  <li>Always match JAX/Flax versions to avoid compatibility issues.</li>
+</ul>
+
+<h1 id="cost-and-quota-considerations">Cost and Quota Considerations</h1>
+
+<ul>
+  <li>v5p and v6e chips are expensive and may require quota increases.</li>
+  <li>Always automate resource deletion to avoid unexpected charges.</li>
+</ul>
+
+<h1 id="final-thoughts">Final Thoughts</h1>
+
+<p>TPUs offer unmatched performance for large-scale deep learning, but require careful setup and management. By understanding the architecture, using the right frameworks, and automating your workflow, you can maximize both performance and cost-efficiency.</p>]]></content><author><name></name></author><category term="paper-walkthrough" /><summary type="html"><![CDATA[Documentation walkthrough]]></summary></entry></feed>

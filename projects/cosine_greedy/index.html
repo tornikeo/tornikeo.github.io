@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tornike  Onoprishvili | SimMS: GPU-Accelerated Cosine Similarity</title>
+    <meta name="author" content="Tornike  Onoprishvili" />
+    <meta name="description" content="Fast chemical search with GPU cosine similarity." />
+    <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://tornikeo.com/projects/cosine_greedy/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <meta name="referrer" content="no-referrer">
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://tornikeo.com/"><span class="font-weight-bold">Tornike</span>   Onoprishvili</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">about</a>
+              </li>
+
+              <!-- Other pages -->
+                <li class="nav-item ">
+                  <a class="nav-link" href="/projects/">projects</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="/publications/">publications</a>
+                </li>
+                
+              <!-- Blog -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
+              </li>
+
+              <!-- Resume: Direct link to PDF asset -->
+              <li class="nav-item">
+                <a class="nav-link" href="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/resume/tornikeo.pdf" target="_blank" rel="noopener noreferrer">resume
+                </a>
+              </li>
+
+              <!-- Toggle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- page.html -->
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">SimMS: GPU-Accelerated Cosine Similarity</h1>
+    <p class="post-description">Fast chemical search with GPU cosine similarity.</p>
+  </header>
+
+  <article>
+    <p>Search engines are important when there is a lot of data. Chemistry, just like the internet, has produced a <em>looot</em> of chemical experimental data. These chemical data are published in large online <a href="https://ccms-ucsd.github.io/GNPSDocumentation/" target="_blank" rel="noopener noreferrer">repositories</a> that can reach petabytes in size and contain billions of entries.</p>
+
+<p>Search engines like Google, Bing, and GoDaddy find a list of webpages given search text. Similarly, a chemist might try to find a list of relevant chemicals given a chemical query. In practice the “search engine” for chemicals is a program like <a href="https://github.com/matchms/matchms" target="_blank" rel="noopener noreferrer">MatchMS</a>. In MatchMS, chemical experiments (called “mass spectra”) are compared using an algorithm called “cosine greedy” that outputs a percentage similarity (similarity from 0% to 100%):</p>
+
+<!-- ** Histogram with blue peaks and red peaks, histograms get overlapped, close peaks get toleranced, divide toleranced peaks with everything equals score ** -->
+
+<p><img src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-anim.svg" alt=""></p>
+
+<p>Similar chemicals produce similar mass spectra, and mass spectra of chemicals are relatively easy to obtain. This makes searching and comparing mass spectra an important aspect of chemical discovery.</p>
+
+<p><img src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/easy-comp.svg" alt=""></p>
+
+<p>Unfortunately, Cosine Greedy is <em>computationally</em> very expensive at scale. Running a Cosine Greedy algorithm for a single search query can take over a <em>month</em> of CPU time. To solve the computational problem, some researchers tried <a href="https://github.com/biorack/blink" target="_blank" rel="noopener noreferrer">to approximate it</a> to trade quality for speed. In many applications, however, the <a href="https://matchms.readthedocs.io/en/latest/?badge=latest#example" target="_blank" rel="noopener noreferrer">exact algorithm</a> is required.</p>
+
+<h2 id="the-solution">The solution</h2>
+
+<p><a href="https://github.com/PangeAI/simms" target="_blank" rel="noopener noreferrer">SimMS</a> is solves this computational problem. SimMS uses the <em>exact</em> Cosine Greedy algorithm but runs it on an NVIDIA GPU. This leads to some incredible speedups. Using just one H100, SimMS executes <strong>1700x</strong> faster than an <code class="language-plaintext highlighter-rouge">i9</code> CPU. SimMS runs on smaller gaming RTX4090 GPUs <strong>800x</strong> faster. These performance gains come from the way SimMS fits onto the GPU hardware, instead of algorithmic tricks.</p>
+
+<p>The first reason for the performance is that SimMS works in batches of data, while the CPU only works on individual pairs of data. SimMS by default compares a batch of 2048 * 2048 chemicals in one step:</p>
+
+<!-- ** Grid of chemicals: red cell moves (this is CPU) and calculates each point at a time, Grid of chemicals red block moves (this is GPU) and calculates many in one shot ** -->
+<p><img src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-batch.svg" alt=""></p>
+
+<p>This works well because each spectrum is loaded just once from the memory in a batch, and is then reused many times for the similarity calculations within the batch. The slowest part of any program is the memory access and this approach improves the memory bottleneck.</p>
+
+<p>Another important reason for the speed is the nature of the GPU memory itself. Modern GPU memory systems allow reading the main memory with very high throughput. The GPU memory system is not exactly <em>fast</em>, but more like a cargo train – it can transport a lot of data per unit of time. SimMS uses this correctly and this is the second main reason why it is so fast.</p>
+
+<p>Algorithmically, SimMS is simply the cosine greedy algorithm applied in parallel on batches of chemicals. The larger the batch and the GPU memory bandwidth, the better the performance.</p>
+
+<h2 id="cpu-algorithm">CPU algorithm</h2>
+
+<p>Comparing chemicals with cosine is more involved than the above image shows. Each chemical is stored in memory as a pair of two arrays called <code class="language-plaintext highlighter-rouge">mz</code> and <code class="language-plaintext highlighter-rouge">intensity</code>. Comparing two chemicals involves the following 4 steps:</p>
+
+<p><img src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-details.svg" alt=""></p>
+
+<p>Or, written as pseudo-Python, the following:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File cosine_similarity.py
+# Inputs: Two arrays, r and q
+# Outputs: score  %
+</span><span class="n">r_spec</span> <span class="o">=</span> <span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">510</span><span class="p">],</span> 
+         <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span>
+<span class="n">q_spec</span> <span class="o">=</span> <span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">490</span><span class="p">,</span> <span class="mi">510</span><span class="p">],</span>
+          <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+<span class="c1"># Collect close mz pairs
+</span><span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">rmz</span><span class="p">,</span> <span class="n">rint</span> <span class="ow">in</span> <span class="n">r_spec</span><span class="p">:</span>
+  <span class="k">for</span> <span class="n">qmz</span><span class="p">,</span> <span class="n">qint</span> <span class="ow">in</span> <span class="n">q_spec</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nf">abs</span><span class="p">(</span><span class="n">rmz</span> <span class="o">-</span> <span class="n">qmz</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+      <span class="n">pairs</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">rint</span><span class="p">,</span> <span class="n">qint</span><span class="p">))</span>
+
+<span class="c1"># Sort matching pairs by intensity product (rint*qint)
+</span><span class="n">intensity_product</span> <span class="o">=</span> <span class="nf">sorted</span><span class="p">([</span><span class="n">rint</span><span class="o">*</span><span class="n">qint</span> <span class="k">for</span> <span class="n">rint</span><span class="p">,</span> <span class="n">qint</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">])</span>
+
+<span class="c1"># Choose pairs that 1) maximize total score and 2) use each rmz or qmz only once
+</span><span class="n">used</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">intensity_product</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="c1"># Largest products first
+</span>  <span class="k">if</span> <span class="n">product</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">used</span><span class="p">:</span>
+    <span class="n">score</span> <span class="o">+=</span> <span class="n">product</span>
+    <span class="n">used</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="n">score</span>
+</code></pre></div></div>
+
+<p>The above is the innermost section of the algorithm. To compare N by M similarity matrix, a double loop is used:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># File: matrix_similarity.py
+# Inputs: Pairs of many spectra, rlist and qlist
+</span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rspec</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">rlist</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">qspec</span> <span class="ow">in</span> <span class="nf">enumerate</span><span class="p">(</span><span class="n">qlist</span><span class="p">):</span>
+    <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">rspec</span><span class="p">,</span> <span class="n">qspec</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>That loop, even on the best hardware and hundreds of CPUs, takes <strong>weeks</strong> to complete.</p>
+
+<h2 id="gpu-algorithm">GPU Algorithm</h2>
+
+<p>The main insight is recognizing the parallelism of cosine greedy calculation. All the <code class="language-plaintext highlighter-rouge">matrix[i,j]</code> entries are independent from one another. So figuring out how to fit this problem onto an NVIDIA GPU was half the solution. Below is a visual guide on how the problem was fit to a GPU:</p>
+
+<p><img src="https://github.com/tornikeo/cdn/raw/master/assets/cosine_greedy/gpu_run.png" alt=""></p>
+
+<p>Step 1: stack all references and queries on top of each other, into a 2D array. Step 2: allocate a 2D similarity array on a GPU. Step 3: assign each CUDA thread to process a single spectrum-to-spectrum comparison, with the exact Cosine Similarity algorithm. Finally, in step 4, transfer all results from the GPU 2D similarity array back to the CPU. This completes the run. In code, that would look something like this:</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Input: Many References and queries
+# Output: Similarity matrix of all-vs-all spectra
+</span>
+<span class="k">for</span> <span class="n">references_chunk</span> <span class="ow">in</span> <span class="nf">batch</span><span class="p">(</span><span class="n">references</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span> <span class="c1"># 3 per batch; in practice 2048 is used
+</span>  <span class="n">references_batch</span> <span class="o">=</span> <span class="nf">spectra_to_contiguous_array</span><span class="p">(</span><span class="n">references_chunk</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">queries_chunk</span> <span class="ow">in</span> <span class="nf">batch</span><span class="p">(</span><span class="n">queries</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">queries_batch</span> <span class="o">=</span> <span class="nf">spectra_to_contiguous_array</span><span class="p">(</span><span class="n">queries_chunk</span><span class="p">)</span>
+
+    <span class="c1"># Outputs for GPU to write in must be pre-allocated
+</span>    <span class="n">batch_results</span> <span class="o">=</span> <span class="nf">empty_array</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># 3 references and 2 queries
+</span>    
+    <span class="c1"># GPU kernel is launched
+</span>    <span class="nf">kernel</span><span class="p">(</span><span class="n">references_batch</span><span class="p">,</span> <span class="n">queries_batch</span><span class="p">,</span> <span class="n">batch_results</span><span class="p">)</span>
+
+    <span class="c1"># The batch matrix similarity is transferred back to the CPU
+</span>    <span class="n">batch_results</span><span class="p">.</span><span class="nf">to_cpu</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The <em>magic</em> happens here during the kernel launch <code class="language-plaintext highlighter-rouge">kernel(references_batch, queries_batch, batch_results)</code>. The GPU crunches the entire batches of data in just a fraction of a second, allowing the full process to finish in under a couple of minutes instead of days.</p>
+
+<p>After the processing is done, another engineering challenge appears - it turns out that storing N by M matrix of similarities becomes infeasible after N and M reach respectable sizes (100k vs 1mln). Therefore, one last step involves converting the current batch to a sparse matrix format before storing it into memory. This is controlled by the keyword argument <code class="language-plaintext highlighter-rouge">array_type: Literal["numpy", "sparse"]</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Huge amounts of data require highly specialized tools. Researchers that rely on MS/MS have access to large amounts of mass spectrometry data. Searching through this data is like looking for a needle in a massive haystack. This process, as shown above, is easily parallelizable. Parallelism, when coupled with GPU technology, can be used to achieve incredibly performant solutions. This GPU-centric approach allows search to happen up to <strong>1700x</strong> faster than the latest-gen CPUs, making MS/MS research more accessible for everyone.</p>
+
+  </article>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        <!-- &copy; Copyright 2025 Tornike  Onoprishvili.  -->Last updated: October 13, 2025.
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/spinner.js"></script>
+  <script src="/assets/js/image_comparison.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>
+

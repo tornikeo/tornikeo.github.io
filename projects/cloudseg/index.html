@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | 3D Mesh Segmentation</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="Segment indoor 3D spaces with transformers." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -35,7 +35,7 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/projects/cloudseg/">
     
     <!-- Dark Mode -->
     
@@ -112,12 +112,106 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">3D Mesh Segmentation</h1>
+    <p class="post-description">Segment indoor 3D spaces with transformers.</p>
   </header>
 
   <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+    <p>Point-cloud segmentation, or “cloudseg” for short, was one of the more challenging projects at Luxolis. The idea was relatively simple though.</p>
+
+<p>You are given a colored 3D mesh reconstruction of an indoor space (e.g. a living room). You are to assign each vertex the following labels: class label, instance label, and part label.</p>
+
+<p>Let’s get to the example of a living room. The first stage - class label - assigns each vertex (a point in space), one of the predetermined classes (wall, floor, ceiling, chair, etc.). The second stage is actually determining which two points sharing the same <em>class</em>, actually are two different <em>objects</em>.</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI.jpg" data-zoomable="">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    Various stages of the Mask3D segmentation. Notice that on the right-hand panel the two instances of the same class ("sofa") are separated.
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <div class="container">
+
+    <figure class="cd-image-container" style="">
+        <img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/BlWeOP8.jpg" alt="Original Image">
+		<span class="cd-image-label" data-type="original">SoftGroup segmentation</span>
+        
+		<div class="cd-resize-img"> <!-- the resizable image on top -->
+			<img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/vdXtHTB.jpg" alt="Modified Image">
+			<span class="cd-image-label" data-type="modified">Mask3D segmentation</span>
+		</div>
+        
+		<span class="cd-handle"></span>
+	</figure> <!-- cd-image-container -->
+</div>
+    </div>
+</div>
+<div class="caption">
+    Mask3D segmentation is much more robust than the current state-of-the-art (Softgroup)
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" title="YouTube video player" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen=""></iframe>
+    </div>
+</div>
+
+<div class="caption">
+    A small, investor-focused showcase of Mask3D segmentation (a small living room)
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo.png">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    The core of the model - Sparse convnet (Minkowski engine) + Decoder transformer.
+</div>
+
+<h1 id="a-live-demo">A Live demo</h1>
+
+<p>Follow the instructions down below in order to generate 3D point cloud segmentation, works both indoors and outdoors. Make sure to use the supported 3D point cloud formats, and to orient the cloud correctly (z-axis points towards positive vertical direction).</p>
+
+<div class="container">
+  <div class="container iframe-with-spinner">
+    <svg id="spinner" class="spinner" width="65px" height="65px" viewbox="0 0 66 66" xmlns="https://www.w3.org/2000/svg">
+      <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+    </svg>
+    <!-- <div id="progress" class="container">
+      <h2>Loading the model...</h2>
+      <div class="progress"></div>
+    </div>Add placeholder -->
+    <iframe sandbox="allow-scripts" id="iframe" src="https://mix3d-demo.nekrasov.dev/mask3d/" height="1000" width="100%" allow="" frameborder="0" hidden="" style=""></iframe>
+  </div>
+</div>
+
 
   </article>
 

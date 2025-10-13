@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | Image Super-Resolution</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="4x image upscaling with SwinIR." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -35,7 +35,7 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/projects/swinir_superres/">
     
     <!-- Dark Mode -->
     
@@ -112,12 +112,78 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">Image Super-Resolution</h1>
+    <p class="post-description">4x image upscaling with SwinIR.</p>
   </header>
 
   <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+    <h1 id="intro-on-image-super-resolution">Intro on image super-resolution</h1>
+
+<div class="row" style="justify-content:center;">
+    <div class="col">
+        <figure>
+  <div class="container text-center">
+  <video height="200px" class="img-fluid rounded z-depth-1" width="50%" autoplay="" loop="" muted="">
+    <!-- <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4"    /> -->
+    <source src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4" type="video/mp4"></source>
+
+  </video>
+</div></figure>
+    </div>
+</div>
+<div class="caption">
+    SwinIR transformer allows us to drastically increase the image quality
+</div>
+
+<p>Image restoration is a long-standing low-level vision problem that aims to restore high-quality images from low-quality images (e.g., downscaled, noisy and compressed images). While state-of-the-art image restoration methods are based on convolutional neural networks, few attempts have been made with Transformers which show impressive performance on high-level vision tasks. 
+In this demo, I showcase a working online super-resolution tool, based on <a href="https://github.com/JingyunLiang/SwinIR" target="_blank" rel="noopener noreferrer">SwinIR Transformer</a>. SwinIR consists of three parts: shallow feature extraction, deep feature extraction and high-quality image reconstruction. In particular, the deep feature extraction module is composed of several residual Swin Transformer blocks (RSTB), each of which has several Swin Transformer layers together with a residual connection. We conduct experiments on three representative tasks: image super-resolution (including classical, lightweight and real-world image super-resolution), image denoising (including grayscale and color image denoising) and JPEG compression artifact reduction. Experimental results demonstrate that SwinIR outperforms state-of-the-art methods on different tasks by up to 0.14~0.45dB, while the total number of parameters can be reduced by up to 67%.</p>
+
+<div class="row" style="justify-content:center;">
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/MzUbXIp-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/MzUbXIp-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/MzUbXIp-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/MzUbXIp.png">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    The SwinIR architecture outline
+</div>
+
+<h1 id="a-live-showcase">A live showcase</h1>
+<p>Below, you will see a sample <em>free</em> implementation of SwinIR super-resolution model, deployed on a serverless GPU backend. <strong>Note that it might take up to 10-15 seconds to load</strong>. While the boot-up delay can be frustrating, where it is tolerable, server cost savings can be huge. This is especially important for showcase projects and services with occasional demand spikes every now and then.</p>
+
+<div class="container">
+  <div class="container iframe-with-spinner">
+    <svg id="spinner" class="spinner" width="65px" height="65px" viewbox="0 0 66 66" xmlns="https://www.w3.org/2000/svg">
+      <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+    </svg>
+    <!-- <div id="progress" class="container">
+      <h2>Loading the model...</h2>
+      <div class="progress"></div>
+    </div>Add placeholder -->
+    <iframe sandbox="allow-scripts" id="iframe" src="https://backend-6uu265amkq-uc.a.run.app/serverless_superres/" height="1200" width="100%" allow="" frameborder="0" hidden="" style=""></iframe>
+  </div>
+</div>
+
+<h2 id="how-it-works">How it works</h2>
+
+<p>This app is composed of three major layers (all freely available):</p>
+<ul>
+  <li>All you see here, at <a href="https://tornikeo.com/">https://tornikeo.com/</a> is delivered as a static website, from github pages. This is just plain old HTML, CSS and JavaScript. No magic here. This part of the app can be called a <em>front</em>. It is hosted by github and is extremely quick to load.</li>
+  <li>The box above this text, which contains the <strong>submit</strong> button and other controls, is actually a separate website. It is hosted as a serverless, python application on google cloud server. It is serverless, because the server it runs on is only up when someone is actively using it. It also acts as a sort of a gateway. It can limit the number of requests you make from the <em>front</em> or block users based on IP, something that is not possible by just relying on HTML and JavaScript. Let’s call this part a <em>gateway</em>.</li>
+  <li>Lastly, and this is the important bit, the <em>gateway</em> calls a hidden website, with two secret strings, <strong>MODEL_KEY</strong> and <strong>API_KEY</strong>. We call this the <em>backend</em>. This API is hosted by <a href="https://www.banana.dev/" target="_blank" rel="noopener noreferrer">banana.dev</a>. Currently <em>banana.dev</em> is the simplest serverless GPU provider on the market. When <em>gateway</em> calls <em>backend</em>, <em>banana.dev</em> boots up my container containing the stable diffusion model and executes the input given to <em>gateway</em> from the <em>front</em>. The result is then passed back, in two steps - <em>backend</em> to <em>gateway</em>, <em>gateway</em> to <em>front</em>.</li>
+</ul>
+
+<p>And, this is it. Had I not used serverless GPU as a backend, I would’ve ended up with a monthly bill of around $300. Right now, it’s less than $3 (in 2022), since my showcases don’t have regular users.</p>
 
   </article>
 

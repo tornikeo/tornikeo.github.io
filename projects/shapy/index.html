@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tornike  Onoprishvili | 3D Body Shape Estimation from Video</title>
+    <meta name="author" content="Tornike  Onoprishvili" />
+    <meta name="description" content="Estimate body shape from video with your phone." />
+    <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://tornikeo.com/projects/shapy/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <meta name="referrer" content="no-referrer">
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://tornikeo.com/"><span class="font-weight-bold">Tornike</span>   Onoprishvili</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">about</a>
+              </li>
+
+              <!-- Other pages -->
+                <li class="nav-item ">
+                  <a class="nav-link" href="/projects/">projects</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="/publications/">publications</a>
+                </li>
+                
+              <!-- Blog -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
+              </li>
+
+              <!-- Resume: Direct link to PDF asset -->
+              <li class="nav-item">
+                <a class="nav-link" href="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/resume/tornikeo.pdf" target="_blank" rel="noopener noreferrer">resume
+                </a>
+              </li>
+
+              <!-- Toggle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- page.html -->
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">3D Body Shape Estimation from Video</h1>
+    <p class="post-description">Estimate body shape from video with your phone.</p>
+  </header>
+
+  <article>
+    <h1 id="intro">Intro</h1>
+
+<div class="row mt-3">
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/IirfLVw.gif-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/IirfLVw.gif-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/IirfLVw.gif-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/IirfLVw.gif" data-zoomable="">
+  </picture>
+</figure>
+
+    </div>
+    <div class="col">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/DsfbqwK.gif-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/DsfbqwK.gif-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/DsfbqwK.gif-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/DsfbqwK.gif" data-zoomable="">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+    Per-frame 3D body shape estimation results - right: video from <a href="https://www.pexels.com/@vlada-karpovich" target="_blank" rel="noopener noreferrer">Vlada Karpovich</a>, left: video from <a href="https://www.pexels.com/@polina-tankilevitch/" target="_blank" rel="noopener noreferrer">Polina Tankilevitch</a> on Pexels.
+</div>
+
+<p>The very first project at <a href="https://luxolis.ai/" target="_blank" rel="noopener noreferrer">Luxolis</a> was concerned with using AI to estimate person’s 3D <em>mesh</em> from a video stream. And, I mean an accurate, bodyshape aware estimation.</p>
+
+<p>To make absolutely clear what I mean by “bodyshape aware”, here’s an excerpt from the abstract of <a href="https://ps.is.mpg.de/uploads_file/attachment/attachment/691/00928.pdf" target="_blank" rel="noopener noreferrer">SHAPY paper</a>:</p>
+
+<blockquote>
+  <p><em>While methods that regress 3D human meshes from images have progressed rapidly, the estimated body shapes often do not capture the true human shape. This is problematic since, for many applications, accurate body shape is as
+important as pose. The key reason that body shape accuracy
+lags pose accuracy is the lack of data</em></p>
+</blockquote>
+
+<p>In fact, SHAPY allows to predict all of the standard measurements for chest, waist, hips (CWH), in addition to height, weight and a whole other body measurement parameters. While many other methods in 3D mesh estimation use just a default human mesh, SHAPY creates an accurate human body mesh, in addition to an accurate 3D posture of the said mesh. Below, is a video explaining all the model details:</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col">
+        <iframe width="100%" height="315" src="https://www.youtube-nocookie.com/embed/7TzXrL4eV9g" title="YouTube video player" frameborder="0" allow="autoplay; picture-in-picture" allowfullscreen=""></iframe>
+    </div>
+</div>
+
+<div class="caption">
+    The authors of the paper explain how the model works.
+</div>
+
+<h1 id="replicating-the-results">Replicating the results</h1>
+<p>Replicating SHAPY’s result was <strong>not</strong> easy. During my work, I’ve came across multitude of issues and errors, mainly from installing dependencies. Here’s an excerpt from my <del>suffering</del>dev logs:</p>
+
+<blockquote>
+  <p>I’m currently working on building a human-shape-from-image paper, called SHAPY from CVPR2022. It’s a solid paper, with solid results, however, it is an absolute PITA to install and run. The documentation is lacking. Concrete example of this is the fact that you need to install <code class="language-plaintext highlighter-rouge">libturbojpeg</code> and there is no mention of this anywhere, except the issues tab (what would it take to update a <code class="language-plaintext highlighter-rouge">README.md</code>, like, 20 minutes?). Worse still is the fact that the library depends on OpenPose. A library that’s really complicated to install on linux.</p>
+</blockquote>
+
+<p>Here’s the step-by-step process to creating a working <code class="language-plaintext highlighter-rouge">Dockerfile</code> for this thing:</p>
+
+<ul>
+  <li>Clone shapy repo and follow instructions precisely (if you get “import attributes” error, that means you need to look for the <code class="language-plaintext highlighter-rouge">export $PATH</code> command in the install guide and run that). Another error comes from a missing dependency, libturbojpeg. I did <code class="language-plaintext highlighter-rouge">sudo apt-get install libturbojpeg</code>, or a variation of the package’s name, can’t recall.</li>
+  <li>Did a sample run on the <code class="language-plaintext highlighter-rouge">regression/demo.py</code>. To run on new images, we have to change openpose dataset location arg.</li>
+  <li>SHAPY depends on JSON pose keypoints. This is generated by <a href="https://github.com/CMU-Perceptual-Computing-Lab/openpose" target="_blank" rel="noopener noreferrer">openpose</a>. Here’s where the pain begins - openpose doesn’t provide linux builds. So you have to build one yourself within or outside of docker.</li>
+  <li>I managed to run openpose within a docker container, using <a href="https://janbkk10.medium.com/build-to-openpose-docker-on-ssh-server-5603874834e9" target="_blank" rel="noopener noreferrer">this guide</a>. This took over 3 hours. :/ Installation takes good 30 minutes or more on 12 vCPU machine.</li>
+  <li>Once done, find openpose docs for CLI usage, you will need to use <code class="language-plaintext highlighter-rouge">--write_json</code> arg for this.</li>
+</ul>
+
+<p>In short, here’s what I built (the whole pipeline):</p>
+<ul>
+  <li>Use FFMPEG to extract frames from a video</li>
+  <li>Use openpose to create JSONs for frames</li>
+  <li>Use SHAPY regressor to predict shape -&gt; ply file</li>
+  <li>Use shapy virtual measurements tool to extract measurements from generated shapes per frame</li>
+  <li>Average measurements out for more accuracy</li>
+  <li>Return average measurements from API</li>
+</ul>
+
+<h1 id="the-work-specifics">The work specifics</h1>
+
+<p>Life isn’t simple, and business usually isn’t happy with just the given outputs that the SHAPY code-base provides (mesh, chest, waist, hips, mass, height). We also need to calculate arm span, leg length, torso <em>height</em>, and head circumference.</p>
+
+<div class="center-role-form">
+    <div class="col-12">
+        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://storage.googleapis.com/tornikeo-portfolio-cdn/assets/img/8_project/mean_beta_tpose.ply"></iframe>
+    </div>
+</div>
+<div class="caption">
+    This interactive demo shows the final 3D T-pose result is generated by averaging shape parameters across frames.
+</div>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/8NWyAwQ-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/8NWyAwQ-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/8NWyAwQ-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/8NWyAwQ.png" data-zoomable="">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+        Even without a video, you can generate a reliable 3D body shape.
+</div>
+
+<div class="center-role-form">
+    <div class="col-sm-6 mt-3 mt-md-0">
+        <iframe width="640" height="480" style="border:1px solid #eeeeee;" src="https://3dviewer.net/embed.html#model=https://raw.githubusercontent.com/tornikeo/tornikeo.com/ed54538a0a338aa952e2230143db723becd56a39/assets/img/8_project/img_12.ply"></iframe>
+    </div>
+</div>
+<div class="caption">
+    This 3D body shape is in an usual pose, leaning against a wall. 
+</div>
+
+
+  </article>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        <!-- &copy; Copyright 2025 Tornike  Onoprishvili.  -->Last updated: October 13, 2025.
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/spinner.js"></script>
+  <script src="/assets/js/image_comparison.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>
+

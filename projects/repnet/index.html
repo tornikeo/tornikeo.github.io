@@ -2,16 +2,16 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | Repetition Counting for Fitness</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="Automatically count reps and sets from video." />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -35,7 +35,7 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/projects/repnet/">
     
     <!-- Dark Mode -->
     
@@ -112,12 +112,40 @@
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">Repetition Counting for Fitness</h1>
+    <p class="post-description">Automatically count reps and sets from video.</p>
   </header>
 
   <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+    <p>The “repnet”, or “repetition counter network” was a bit of an oddball right from the start. The business wanted to create a “universal workout counting and calorie estimation app, from a video”. A task, which, after some careful consideration of recent research and the maximum allowed error rate, I carefully laid out was <em>impossible</em>.</p>
+
+<p>So, after some corner-cutting, we arrived at “just count how many reps a person does at a gym”. This was also not an easy task. The problem is the typical user is pretty unreliable at providing good quality videos, while also having high initial expectations.</p>
+
+<p>So, we wanted something to be very robust to visual noise, able to count any kind of repeating motions and be accurate enough for rep counting at a gym.</p>
+
+<p>After a while, I arrived at <a href="https://ai.googleblog.com/2020/06/repnet-counting-repetitions-in-videos.html" target="_blank" rel="noopener noreferrer">this wonderful article by google</a>.</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs.png" data-zoomable="">
+  </picture>
+</figure>
+
+    </div>
+</div>
+<div class="caption">
+        The paper and free, as is the accompanying source code.
+</div>
+
+<p>Work-in-progress: more details coming soon…</p>
 
   </article>
 

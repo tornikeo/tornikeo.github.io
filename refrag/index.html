@@ -2,16 +2,17 @@
 <html lang="en">
 
   <!-- Head -->
-  <head><meta http-equiv="refresh" content="3; url=https://tornikeo.com/" />    <!-- Metadata, OpenGraph and Schema.org -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
     
 
     <!-- Standard metadata -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Tornike  Onoprishvili | Page not found</title>
+    <title>Tornike  Onoprishvili | Why did Meta Superintelligence Lab publish an obscure AI paper?</title>
     <meta name="author" content="Tornike  Onoprishvili" />
-    <meta name="description" content="Looks like there has been a mistake. Nothing exists here." />
+    <meta name="description" content="tornikeo is a machine learning researcher, this is his website
+" />
     <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
 
 
@@ -35,7 +36,7 @@
     <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
 
     <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="canonical" href="https://tornikeo.com/404.html">
+    <link rel="canonical" href="https://tornikeo.com/refrag/">
     
     <!-- Dark Mode -->
     
@@ -108,16 +109,45 @@
 
     <!-- Content -->
     <div class="container mt-5">
-      <!-- page.html -->
+      <!-- _layouts/post.html -->
+
 <div class="post">
 
   <header class="post-header">
-    <h1 class="post-title">Page not found</h1>
-    <p class="post-description">Looks like there has been a mistake. Nothing exists here.</p>
+    <h1 class="post-title">Why did Meta Superintelligence Lab publish an obscure AI paper?</h1>
+    <p class="post-meta">October 12, 2025</p>
+    <p class="post-tags">
+      <a href="/blog/2025"> <i class="fas fa-calendar fa-sm"></i> 2025 </a>
+
+    </p>
   </header>
 
-  <article>
-    <p>You will be redirected to the main page within 3 seconds. If not redirected, please click <a href="https://tornikeo.com/">here</a>.</p>
+  <article class="post-content">
+    <p>Things are taking an interesting turn at <a href="https://en.wikipedia.org/wiki/Meta_Superintelligence_Labs" target="_blank" rel="noopener noreferrer">Meta Superintelligence Labs</a>
+(MSI). The <a href="https://arxiv.org/pdf/2509.01092" target="_blank" rel="noopener noreferrer">debut paper</a> from this AI lab is about making <a href="https://research.ibm.com/blog/retrieval-augmented-generation-RAG" target="_blank" rel="noopener noreferrer">retrieval augmented generation (RAG)</a> <strong>30x faster</strong> without any accuracy loss. This might be surprising because MSI employs some of the most ambitious and successful AI researchers and founders on the planet right now, and the first paper they publish is just a well-known RAG method, only faster. Compare this with <a href="https://openai.com/index/sora-2/" target="_blank" rel="noopener noreferrer">OpenAI publishing Sora 2</a> just weeks ago and the wow-effect it had!</p>
+
+<p>But why bother accelerating RAG? Well, most of my business AI engineering <a href="https://tornikeo.com/projects/">tasks</a> involved, in one way or another, a RAG pipeline over thousands of documents. RAG is, as far as I know, the most widely applied AI method by businesses to actually make money. Building RAGs, maintaining them, tuning them, and updating them are all so vitally important that I could see it becoming a profession at some point. Businesses love RAGs and they pay for RAGs because RAGs make information search easier and they turn a real return on investment.</p>
+
+<p>But RAGs are <strong>incredibly slow</strong>, and so the paper addressing this problem is really business-oriented. All of the businesses I’ve built RAGs for stand to directly benefit from this paper. It’s not even a question of “How do we monetize this?”, but “When do we update our RAGs to this?”.</p>
+
+<p>The method (called “<a href="https://arxiv.org/abs/2509.01092" target="_blank" rel="noopener noreferrer">REFRAG</a>”) is also simple to explain. The core insight can be summarized in just a couple of sentences:</p>
+<ol>
+  <li>During a traditional RAG pipeline, the text corpus is turned into vectors using an <a href="https://en.wikipedia.org/wiki/Embedding_(machine_learning)" target="_blank" rel="noopener noreferrer">embedding model</a> and stored in vector databases like <a href="https://www.pinecone.io/" target="_blank" rel="noopener noreferrer">Pinecone</a>, <a href="https://www.trychroma.com/" target="_blank" rel="noopener noreferrer">Chroma</a>, or <a href="https://github.com/facebookresearch/faiss" target="_blank" rel="noopener noreferrer">FAISS</a>.</li>
+  <li>When the user asks a question, the vector database finds relevant pieces of text by retrieving the texts from the vector database and injecting the texts in the context of an AI model like <a href="https://openai.com/chatgpt/" target="_blank" rel="noopener noreferrer">ChatGPT</a>.</li>
+  <li>But then embedding happens twice, once by the embedding model and a second time by the ChatGPT itself!</li>
+  <li><strong>The core insight is that these two embeddings can be replaced with just a single embedding. Avoiding unnecessary re-embedding allows the RAG pipeline to become 30x faster.</strong></li>
+</ol>
+
+<p>A world-class AI lab just published work that will largely go unnoticed by the public, while solving an actual business issue and driving real value. This is the kind of AI research that is sustainable and can validate the global bet on AI. It’s exciting to see what the Meta Superintelligence team will publish next.</p>
+
+<p><em>Thanks to <a href="https://www.linkedin.com/in/anitalakhadze/" target="_blank" rel="noopener noreferrer">Ani Talakhadze</a> for reading drafts of this</em></p>
+
+<p>
+  💬 Discuss this post on 
+  <a href="https://news.ycombinator.com/item?id=45565391" target="_blank" rel="noopener noopener noreferrer">
+    Hacker News ↗
+  </a>
+</p>
 
   </article>
 

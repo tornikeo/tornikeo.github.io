@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- Head -->
+  <head>    <!-- Metadata, OpenGraph and Schema.org -->
+    
+
+    <!-- Standard metadata -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Tornike  Onoprishvili | Deep Dream with TFJS</title>
+    <meta name="author" content="Tornike  Onoprishvili" />
+    <meta name="description" content="Deepdream images in your browser for free." />
+    <meta name="keywords" content="tornikeo, tornike, onoprishvili, ai, llm, portfolio, machine learning, researcher, scientist" />
+
+
+    <!-- Bootstrap & MDB -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-DF7Zhf293AJxJNTmh5zhoYYIMs2oXitRfBjY+9L//AY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/css/mdb.min.css" integrity="sha256-jpjYvU3G3N6nrrBwXJoVEYI/0zw8htfFnhT9ljN3JJw=" crossorigin="anonymous" />
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/academicons@1.9.1/css/academicons.min.css" integrity="sha256-i1+4qU2G2860dGGIOJscdC30s9beBXjFfzjWLjBRsBg=" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:100,300,400,500,700|Material+Icons">
+
+    <!-- Code Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/github.css" media="none" id="highlight_theme_light" />
+
+    <!-- Styles -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon/favicon-96x96.png">
+    <link rel="apple-touch-icon" href="/assets/favicon/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://tornikeo.com/projects/deepdream/">
+    
+    <!-- Dark Mode -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jwarby/jekyll-pygments-themes@master/native.css" media="none" id="highlight_theme_dark" />
+
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/dark_mode.js"></script>
+    
+
+  </head>
+
+  <!-- Body -->
+  <body class="fixed-top-nav ">
+
+    <!-- Header -->
+    <header>
+
+      <meta name="referrer" content="no-referrer">
+      <!-- Nav Bar -->
+      <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+        <div class="container">
+          <a class="navbar-brand title font-weight-lighter" href="https://tornikeo.com/"><span class="font-weight-bold">Tornike</span>   Onoprishvili</a>
+          <!-- Navbar Toggle -->
+          <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar top-bar"></span>
+            <span class="icon-bar middle-bar"></span>
+            <span class="icon-bar bottom-bar"></span>
+          </button>
+
+          <div class="collapse navbar-collapse text-right" id="navbarNav">
+            <ul class="navbar-nav ml-auto flex-nowrap">
+
+              <!-- About -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/">about</a>
+              </li>
+
+              <!-- Other pages -->
+                <li class="nav-item ">
+                  <a class="nav-link" href="/projects/">projects</a>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" href="/publications/">publications</a>
+                </li>
+                
+              <!-- Blog -->
+              <li class="nav-item ">
+                <a class="nav-link" href="/blog/">blog</a>
+              </li>
+
+              <!-- Resume: Direct link to PDF asset -->
+              <li class="nav-item">
+                <a class="nav-link" href="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/resume/tornikeo.pdf" target="_blank" rel="noopener noreferrer">resume
+                </a>
+              </li>
+
+              <!-- Toggle theme mode -->
+              <div class="toggle-container">
+                <a id="light-toggle">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                </a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5">
+      <!-- page.html -->
+<div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Deep Dream with TFJS</h1>
+    <p class="post-description">Deepdream images in your browser for free.</p>
+  </header>
+
+  <article>
+    <p>Well, since I’m working on making attentional style transfer <a href="https://github.com/GlebSBrykin/SANET/tree/master/style" target="_blank" rel="noopener noreferrer">model</a> smaller and faster by replacing the VGGs with much faster MobileNets, I thought it would make it easier to avoid potential bugs by first doing a similar replacement in a much easier task - deep dream.</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-8 mt-3 mt-md-0">
+        <iframe src="https://tornikeo.com/embed-deepdream" height="805px" width="550px" frameborder="0" allowfullscreen=""></iframe>
+    </div>
+</div>
+<div class="caption">
+    Interactive deepdream (Based on MobileNetV2's deep features)
+</div>
+
+<p><a href="https://en.wikipedia.org/wiki/DeepDream" target="_blank" rel="noopener noreferrer">DeepDream</a> works by performing a gradient <em>ascent</em> on an image, using a pre-trained network activations as loss. Something like this:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">net</span> <span class="o">=</span> <span class="nc">VGG19</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+    <span class="n">get_deep_activations</span><span class="o">=</span><span class="p">[</span><span class="sh">'</span><span class="s">relu4_1</span><span class="sh">'</span><span class="p">,</span><span class="sh">'</span><span class="s">relu5_1</span><span class="sh">'</span><span class="p">])</span>
+<span class="n">image</span> <span class="o">=</span> <span class="nf">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">512</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">deep_activations</span> <span class="o">=</span> <span class="nf">net</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">deep_activations</span><span class="p">.</span><span class="nf">sum</span><span class="p">()</span>
+    <span class="n">image_gradient</span> <span class="o">=</span> <span class="nf">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span> <span class="o">+</span> <span class="mf">0.001</span> <span class="o">*</span> <span class="n">image_gradient</span> <span class="c1"># Notice the "+" here. 
+</span></code></pre></div></div>
+
+<p>The end-result is a <code class="language-plaintext highlighter-rouge">1,512,512,3</code> tensor that excites <code class="language-plaintext highlighter-rouge">VGG19</code> <code class="language-plaintext highlighter-rouge">relu4_1</code> and <code class="language-plaintext highlighter-rouge">relu5_1</code> layers the most. But that’s not interesting. What’s mind-blowing though, is that the end-result looks like a surreal dream:</p>
+
+<div class="row mt-3" style="justify-content:center;">
+    <div class="col-sm-6 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6-480.webp" />
+    <source media="(max-width: 800px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6-800.webp" />
+    <source media="(max-width: 1400px)" srcset="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6.png" data-zoomable="">
+  </picture>
+</figure>
+
+        <div class="caption">
+            Original image
+        </div>
+    </div>
+    <div class="col-sm-6 mt-3 mt-md-0">
+        <figure>
+
+  <picture>
+    <!-- <source media="(max-width: 480px)" srcset="/assets/img/deepdream-monke-480.webp" />
+    <source media="(max-width: 800px)" srcset="/assets/img/deepdream-monke-800.webp" />
+    <source media="(max-width: 1400px)" srcset="/assets/img/deepdream-monke-1400.webp" />
+    -->
+    <!-- Fallback to the original file -->
+    <img class="img-fluid rounded z-depth-1" src="/assets/img/deepdream-monke.png" data-zoomable="">
+  </picture>
+</figure>
+
+        <div class="caption">
+            Resulting image
+        </div>
+    </div>
+    <div class="caption">
+        Images from pytorch <a href="https://www.kaggle.com/paultimothymooney/pre-trained-pytorch-monkeys-a-deep-dream" target="_blank" rel="noopener noreferrer">implementation</a>
+    </div>
+</div>
+
+<p>The hint to the “why?” is the fact that the layer choice matters a <strong>lot</strong>. Earlier layers produce more minimalistic images (think of a cubist painting) and later ones produce very detailed dream images.</p>
+
+<h2 id="the-problems-at-hand">The problems at hand</h2>
+
+<p>We a load of problems. First off, we need an autgrad library, for Javascript. The only well-rounded library to do that is the <code class="language-plaintext highlighter-rouge">Tensorflow.JS</code>. Second, we need a way to extract intermediate representations from that a network (that maybe doable with the as a builtin tfjs feature – hopefully including tfhub models). Third, we need adjust the network input-output size. We need higher definition, and MobileNet, which is a convnet, should easily allow that.</p>
+
+<p>Last, but not least, it is important that we carefully replicate every single line of code we have within the original kaggle notebook. NNs have a huge error surface and postpartum NN bugfixing is never fun.</p>
+
+<p>The project is hosted at <a href="https://github.com/tornikeo/embed-deepdream/tree/master" target="_blank" rel="noopener noreferrer">a public repository</a>.</p>
+
+<h2 id="rudimentary-implementation">Rudimentary implementation</h2>
+
+<p>Following in the footsteps of the <a href="https://www.tensorflow.org/tutorials/generative/deepdream" target="_blank" rel="noopener noreferrer">popular tensorflow implementation</a> of the DeepDream algorithm, I set up a training loop using the TFJS library, backed by common JS tools, such as <a href="https://webpack.js.org/" target="_blank" rel="noopener noreferrer">Webpack</a>, <a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer">NPM</a> and <a href="https://nodejs.org/en/" target="_blank" rel="noopener noreferrer">NodeJS</a>.</p>
+
+<p>Webpack is known to be quite verbose and requires a non-trivial amount of boilerplate in order to function. To avoid this and focus more on the ML aspect of the project, I start off my work with the <a href="https://github.com/taniarascia/webpack-boilerplate" target="_blank" rel="noopener noreferrer">webpack boilerplate</a>, while making sure that all <a href="https://github.com/taniarascia/webpack-boilerplate/graphs/contributors" target="_blank" rel="noopener noreferrer">the contributors</a> get their authorship, by carefully preserving the commit history within a <a href="https://github.com/tornikeo/embed-deepdream" target="_blank" rel="noopener noreferrer">new repository</a>.</p>
+
+<h2 id="dev-logbook">Dev logbook</h2>
+
+<h3 id="2022-jun-18-2340-tornikeo">2022 Jun 18, 23:40 TornikeO</h3>
+
+<p>In order to use more feature layers from the base model (MobileNetV2), and to also have more control over model parameters, I opted for generating a custom TFJS model.</p>
+
+<p>Inferene speed is of paramount importance, so, I compared the following promising model architectures for speed on CPU:</p>
+
+<ul>
+  <li>MobileNetV3Small (62.2 ms)</li>
+  <li>MobileNetV2 (<strong>61.1 ms</strong>)</li>
+  <li>EfficientNetV2B0 (111 ms)</li>
+  <li>EfficientNetB0 (112 ms)</li>
+</ul>
+
+<p>I finally went with MobileNetV2.</p>
+
+<h3 id="2022-jun-19-0110-tornikeo">2022 Jun 19, 01:10 TornikeO</h3>
+
+<p>Including the rescaling layer into the model isn’t going to be easy, since Lambda layers are not supported within TFJS converter. Instead chose to leave that task to the JS codebase. So, <strong>scaling is required</strong> (input has to be in -1 to 1 range)!.</p>
+
+<p>The Deep Dream requires feature vectors (or hidden activations, as they call it). I don’t know how to get intermediate outputs from loaded TFJS models, so, instead that task goes to Python part: The conversion-ready model already outputs 5 feature vectors from <code class="language-plaintext highlighter-rouge">block_n_add</code> layers. In th end, the <code class="language-plaintext highlighter-rouge">n</code> should be a tweakable UI input.</p>
+
+<p>Model also doesn’t input Batch size, that’s handled by the signature function. Output is also batch-less. Also, fp16 quantization happens to all nodes. Had to double check that there are no int nodes within the model (Learned the hard way what reckless quantization can do to a model with int nodes).</p>
+
+<h3 id="2022-jun-19-1810-tornikeo">2022 Jun 19, 18:10 TornikeO</h3>
+
+<p>Fixed the issue with model path. Turns out, <code class="language-plaintext highlighter-rouge">webpack.common.js</code> redirects all queries from <code class="language-plaintext highlighter-rouge">'assets/models/*'</code> to the <code class="language-plaintext highlighter-rouge">public/models</code> directory. Also tweaked the learning rate and updated the <code class="language-plaintext highlighter-rouge">getGradient</code> function to gather gradients from multiple hidden layers.</p>
+
+<p>Seems like higher learning rates (0.1,0.05) are more unstable for shallower layers like <code class="language-plaintext highlighter-rouge">block_1_add</code> but not deeper ones.</p>
+
+
+  </article>
+
+</div>
+
+    </div>
+
+    <!-- Footer -->    
+    <footer class="fixed-bottom">
+      <div class="container mt-0">
+        <!-- &copy; Copyright 2025 Tornike  Onoprishvili.  -->Last updated: October 13, 2025.
+      </div>
+    </footer>
+
+    <!-- JavaScripts -->
+    <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap & MDB scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js" integrity="sha256-l/1pMF/+J4TThfgARS6KwWrk/egwuVvhRzfLAMQ6Ds4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha256-SyTu6CwrfOhaznYZPoolVw2rxoY7lKYKQvqbtqN93HI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mdbootstrap@4.20.0/js/mdb.min.js" integrity="sha256-NdbiivsvWt7VYCt6hYNT3h/th9vSTL4EDWeGs5SN3DA=" crossorigin="anonymous"></script>
+
+    <!-- Masonry & imagesLoaded -->
+  <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha256-Nn1q/fx0H7SNLZMQ5Hw5JLaTRZp0yILA/FRexe19VdI=" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+  <script defer src="/assets/js/masonry.js" type="text/javascript"></script>
+    
+  <!-- Medium Zoom JS -->
+  <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js" integrity="sha256-EdPgYcPk/IIrw7FYeuJQexva49pVRZNmt3LculEr7zM=" crossorigin="anonymous"></script>
+  <script src="/assets/js/zoom.js"></script><!-- Load Common JS -->
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/spinner.js"></script>
+  <script src="/assets/js/image_comparison.js"></script>
+
+    <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = {
+      tex: {
+        tags: 'ams'
+      }
+    };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js"></script>
+  <script defer src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+
+    <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>
+
