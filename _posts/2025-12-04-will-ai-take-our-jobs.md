@@ -74,7 +74,7 @@ I suppose all of you have seen these websites and you know if you click on this 
 
 People wrote those articles. Now AI is going to write those articles and there's going to be zero human touch there. **Jobs that cannot connect with people and do not connect with people--they're going to be cut first.**
 
-On the other side of the spectrum, does anyone think that for instance Thomson Reuters or one of the greatest YouTube channels is going to be destroyed because of AI? It's nearly unthinkable because the content they create connects directly to the people. These people who create these videos, they talk to experts. They spend 1,200 hours per video talking to people, revising everything and making it fit.
+On the other side of the spectrum, does anyone think that for instance [Reuters](http://reuters.com/) or great YouTube channels like [Kurzgesagt](https://www.youtube.com/@kurzgesagt) is going to be destroyed because of AI? It's nearly unthinkable because the content they create connects directly to the people. These people who create these videos, they talk to experts. They spend 1,200 hours per video talking to people, revising everything and making it fit.
 
 So this is not going to be replaced, but the SEO websites are going to be replaced.
 
