@@ -1,0 +1,23 @@
+<!-- View Counter -->
+<span id="view-counter" class="view-counter" style="display: none;">
+  • <i class="fas fa-eye fa-sm"></i> <span id="view-count"></span> views
+</span>
+
+<script>
+(function() {
+  const slug = window.location.pathname.replace(/\/$/, '') || 'home';
+  
+  fetch(`/api/views?slug=${encodeURIComponent(slug)}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.views !== undefined) {
+        document.getElementById('view-count').textContent = data.views.toLocaleString();
+        document.getElementById('view-counter').style.display = 'inline';
+      }
+    })
+    .catch(err => {
+      console.error('Failed to load view count:', err);
+      document.getElementById('view-counter').style.display = 'none';
+    });
+})();
+</script>

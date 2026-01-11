@@ -1,0 +1,7 @@
+{
+  "name": "tornikeo-blog",
+  "private": true,
+  "dependencies": {
+    "@vercel/kv": "^2.0.0"
+  }
+}
