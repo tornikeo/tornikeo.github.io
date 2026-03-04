@@ -1,6 +1,0 @@
----
-layout: null
-permalink: /_version
-sitemap: false
----
-{"commit":"{{ site.github.build_revision }}"}

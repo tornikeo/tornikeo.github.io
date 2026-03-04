@@ -1,5 +1,6 @@
 {
-  "buildCommand": "bundle exec jekyll build",
+  "buildCommand": "bundle exec jekyll build && echo \"{\\\"commit\\\":\\\"$(git rev-parse HEAD)\\\"}\" > _site/_version",
   "outputDirectory": "_site",
-  "framework": null
+  "framework": null,
+  "cleanUrls": true
 }
