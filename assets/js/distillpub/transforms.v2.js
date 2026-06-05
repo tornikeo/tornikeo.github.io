@@ -12187,7 +12187,7 @@
     }
 
     if (needsCSS) {
-      const katexCSSTag = '<link rel="stylesheet" href="https://distill.pub/third-party/katex/katex.min.css" crossorigin="anonymous">';
+      const katexCSSTag = '<link rel="stylesheet" href="/assets/vendor/distill-katex/katex.min.css">';
       dom.head.insertAdjacentHTML('beforeend', katexCSSTag);
     }
 
@@ -12708,7 +12708,7 @@ window.addEventListener('WebComponentsReady', function() {
 
     // add loader
     const loaderTag = dom.createElement('script');
-    loaderTag.src = 'https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/1.0.17/webcomponents-loader.js';
+    loaderTag.src = '/assets/vendor/distill-polyfills/webcomponents-loader.js';
     dom.head.insertBefore(loaderTag, dom.head.firstChild);
 
     // add loader event listener to add tempalrte back in
@@ -13182,4 +13182,3 @@ distill-header .nav a {
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=transforms.v2.js.map

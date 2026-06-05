@@ -1,0 +1,8 @@
+name = "tornikeo-posthog-proxy"
+main = "src/index.js"
+compatibility_date = "2026-06-05"
+workers_dev = false
+
+routes = [
+  { pattern = "e.tornikeo.com", custom_domain = true }
+]
