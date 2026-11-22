@@ -15,7 +15,8 @@ layout: parse
   {%- unless page.layout == 'post' or page.modern -%}
     {% include legacy-styles.html %}
   {%- endunless -%}
-  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  {% assign site_styles = site.static_files | where: 'path', '/assets/css/site.css' | first %}
+  <link rel="stylesheet" href="{{ site_styles.path | relative_url }}?v={{ site_styles.modified_time | date: '%s' }}">
   <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_light | append: '.css' | relative_url }}" id="highlight_theme_light">
   {% if site.enable_darkmode %}
     <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_dark | append: '.css' | relative_url }}" media="none" id="highlight_theme_dark">

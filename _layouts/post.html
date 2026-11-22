@@ -12,7 +12,7 @@ layout: default
 <article class="essay">
 
   <header class="post-header">
-    <a class="text-link back-link" href="{{ '/blog/' | relative_url }}">← All writing</a>
+    <a class="text-link back-link" href="{{ '/blog/' | relative_url }}">← All posts</a>
     <p class="eyebrow"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%B %-d, %Y' }}</time>{%- if page.author %} · {{ page.author }}{%- endif -%}{%- if page.meta %} · {{ page.meta }}{%- endif -%}</p>
     <h1 class="post-title">{{ page.title | escape }}</h1>
   </header>

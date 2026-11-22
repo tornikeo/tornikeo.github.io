@@ -1,9 +1,10 @@
 <header class="site-header">
   <div class="site-width header-inner">
-    <a class="wordmark" href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>tornikeo.com</a>
+    <a class="wordmark" href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
     <nav class="site-nav" aria-label="Main">
       <a href="{{ '/projects/' | relative_url }}"{% if page.url == '/projects/' %} aria-current="page"{% elsif page.url contains '/projects/' %} aria-current="location"{% endif %}>Projects</a>
-      <a href="{{ '/blog/' | relative_url }}"{% if page.url == '/blog/' or page.url == '/blog/index.html' %} aria-current="page"{% elsif page.url contains '/blog/' or page.layout == 'post' %} aria-current="location"{% endif %}>Writing</a>
+      <a href="{{ '/publications/' | relative_url }}"{% if page.url == '/publications/' %} aria-current="page"{% endif %}>Research</a>
+      <a href="{{ '/blog/' | relative_url }}"{% if page.url == '/blog/' or page.url == '/blog/index.html' %} aria-current="page"{% elsif page.url contains '/blog/' or page.layout == 'post' %} aria-current="location"{% endif %}>Blogs</a>
     </nav>
     {% if site.enable_darkmode %}
       <button type="button" id="light-toggle" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">

@@ -5,19 +5,54 @@ title: Tornike Onoprishvili
 permalink: /
 ---
 <article class="profile-bio" aria-labelledby="profile-name">
+  {% assign pronunciation = site.static_files | where: 'path', '/assets/audio/tornike-onoprishvili.mp3' | first %}
   <header class="profile-heading">
-    <img class="profile-photo" src="{{ '/assets/img/portrait.webp' | relative_url }}" width="88" height="88" alt="">
-    <h1 id="profile-name">Tornike Onoprishvili</h1>
+    <figure class="profile-portrait">
+      <a class="profile-photo-link" href="{{ '/assets/img/portrait-full.webp' | relative_url }}" data-portrait-open aria-label="Enlarge portrait of Tornike Onoprishvili">
+        <img class="profile-photo" src="{{ '/assets/img/portrait.webp' | relative_url }}" width="88" height="88" alt="">
+      </a>
+      <figcaption class="portrait-caption" id="portrait-caption">
+        Near Lake Lugano <time datetime="2024-05-12">May 12, 2024</time>
+      </figcaption>
+    </figure>
+    <h1 id="profile-name">
+      {% if pronunciation %}
+        <button class="pronunciation-trigger" type="button" aria-describedby="pronunciation-hint" data-pronunciation>
+          <span class="pronunciation-name">Tornike Onoprishvili</span>
+          <span class="pronunciation-icon" aria-hidden="true"></span>
+        </button>
+      {% else %}
+        Tornike Onoprishvili
+      {% endif %}
+    </h1>
+    {% if pronunciation %}
+      <span id="pronunciation-hint" class="visually-hidden">Play the pronunciation in Tornike’s voice</span>
+      <audio id="name-audio" src="{{ pronunciation.path | relative_url }}" preload="none"></audio>
+    {% endif %}
   </header>
+
+  <dialog class="portrait-dialog" id="portrait-dialog" aria-label="Portrait of Tornike Onoprishvili" aria-describedby="portrait-caption">
+    <form method="dialog" class="portrait-controls">
+      <button type="button" data-portrait-zoom aria-pressed="false">Actual size</button>
+      <button autofocus>Close</button>
+    </form>
+    <div class="portrait-preview">
+      <img src="{{ '/assets/img/portrait-full.webp' | relative_url }}" width="768" height="1024" alt="Tornike smiling by Lake Lugano" loading="lazy">
+    </div>
+    <p class="portrait-caption">Near Lake Lugano, Switzerland · <time datetime="2024-05-12">May 12, 2024</time></p>
+  </dialog>
 
   <p>I’m a cofounder of <a href="https://launchsingularity.com/">Singularity</a>. We’re building AI teams that can launch a product, find its first customers, and improve it with their feedback. I previously cofounded <a href="https://tegy.io/">Tegy</a>, an AI tool for business strategy.</p>
 
-  <p>I started out simulating optical circuits, then spent several years building AI systems for startups. I built <a href="{{ '/projects/vimage/' | relative_url }}">VIMAGE’s GPU backend</a> and wrote the CUDA kernels for <a href="{{ '/projects/cosine_greedy/' | relative_url }}">SimMS</a>, which matched mass spectra about 1,000× faster than the MatchMS reference implementation in our benchmarks.</p>
-
   <p>I sunset <a href="https://peachjam.dev/blog/sunset/">PeachJam</a> when I realized a lower price wasn’t enough to make people switch app builders. <a href="{{ '/mothershipx.dev/' | relative_url }}">MothershipX</a> made early sales, but we pivoted before learning why people paid. I stepped away from Changewiser after realizing we hadn’t agreed on my role.</p>
+
+  <p>I wrote the CUDA kernels for <a href="{{ '/projects/cosine_greedy/' | relative_url }}">SimMS</a>, which matched mass spectra about 1,000× faster than the MatchMS reference implementation in our benchmarks. Before that, I built <a href="{{ '/projects/vimage/' | relative_url }}">VIMAGE’s GPU backend</a>. I started out simulating optical circuits.</p>
 
   <nav class="profile-contact" aria-label="Contact">
     <a href="https://x.com/messages/compose?recipient_id={{ site.twitter_user_id }}">DM on X <span aria-hidden="true">↗</span></a>
     <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}/">LinkedIn <span aria-hidden="true">↗</span></a>
   </nav>
 </article>
+
+{% assign profile_script = site.static_files | where: 'path', '/assets/js/profile.js' | first %}
+<script defer src="{{ profile_script.path | relative_url }}?v={{ profile_script.modified_time | date: '%s' }}"></script>

@@ -164,14 +164,168 @@ body.personal-site {
   letter-spacing: -.06em;
 }
 
+.profile-portrait {
+  flex: none;
+  margin: 0;
+  text-align: center;
+}
+
+.profile-photo-link {
+  display: inline-block;
+  border-radius: 50%;
+  vertical-align: top;
+  cursor: zoom-in;
+}
+
 .profile-photo {
   display: block;
   width: clamp(68px, 12vw, 88px);
   height: clamp(68px, 12vw, 88px);
-  flex: none;
-  border-radius: 50%;
+  border-radius: inherit;
   object-fit: cover;
   object-position: center 64%;
+  transition: transform .18s ease-out;
+}
+
+.profile-photo-link:hover .profile-photo { transform: scale(1.06); }
+
+.portrait-caption {
+  margin-top: .45rem;
+  color: var(--muted);
+  font-size: .7rem;
+  line-height: 1.4;
+}
+
+.profile-portrait time { display: block; }
+
+.portrait-dialog {
+  max-width: calc(100% - 24px);
+  max-height: calc(100dvh - 24px);
+  padding: .85rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: .5rem;
+}
+
+.portrait-dialog::backdrop { background: rgb(16 21 18 / 74%); }
+
+.portrait-controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  margin-bottom: .65rem;
+}
+
+.portrait-controls button {
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: .25rem;
+  padding: .45rem .6rem;
+  min-height: 36px;
+  font: 500 .78rem/1.25 Geist, system-ui, sans-serif;
+  cursor: pointer;
+}
+
+.portrait-controls button:hover,
+.portrait-controls button[aria-pressed="true"] { background: var(--panel); }
+
+.portrait-preview {
+  max-width: min(768px, calc(100vw - 54px));
+  max-height: min(72dvh, 800px);
+  overflow: auto;
+}
+
+.portrait-preview img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(72dvh, 800px);
+  margin-inline: auto;
+}
+
+.portrait-dialog[data-zoomed] .portrait-preview img {
+  width: 768px;
+  max-width: none;
+  max-height: none;
+}
+
+.portrait-dialog .portrait-caption { margin: .55rem 0 0; }
+
+.pronunciation-trigger {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.pronunciation-name {
+  transition: color .18s ease-out, text-shadow .18s ease-out;
+}
+
+.pronunciation-trigger:hover .pronunciation-name,
+.pronunciation-trigger:focus-visible .pronunciation-name,
+.pronunciation-trigger[data-speaking] .pronunciation-name {
+  color: var(--accent);
+  text-shadow: 0 .035em 0 color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+.pronunciation-icon {
+  display: inline-block;
+  position: relative;
+  width: .43em;
+  height: .43em;
+  margin-inline-start: .11em;
+  color: var(--accent);
+  vertical-align: .08em;
+}
+
+.pronunciation-icon::before {
+  content: "";
+  position: absolute;
+  inset: 11% 34% 11% 0;
+  background: currentColor;
+  clip-path: polygon(0 32%, 38% 32%, 85% 0, 85% 100%, 38% 68%, 0 68%);
+}
+
+.pronunciation-icon::after {
+  content: "";
+  position: absolute;
+  inset: 4% 0 4% 25%;
+  border-right: .035em solid currentColor;
+  border-radius: 50%;
+}
+
+.pronunciation-trigger[data-speaking] .pronunciation-icon {
+  animation: pronunciation-pulse .42s ease-in-out alternate infinite;
+}
+
+@keyframes pronunciation-pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-photo, .pronunciation-name { transition: none; }
+  .profile-photo-link:hover .profile-photo { transform: none; }
+  .pronunciation-trigger[data-speaking] .pronunciation-icon { animation: none; }
 }
 
 .profile-bio p { margin: 0 0 1.05em; }
@@ -354,7 +508,8 @@ body.personal-site {
 
 @media (max-width: 540px) {
   .site-width { width: calc(100% - 40px); }
-  .header-inner { min-height: 64px; }
+  .header-inner { min-height: 64px; gap: .6rem; }
+  .site-nav { gap: .65rem; }
   .theme-toggle { width: 31px; height: 31px; }
   .profile-bio { padding-block: 2.25rem 2rem; line-height: 1.6; }
   .profile-heading { margin-bottom: 1.35rem; }
