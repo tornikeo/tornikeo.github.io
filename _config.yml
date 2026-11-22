@@ -126,6 +126,7 @@ kramdown:
 # Includes & excludes
 include: ['_pages']
 exclude:
+  - ui
   - bin
   - Gemfile
   - Gemfile.lock

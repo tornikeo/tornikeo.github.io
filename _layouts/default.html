@@ -15,19 +15,33 @@ layout: parse
   {%- unless page.layout == 'post' or page.modern -%}
     {% include legacy-styles.html %}
   {%- endunless -%}
-  {% assign site_styles = site.static_files | where: 'path', '/assets/css/site.css' | first %}
-  <link rel="stylesheet" href="{{ site_styles.path | relative_url }}?v={{ site_styles.modified_time | date: '%s' }}">
+  {% for css in site.data.shadcn_assets.styles %}
+    <link rel="stylesheet" href="{{ css | relative_url }}">
+  {% endfor %}
+  {% if site.data.shadcn_assets.script %}
+    <script type="module" src="{{ site.data.shadcn_assets.script | relative_url }}"></script>
+  {% endif %}
   <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_light | append: '.css' | relative_url }}" id="highlight_theme_light">
   {% if site.enable_darkmode %}
     <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_dark | append: '.css' | relative_url }}" media="none" id="highlight_theme_dark">
     <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
-    <script defer src="{{ '/assets/js/dark_mode.js' | relative_url }}"></script>
+    <script>
+      const syncShadcnTheme = () => {
+        const root = document.documentElement;
+        root.classList.toggle("dark", root.dataset.theme === "dark");
+      };
+      syncShadcnTheme();
+      window.toggleSiteTheme = () => {
+        toggleTheme(document.documentElement.dataset.theme);
+        syncShadcnTheme();
+      };
+    </script>
   {% endif %}
 </head>
-<body class="personal-site">
-  <a class="skip-link" href="#main">Skip to content</a>
+<body class="min-h-screen">
+  <a class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:border focus:bg-background focus:p-2" href="#main">Skip to content</a>
   {% include site-header.html %}
-  <main id="main" class="site-width" tabindex="-1">
+  <main id="main" class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12" tabindex="-1">
     {{ content }}
   </main>
   {%- unless page.url == '/' -%}

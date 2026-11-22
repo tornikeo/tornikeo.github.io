@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+cd "$(dirname "$0")/.."
+npm --prefix ui ci --no-audit --no-fund
+npm --prefix ui run build
+exec bundle exec jekyll build "$@"

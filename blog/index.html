@@ -14,12 +14,12 @@ pagination:
     before: 1
     after: 3
 ---
-<section class="writing-index" aria-labelledby="writing-title">
-  <header class="index-heading">
-    <h1 id="writing-title">Blogs</h1>
-    <p>{{ page.description }}</p>
+<section class="space-y-6" aria-labelledby="writing-title">
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold tracking-tight" id="writing-title">Blogs</h1>
+    <p class="text-muted-foreground">{{ page.description }}</p>
   </header>
-  <ul class="entry-list">
+  <ul class="divide-y overflow-hidden rounded-xl border">
     {% for post in paginator.posts %}
       {% include writing-entry.html post=post summary=true %}
     {% endfor %}

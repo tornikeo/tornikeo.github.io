@@ -1,11 +1,11 @@
 {% if paginator.total_pages > 1 %}
-<nav class="page-nav" aria-label="Blog pages">
+<nav class="flex flex-wrap items-center gap-1 text-sm [&_a]:rounded-md [&_a]:px-3 [&_a]:py-2 [&_a:hover]:bg-muted" aria-label="Blog pages">
   {% if paginator.previous_page %}
     <a href="{{ paginator.previous_page_path | relative_url }}" rel="prev">← Newer</a>
   {% endif %}
   {% for trail in paginator.page_trail %}
     {% if paginator.page == trail.num %}
-      <span aria-current="page">{{ trail.num }}</span>
+      <span class="rounded-md border bg-background px-3 py-2" aria-current="page">{{ trail.num }}</span>
     {% else %}
       <a href="{{ trail.path | relative_url }}" aria-label="Page {{ trail.num }}">{{ trail.num }}</a>
     {% endif %}

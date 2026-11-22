@@ -9,15 +9,15 @@ layout: default
 </style>
 {% endif %}
 
-<article class="essay">
+<article class="space-y-8">
 
-  <header class="post-header">
-    <a class="text-link back-link" href="{{ '/blog/' | relative_url }}">← All posts</a>
-    <p class="eyebrow"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%B %-d, %Y' }}</time>{%- if page.author %} · {{ page.author }}{%- endif -%}{%- if page.meta %} · {{ page.meta }}{%- endif -%}</p>
-    <h1 class="post-title">{{ page.title | escape }}</h1>
+  <header class="space-y-3">
+    <a class="inline-block rounded-md px-2 py-1 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground" href="{{ '/blog/' | relative_url }}">← All posts</a>
+    <p class="text-sm text-muted-foreground"><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: '%B %-d, %Y' }}</time>{%- if page.author %} · {{ page.author }}{%- endif -%}{%- if page.meta %} · {{ page.meta }}{%- endif -%}</p>
+    <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{{ page.title | escape }}</h1>
   </header>
 
-  <div class="post-content">
+  <div class="prose prose-neutral max-w-none break-words dark:prose-invert [&_pre]:overflow-x-auto [&_table]:block [&_table]:overflow-x-auto">
     {{ content }}
   </div>
 
