@@ -22,4 +22,9 @@ export default defineConfig([
       'react-refresh/only-export-components': 'off',
     },
   },
+  {
+    // The stock registry component initializes its controls when Embla connects.
+    files: ['src/components/ui/carousel.tsx'],
+    rules: { 'react-hooks/set-state-in-effect': 'off' },
+  },
 ])

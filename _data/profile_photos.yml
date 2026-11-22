@@ -1,0 +1,26 @@
+- image: portrait-full.webp
+  title: Near Lake Lugano
+  date: "2024-05-12"
+  alt: Tornike smiling outdoors in a black cap
+  story: I took this photo near Lake Lugano, Switzerland, on May 12, 2024.
+
+- image: profile-photos/isc-2025.webp
+  title: Holding a GPU at ISC 2025
+  alt: Tornike holding an NVIDIA GPU at ISC High Performance in Hamburg
+  story: I competed in the Student Cluster Competition at ISC High Performance 2025 in Hamburg. Our team, FAUSION, brought together students from FAU and USI. We placed third overall in the onsite competition.
+  link:
+    label: Official results
+    href: https://2025.isc-hpc.com/program/student-cluster-competition/
+
+- image: profile-photos/lake-lugano.webp
+  title: Lake Lugano with Ani
+  alt: Tornike and Ani standing beside Lake Lugano with the mountains behind them
+  story: Here I am by Lake Lugano with my spouse and the love of my life. It was an incredibly beautiful place.
+  link:
+    label: Ani Talakhadze
+    href: https://anitalakhadze.dev/
+
+- image: profile-photos/formal.webp
+  title: My formal headshot
+  alt: Formal portrait of Tornike with his arms crossed against a dark background
+  story: I originally took this for a job application. These days I mostly use it on professional profiles when I want a more formal look for the businesses I’m building.

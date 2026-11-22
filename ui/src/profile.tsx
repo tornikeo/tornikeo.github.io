@@ -5,16 +5,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import {
-  Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader,
+  Dialog, DialogContent, DialogDescription, DialogHeader,
   DialogTitle, DialogTrigger,
 } from "@/components/ui/dialog"
+import { PortraitGallery, type ProfilePhoto } from "@/portrait-gallery"
 
 export type SiteLink = { label: string; href: string; current?: "page" | "location" }
 
 type ProfileProps = {
   name: string
   avatar: string
-  portrait: string
+  photos: ProfilePhoto[]
   caption: string
   date: string
   dateLabel: string
@@ -23,37 +24,22 @@ type ProfileProps = {
   contacts: SiteLink[]
 }
 
-function Portrait({ name, avatar, portrait, caption, date, dateLabel }: ProfileProps) {
-  const [fullSize, setFullSize] = useState(false)
-
+function Portrait({ name, avatar, photos, caption, date, dateLabel }: ProfileProps) {
   return (
     <figure className="shrink-0">
-      <Dialog onOpenChange={(open) => { if (!open) setFullSize(false) }}>
-        <DialogTrigger aria-label={`Enlarge portrait of ${name}`} className="rounded-full focus-visible:outline-2">
+      <Dialog>
+        <DialogTrigger aria-label={`View profile photos of ${name}`} className="rounded-full focus-visible:outline-2">
           <Avatar className="size-16">
             <AvatarImage src={avatar} alt="" className="object-[center_64%]" />
             <AvatarFallback>TO</AvatarFallback>
           </Avatar>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-xl">
-          <DialogHeader>
-            <DialogTitle>Portrait of {name}</DialogTitle>
-            <DialogDescription>{caption}, Switzerland · <time dateTime={date}>{dateLabel}</time></DialogDescription>
+        <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl">
+          <DialogHeader className="pr-8">
+            <DialogTitle>Profile photos</DialogTitle>
+            <DialogDescription className="sr-only">Photos of {name}, with a story for each.</DialogDescription>
           </DialogHeader>
-          <div className="max-h-[65dvh] overflow-auto rounded-md">
-            <img
-              src={portrait}
-              width={768}
-              height={1024}
-              alt="Tornike smiling near Lake Lugano"
-              className={fullSize ? "max-w-none" : "mx-auto h-auto max-h-[65dvh] w-auto max-w-full object-contain"}
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" aria-pressed={fullSize} onClick={() => setFullSize(!fullSize)}>
-              Actual size
-            </Button>
-          </DialogFooter>
+          <PortraitGallery photos={photos} />
         </DialogContent>
       </Dialog>
       <figcaption className="mt-2 text-xs text-muted-foreground">

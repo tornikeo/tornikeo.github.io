@@ -4,21 +4,23 @@ modern: true
 title: Tornike Onoprishvili
 permalink: /
 ---
-{% assign portrait_caption = 'Near Lake Lugano' %}
-{% assign portrait_date = '2024-05-12' %}
+{% assign cover_photo = site.data.profile_photos | first %}
+{% assign portrait_caption = cover_photo.title %}
+{% assign portrait_date = cover_photo.date %}
 {% assign portrait_date_label = portrait_date | date: '%B %-d, %Y' %}
 <article aria-label="{{ page.title }}"
   data-site-profile
   data-name="{{ page.title | escape }}"
   data-avatar="{{ '/assets/img/portrait.webp' | relative_url }}"
-  data-portrait="{{ '/assets/img/portrait-full.webp' | relative_url }}"
+  data-photos="{{ site.data.profile_photos | jsonify | escape }}"
+  data-photo-root="{{ '/assets/img/' | relative_url }}"
   data-caption="{{ portrait_caption }}"
   data-date="{{ portrait_date }}"
   data-date-label="{{ portrait_date_label }}"
   data-pronunciation="{{ '/assets/audio/tornike-onoprishvili.mp3' | relative_url }}">
   <header class="mb-5 flex gap-4">
     <figure>
-      <a href="{{ '/assets/img/portrait-full.webp' | relative_url }}" aria-label="Enlarge portrait of {{ page.title }}">
+      <a href="{{ cover_photo.image | prepend: '/assets/img/' | relative_url }}" aria-label="Enlarge portrait of {{ page.title }}">
         <img class="size-16 rounded-full object-cover object-[center_64%]" src="{{ '/assets/img/portrait.webp' | relative_url }}" width="64" height="64" alt="">
       </a>
       <figcaption class="mt-2 text-xs text-muted-foreground">{{ portrait_caption }} <time class="block" datetime="{{ portrait_date }}">{{ portrait_date_label }}</time></figcaption>

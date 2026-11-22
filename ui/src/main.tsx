@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client"
 import { SiteNavigation } from "@/navigation"
 import { Profile } from "@/profile"
 import type { SiteLink } from "@/profile"
+import type { ProfilePhoto } from "@/portrait-gallery"
 import "./index.css"
 
 function readLinks(container: Element | null): SiteLink[] {
@@ -25,14 +26,18 @@ if (navigation) {
 const profile = document.querySelector<HTMLElement>("[data-site-profile]")
 const bio = profile?.querySelector("[data-profile-bio]")
 if (profile && bio) {
-  const { name, avatar, portrait, caption, date, dateLabel, pronunciation } = profile.dataset
-  if (name && avatar && portrait && caption && date && dateLabel) {
+  const { name, avatar, photos, photoRoot, caption, date, dateLabel, pronunciation } = profile.dataset
+  if (name && avatar && photos && photoRoot && caption && date && dateLabel) {
+    const gallery = (JSON.parse(photos) as ProfilePhoto[]).map((photo) => ({
+      ...photo,
+      image: photoRoot + photo.image,
+    }))
     const contacts = readLinks(profile.querySelector("[data-profile-contacts]"))
     createRoot(profile).render(
       <Profile
         name={name}
         avatar={avatar}
-        portrait={portrait}
+        photos={gallery}
         caption={caption}
         date={date}
         dateLabel={dateLabel}
