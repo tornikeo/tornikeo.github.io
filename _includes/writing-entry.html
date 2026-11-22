@@ -1,0 +1,17 @@
+{% assign entry = include.post %}
+{% assign entry_url = entry.redirect | default: entry.url %}
+{% unless entry_url contains '://' %}
+  {% assign entry_url = entry_url | relative_url %}
+{% endunless %}
+<li class="writing-entry">
+  <a href="{{ entry_url }}">
+    <time class="eyebrow" datetime="{{ entry.date | date: '%Y-%m-%d' }}">{{ entry.date | date: '%b %-d, %Y' }}</time>
+    <div>
+      <p class="entry-title">{{ entry.title | escape }}</p>
+      {% if include.summary and entry.description %}
+        <p class="entry-summary">{{ entry.description | escape }}</p>
+      {% endif %}
+    </div>
+    <span class="row-arrow" aria-hidden="true">↗</span>
+  </a>
+</li>

@@ -1,8 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const mode_toggle = document.getElementById("light-toggle");
+document.addEventListener('DOMContentLoaded', () => {
+    const modeToggle = document.getElementById('light-toggle');
+    if (!modeToggle) return;
 
-    mode_toggle.addEventListener("click", function() {
-        toggleTheme(localStorage.getItem("theme"));
+    function updatePressed() {
+        modeToggle.setAttribute('aria-pressed', document.documentElement.dataset.theme === 'dark');
+    }
+
+    updatePressed();
+    modeToggle.addEventListener('click', () => {
+        toggleTheme(document.documentElement.dataset.theme);
+        updatePressed();
     });
 });
-

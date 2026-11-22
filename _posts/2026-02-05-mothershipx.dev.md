@@ -18,17 +18,15 @@ On mothershipx you can discover the "minor" problems like doordash founders did.
 MothershipX version alpha works by digesting a large amount of data that people create online (e.g. tiktok, reddit, linkedin, youtube, instagram, x, ...) and finding the repeating patterns of complaints and problems. Many similar repeating problems are "clustered" into a unified problem definition (UPD). The UPDs are then shown in the "signals" dashboard, which neatly categorizes all UPDs into 11 categories, ranging from "mental health", to "career", to "social & relationships".
 
 <div style="display: flex; gap: 1rem; align-items: center; justify-content: center;">
-  <img src="desktop-signals.png" alt="Desktop signals view" style="max-width: 60%;">
-  <img src="mobile-signals.png" alt="Mobile signals view" style="max-width: 35%;">
+  <img src="{{ '/assets/img/mothershipx/desktop-signals.webp' | relative_url }}" alt="Desktop signals view" style="max-width: 60%;">
+  <img src="{{ '/assets/img/mothershipx/mobile-signals.webp' | relative_url }}" alt="Mobile signals view" style="max-width: 35%;">
 </div>
 
 We spent a long time deliberating how best to present the huge amount of web information without overwhelming the user. We settled for  scrollable cards of problem definitions. Users can pick and choose to tackle the problems that _they_ feel they are best equipped to solve. 
 
 Inside each unified problem definition card, there's a detailed information on the problem, including the total social media footprint of the problem, potential business score, the problem growth/shrinking trend, and links to actual social media posts that show the issue.
 
-![alt text](inside-problem.png)
-
-Mining the problems from social media costs real money, which is why the 
+![MothershipX’s detail view for a market signal]({{ '/assets/img/mothershipx/inside-problem.webp' | relative_url }})
 
 ## MothershipX Arena
 

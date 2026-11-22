@@ -3,35 +3,43 @@ layout: parse
 ---
 <!DOCTYPE html>
 <html lang="{{ site.lang }}">
-
-  <!-- Head -->
-  <head>
+<head>
   {%- if page.redirect -%}
-    <meta http-equiv="refresh" content="3; url={{ site.baseurl | prepend: site.url }}/" />
+    <meta http-equiv="refresh" content="3; url={{ '/' | relative_url }}">
   {%- endif -%}
-  {% include head.html %}
-  </head>
+  {% include metadata.html %}
+  {% feed_meta %}
+  <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
+  <link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/favicon/apple-touch-icon.png' | relative_url }}">
+  {%- unless page.layout == 'post' or page.modern -%}
+    {% include legacy-styles.html %}
+  {%- endunless -%}
+  <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_light | append: '.css' | relative_url }}" id="highlight_theme_light">
+  {% if site.enable_darkmode %}
+    <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_dark | append: '.css' | relative_url }}" media="none" id="highlight_theme_dark">
+    <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+    <script defer src="{{ '/assets/js/dark_mode.js' | relative_url }}"></script>
+  {% endif %}
+</head>
+<body class="personal-site">
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include site-header.html %}
+  <main id="main" class="site-width{% unless page.modern %} reading-width{% endunless %}" tabindex="-1">
+    {{ content }}
+  </main>
+  {% include site-footer.html %}
 
-  <!-- Body -->
-  <body class="{% if site.navbar_fixed %}fixed-top-nav{% endif %} {% unless site.footer_fixed %}sticky-bottom-footer{% endunless %}">
-
-    <!-- Header -->
-    {%- include header.html %}
-
-    <!-- Content -->
-    <div class="container mt-5">
-      {{ content }}
-    </div>
-
-    <!-- Footer -->
-    {%- include footer.html %}
-
-    <!-- JavaScripts -->
+  {%- unless page.layout == 'post' or page.modern -%}
     {% include scripts/jquery.html %}
     {% include scripts/bootstrap.html %}
     {% include scripts/masonry.html %}
     {% include scripts/misc.html %}
+  {%- endunless -%}
+  {%- unless page.modern -%}
     {% include scripts/mathjax.html %}
-    {% include scripts/analytics.html %}
-  </body>
+  {%- endunless -%}
+  {% include scripts/analytics.html %}
+</body>
 </html>
