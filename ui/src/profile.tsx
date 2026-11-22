@@ -2,7 +2,7 @@ import { useRef, useState } from "react"
 import { ArrowUpRightIcon, Volume2Icon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import {
   Dialog, DialogContent, DialogDescription, DialogHeader,
@@ -25,6 +25,8 @@ type ProfileProps = {
 }
 
 function Portrait({ name, avatar, photos, caption, date, dateLabel }: ProfileProps) {
+  const title = useRef<HTMLHeadingElement>(null)
+
   return (
     <figure className="shrink-0">
       <Dialog>
@@ -34,9 +36,9 @@ function Portrait({ name, avatar, photos, caption, date, dateLabel }: ProfilePro
             <AvatarFallback>TO</AvatarFallback>
           </Avatar>
         </DialogTrigger>
-        <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl">
+        <DialogContent initialFocus={title} className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl">
           <DialogHeader className="pr-8">
-            <DialogTitle>Profile photos</DialogTitle>
+            <DialogTitle ref={title} tabIndex={-1}>Profile photos</DialogTitle>
             <DialogDescription className="sr-only">Photos of {name}, with a story for each.</DialogDescription>
           </DialogHeader>
           <PortraitGallery photos={photos} />
@@ -104,9 +106,9 @@ export function Profile(props: ProfileProps) {
       <CardFooter>
         <nav className="flex flex-wrap gap-2" aria-label="Contact">
           {props.contacts.map((contact) => (
-            <Button key={contact.href} variant="outline" render={<a href={contact.href} />}>
+            <a key={contact.href} href={contact.href} className={buttonVariants({ variant: "outline" })}>
               {contact.label}<ArrowUpRightIcon aria-hidden="true" />
-            </Button>
+            </a>
           ))}
         </nav>
       </CardFooter>

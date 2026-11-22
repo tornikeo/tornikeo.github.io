@@ -15,12 +15,12 @@ So, we wanted something to be very robust to visual noise, able to count any kin
 
 After a while, I arrived at [this wonderful article by google](https://ai.googleblog.com/2020/06/repnet-counting-repetitions-in-videos.html). 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-4 sm:col-start-2" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/9pZ9XHs.png" zoomable=true %}
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
         The paper and free, as is the accompanying source code.
 </div>
 

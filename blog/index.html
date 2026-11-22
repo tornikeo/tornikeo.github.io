@@ -1,6 +1,5 @@
 ---
 layout: default
-modern: true
 title: Blogs
 description: Essays on AI, engineering, and building companies.
 pagination:
@@ -19,7 +18,7 @@ pagination:
     <h1 class="text-3xl font-semibold tracking-tight" id="writing-title">Blogs</h1>
     <p class="text-muted-foreground">{{ page.description }}</p>
   </header>
-  <ul class="divide-y overflow-hidden rounded-xl border">
+  <ul data-blog-list class="space-y-2">
     {% for post in paginator.posts %}
       {% include writing-entry.html post=post summary=true %}
     {% endfor %}

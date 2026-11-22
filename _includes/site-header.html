@@ -1,6 +1,6 @@
 <header class="border-b">
   <div class="mx-auto w-full max-w-3xl px-4 py-3 sm:px-6" data-site-navigation>
-    <nav class="flex flex-wrap items-center gap-1 text-sm font-medium [&_a]:px-2.5 [&_a]:py-1.5 [&_a:hover]:bg-accent" aria-label="Main">
+    <nav class="flex flex-wrap items-center gap-0 text-sm sm:gap-1 [&_a]:inline-flex [&_a]:h-9 [&_a]:items-center [&_a]:rounded-lg [&_a]:px-2 [&_a:hover]:bg-muted" aria-label="Main">
       <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a>
       <a href="{{ '/projects/' | relative_url }}"{% if page.url == '/projects/' %} aria-current="page"{% elsif page.url contains '/projects/' %} aria-current="location"{% endif %}>Projects</a>
       <a href="{{ '/publications/' | relative_url }}"{% if page.url == '/publications/' %} aria-current="page"{% endif %}>Research</a>

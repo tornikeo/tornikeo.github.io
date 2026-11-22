@@ -13,22 +13,22 @@ You are given a colored 3D mesh reconstruction of an indoor space (e.g. a living
 
 Let's get to the example of a living room. The first stage - class label - assigns each vertex (a point in space), one of the predetermined classes (wall, floor, ceiling, chair, etc.). The second stage is actually determining which two points sharing the same *class*, actually are two different *objects*. 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-full" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/5ArYydI.jpg" zoomable=true %}
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     Various stages of the Mask3D segmentation. Notice that on the right-hand panel the two instances of the same class ("sofa") are separated.
 </div>
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col" >
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-full" >
         {% include image_comparison.html src_before="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/BlWeOP8.jpg" label_before="SoftGroup segmentation" src_after="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/vdXtHTB.jpg" label_after="Mask3D segmentation" %}
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     Mask3D segmentation is much more robust than the current state-of-the-art (Softgroup)
 </div>
 
@@ -36,12 +36,12 @@ Let's get to the example of a living room. The first stage - class label - assig
 {% include yt_video.html src="https://www.youtube-nocookie.com/embed/jeo4xKYwoGc" caption="A small, investor-focused showcase of Mask3D segmentation (a small living room)" %}
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo.png" class="img-fluid rounded z-depth-1" zoomable=false %}
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-full" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/dGiiSdo.png" zoomable=false %}
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     The core of the model - Sparse convnet (Minkowski engine) + Decoder transformer.
 </div>
 

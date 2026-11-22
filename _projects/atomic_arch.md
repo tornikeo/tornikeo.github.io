@@ -14,16 +14,16 @@ In this blog, I'll describe how I built a classical computer vision tool for tra
 {% include video.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/aa-raw-compressed.mp4" caption="One example of an input video feed, straight from the microscope." width="70%" %}
 
 This video shows a transfer of a single microscopic flake to a substrate (fancy name for a floor). If you look at this video from the side, you'd see something like below:
-{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-1.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-1.png" zoomable=true %}
 
 The camera starts by looking through a plastic sheet that has a flake attached to it. The sheet is transparent and out of focus, so it is very blurry initially. The plastic sheet is then lowered to the substrate and it then becomes visible. This step looks like this:
 
-{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-2.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-2.png" zoomable=true %}
 
 
 At this point, the flake sticks to the substrate and stays there. The sheet is gently peeled off, leaving the flake in place. This looks like so:
 
-{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-3.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/atomic_arch/image-3.png" zoomable=true %}
 
 You can also read more about this process in [this paper](https://arxiv.org/pdf/1311.4829.pdf). To actually make something useful, you will need to repeat this flake transfer multiple times and build really complex, tiny structures. The unfortunate hard part is that all of this is a really slow, manual process that requires a lot of patience. 
 

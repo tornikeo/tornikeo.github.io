@@ -9,20 +9,20 @@ category: projects
 
 When a pharmaceutical company announces a groundbreaking new drug, usually people don't think too hard about all the hard work and funding that went into developing that drug. What people do notice, however, is the *price*. New drugs cost a lot more than the generic over-the-shelf drugs, e.g aspirin. This is because the pharma has to cover the development expenses -- including making sure that the drug is safe for human consumption. 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/OeCjQCn.jpeg" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/OeCjQCn.jpeg" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             The network gradually learns complex molecular patterns by combining basic shapes (from deeptox)
         </div>
     </div>
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="assets/img/tox21-model-arch.png" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="assets/img/tox21-model-arch.png" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             The winning architecture is a dense neural network with over 1 million parameters
         </div>
     </div>
-    <div class="caption" >
+    <div class="text-center text-sm text-muted-foreground" >
         Images from <a href="https://paperswithcode.com/dataset/tox21-1">PapersWithCode</a>
     </div>
 </div>
@@ -30,18 +30,18 @@ When a pharmaceutical company announces a groundbreaking new drug, usually peopl
 That last part is what the `Tox21` dataset is all about. As you might have already guessed, the dataset is about predicting the toxicity of new drugs. Whether or not the drugs actually *do* work is a whole 'nother field, and `Tox21` doesn't touch that. 
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://www.ris.world/wp-content/uploads/2020/06/ECHA-animal-testing-alternatives-report-for-REACH-regulation-2020_wrbm_large-300x183.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="https://www.ris.world/wp-content/uploads/2020/06/ECHA-animal-testing-alternatives-report-for-REACH-regulation-2020_wrbm_large-300x183.jpg" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             <i>In vitro (meaning in glass, or in the glass) studies are performed with microorganisms, cells, or biological molecules outside their normal biological context...</i>
             <br>
                 -- <a href="https://en.wikipedia.org/wiki/In_vitro"> wikipedia</a >
         </div>
     </div>
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wistar_rat.jpg/300px-Wistar_rat.jpg" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Wistar_rat.jpg/300px-Wistar_rat.jpg" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             <i>Animal testing, also known as animal experimentation, animal research, and in vivo testing, is the use of non-human animals in experiments that seek to control the variables that affect the behavior or biological system under study...</i>
             <br>
                 -- <a href="https://en.wikipedia.org/wiki/Animal_testing"> wikipedia</a >
@@ -76,13 +76,13 @@ In this *grossly* incorrect sample table, we have two chemicals (aspirin and adr
 
 The problem is, most of these interactions are missing. In fact, out of the possible 13.9 million interactions, we only have access to 3.7 (a mere 25.5% coverage!).
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-8 mt-3 mt-md-0" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/AluU5Um.png" class="img-fluid rounded z-depth-1" zoomable=true %}
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-4 sm:col-start-2" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/AluU5Um.png" zoomable=true %}
 
     </div>
 </div>        
-<div class="caption">
+<div class="text-center text-sm text-muted-foreground">
     Ratio of known and unknown chemical-assay pairs. Total - 13.9 Mln. pairs. 
 </div>
 
@@ -99,7 +99,7 @@ Initially I was handed a dataset of interactions (described above) and another d
 | 8830 | 61949-76-6 |    40326 | 390.079  |  6.13  |  35.53 |       0 |       0 |       0 |       0 |       0 |
 {:.table}
 
-<div class="caption">
+<div class="text-center text-sm text-muted-foreground">
     This 8.8k row dataset contains a chemical-id (CAS Number, to be precise) and a whole lot of chemical features (including moleclar weight and various sparse fingerprint columns). 
 </div>
 
@@ -114,7 +114,7 @@ The V1 to V1075 column names are not helpful at all. To make sense of these colu
 | V1074 | ClC1C(Br)CCC1 |
 | V1075 | BrC1C(Br)CCC1 |
 {:.table}
-<div class="caption">
+<div class="text-center text-sm text-muted-foreground">
     First 10 columns contain various chemical IDs (PubChemID, CASN), macro-molecular descriptors (Molecular weight, Chemical XLogP, etc.). The rest 1000+ columns are fully sparse *does-this-specific-pattern-occur-in-the-chemical* kind of binary values. 
 </div>
 

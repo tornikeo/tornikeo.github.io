@@ -11,8 +11,8 @@ category: projects
 Written by: [@tornikeo](https://github.com/tornikeo) and [@GPT3](https://openai.com/api/)
 
 
-<div class="row mt-3" class="center-role-form">
-    <div class="col-12" >
+<div class="mx-auto max-w-full">
+    <div class="min-w-0 sm:col-span-full" >
         <iframe src="https://tornikeo.com/holistic-mediapipe/" 
         height="900" width="1200"  allow="camera" allowfullscreen frameborder="0"
         style="
@@ -24,7 +24,7 @@ Written by: [@tornikeo](https://github.com/tornikeo) and [@GPT3](https://openai.
         ></iframe>
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     The embeddable iframe allows any casual user to 
     use pose estimation within their web-app, for free!
 </div>

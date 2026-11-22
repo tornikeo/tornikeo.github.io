@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 import Autoplay from "embla-carousel-autoplay"
 
 import { Button } from "@/components/ui/button"
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious,
   type CarouselApi,
@@ -23,7 +24,6 @@ export function PortraitGallery({ photos }: { photos: ProfilePhoto[] }) {
     delay: 8500,
     playOnInit: !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     stopOnMouseEnter: true,
-    stopOnInteraction: true,
   }))
 
   const connect = useCallback((carouselApi: CarouselApi) => {
@@ -33,54 +33,59 @@ export function PortraitGallery({ photos }: { photos: ProfilePhoto[] }) {
 
   useEffect(() => {
     if (!api) return
-
-    const selectPhoto = () => setSelected(api.selectedScrollSnap())
-    const startPlayback = () => setPlaying(true)
-    const stopPlayback = () => setPlaying(false)
-    api.on("select", selectPhoto)
-    api.on("autoplay:play", startPlayback)
-    api.on("autoplay:stop", stopPlayback)
-
+    const start = () => setPlaying(true)
+    const stop = () => setPlaying(false)
+    const select = () => setSelected(api.selectedScrollSnap())
+    api.on("autoplay:play", start).on("autoplay:stop", stop)
+    api.on("select", select)
     return () => {
-      api.off("select", selectPhoto)
-      api.off("autoplay:play", startPlayback)
-      api.off("autoplay:stop", stopPlayback)
+      api.off("autoplay:play", start).off("autoplay:stop", stop).off("select", select)
     }
   }, [api])
 
-  const photo = photos[selected]
-
   return (
-    <Carousel
-      aria-label="Profile photos"
-      className="grid min-w-0 gap-3"
-      opts={{ loop: true, breakpoints: { "(prefers-reduced-motion: reduce)": { duration: 0 } } }}
-      plugins={[autoplay]}
-      setApi={connect}
-    >
-      <CarouselContent>
-        {photos.map((slide, index) => (
-          <CarouselItem
-            key={slide.image}
-            aria-label={`${index + 1} of ${photos.length}`}
-            aria-hidden={index !== selected}
-          >
-            <img
-              src={slide.image}
-              alt={slide.alt}
-              loading={index === 0 ? "eager" : "lazy"}
-              draggable={false}
-              className="h-[min(50dvh,28rem)] w-full rounded-md bg-muted object-contain"
-            />
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <CarouselPrevious className="static m-0" onClickCapture={() => autoplay.stop()} />
-          <CarouselNext className="static m-0" onClickCapture={() => autoplay.stop()} />
-          <span className="text-xs tabular-nums text-muted-foreground">{selected + 1} / {photos.length}</span>
-        </div>
+    <>
+      <div className="px-6 sm:px-12">
+        <Carousel
+          aria-label="Profile photos"
+          className="w-full"
+          opts={{ loop: true, breakpoints: { "(prefers-reduced-motion: reduce)": { duration: 0 } } }}
+          plugins={[autoplay]}
+          setApi={connect}
+        >
+          <CarouselContent>
+            {photos.map((photo, index) => (
+              <CarouselItem key={photo.image} inert={index !== selected}>
+                <div className="p-1">
+                  <Card>
+                    <img
+                      src={photo.image}
+                      alt={photo.alt}
+                      draggable={false}
+                      className="h-[min(42dvh,24rem)] w-full bg-muted object-contain"
+                    />
+                    <CardHeader>
+                      <CardTitle>{photo.title}</CardTitle>
+                      <CardDescription>
+                        {photo.story}
+                        {photo.link && (
+                          <>
+                            {" "}
+                            <a className="underline underline-offset-4" href={photo.link.href}>{photo.link.label}</a>
+                          </>
+                        )}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="-left-7 sm:-left-12" onClickCapture={() => autoplay.stop()} />
+          <CarouselNext className="-right-7 sm:-right-12" onClickCapture={() => autoplay.stop()} />
+        </Carousel>
+      </div>
+      <div className="flex justify-end">
         <Button
           variant="outline"
           size="sm"
@@ -90,15 +95,6 @@ export function PortraitGallery({ photos }: { photos: ProfilePhoto[] }) {
           {playing ? "Pause slideshow" : "Play slideshow"}
         </Button>
       </div>
-      <div aria-live={playing ? "off" : "polite"} className="grid gap-1">
-        <h2 className="font-medium">{photo.title}</h2>
-        <p className="text-muted-foreground">{photo.story}</p>
-        {photo.link && (
-          <a className="w-fit underline underline-offset-4" href={photo.link.href}>
-            {photo.link.label}
-          </a>
-        )}
-      </div>
-    </Carousel>
+    </>
   )
 }

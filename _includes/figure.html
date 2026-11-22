@@ -1,13 +1,14 @@
-{%- assign path = include.path | remove: ".jpg" | remove: ".jpeg" | remove: ".png" | remove: ".tiff" -%}
-
+{% assign image_url = include.path | relative_url %}
+{% assign image_label = include.alt | default: include.caption | default: page.title | strip_html %}
 <figure>
-
-  <picture>
-    <!-- {% for i in site.imagemagick.widths -%}
-      <source media="(max-width: {{ i }}px)" srcset="{{ path | relative_url }}-{{ i }}.webp" />
-    {% endfor -%} -->
-    <!-- Fallback to the original file -->
-    <img {% if include.class %}class="{{ include.class }}"{% endif %} src="{{ include.path | relative_url }}" {% if include.alt %}alt="{{ include.alt }}"{% endif %} {% if include.title %}title="{{ include.title }}"{% endif %} {% if include.zoomable %}data-zoomable{% endif %} />
-  </picture>
-  {%- if include.caption -%}<figcaption class="caption">{{ include.caption }}</figcaption>{%- endif %}
+  {% if include.zoomable %}
+    <div data-image-zoom>
+      <a href="{{ image_url }}" aria-label="Enlarge image">
+        <img class="mx-auto max-w-full rounded-lg" src="{{ image_url }}" alt="{{ image_label | escape }}" loading="lazy">
+      </a>
+    </div>
+  {% else %}
+    <img class="mx-auto max-w-full rounded-lg" src="{{ image_url }}" alt="{{ image_label | escape }}" loading="lazy">
+  {% endif %}
+  {% if include.caption %}<figcaption class="text-center">{{ include.caption }}</figcaption>{% endif %}
 </figure>

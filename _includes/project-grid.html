@@ -1,0 +1,24 @@
+<ul class="grid gap-4 sm:grid-cols-2">
+  {% for project in include.projects %}
+    {% assign project_href = project.redirect | default: project.url | relative_url %}
+    {% assign thumbnail = project.img | default: project.video %}
+    <li class="min-w-0">
+      <article class="h-full" data-resource-card>
+        <div class="h-full overflow-hidden rounded-xl border">
+          {% if thumbnail %}
+            <div data-resource-media>
+              {% include media-thumb.html path=thumbnail alt=project.title %}
+            </div>
+          {% endif %}
+          <div class="space-y-2 p-4">
+            <h3 class="font-medium" data-resource-title><a href="{{ project_href }}">{{ project.title | escape }}</a></h3>
+            <p class="text-sm text-muted-foreground" data-resource-description>{{ project.description | escape }}</p>
+            {% if project.github %}
+              <div data-resource-links><a class="text-sm underline underline-offset-4" href="{{ project.github }}">Source code</a></div>
+            {% endif %}
+          </div>
+        </div>
+      </article>
+    </li>
+  {% endfor %}
+</ul>

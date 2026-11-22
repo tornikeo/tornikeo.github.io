@@ -12,9 +12,6 @@ layout: parse
   <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
   <link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/favicon/apple-touch-icon.png' | relative_url }}">
-  {%- unless page.layout == 'post' or page.modern -%}
-    {% include legacy-styles.html %}
-  {%- endunless -%}
   {% for css in site.data.shadcn_assets.styles %}
     <link rel="stylesheet" href="{{ css | relative_url }}">
   {% endfor %}
@@ -38,25 +35,16 @@ layout: parse
     </script>
   {% endif %}
 </head>
-<body class="min-h-screen">
+<body class="flex min-h-screen flex-col">
   <a class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:border focus:bg-background focus:p-2" href="#main">Skip to content</a>
   {% include site-header.html %}
-  <main id="main" class="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12" tabindex="-1">
+  <main id="main" class="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-12" tabindex="-1">
     {{ content }}
   </main>
-  {%- unless page.url == '/' -%}
-    {% include site-footer.html %}
-  {%- endunless -%}
-
-  {%- unless page.layout == 'post' or page.modern -%}
-    {% include scripts/jquery.html %}
-    {% include scripts/bootstrap.html %}
-    {% include scripts/masonry.html %}
-    {% include scripts/misc.html %}
-  {%- endunless -%}
-  {%- unless page.modern -%}
+  {% include site-footer.html %}
+  {% if page.layout == 'post' or page.collection == 'projects' %}
     {% include scripts/mathjax.html %}
-  {%- endunless -%}
+  {% endif %}
   {% include scripts/analytics.html %}
 </body>
 </html>

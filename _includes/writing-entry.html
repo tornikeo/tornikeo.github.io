@@ -3,13 +3,13 @@
 {% unless entry_url contains '://' %}
   {% assign entry_url = entry_url | relative_url %}
 {% endunless %}
-<li>
-  <a class="flex items-start justify-between gap-3 p-4 hover:bg-muted/50 focus-visible:-outline-offset-2 focus-visible:outline-2" href="{{ entry_url }}">
+<li data-blog-entry>
+  <a class="flex items-start justify-between gap-3 rounded-lg border p-4 hover:bg-muted/50 focus-visible:-outline-offset-2 focus-visible:outline-2" href="{{ entry_url }}">
     <div class="space-y-1">
-    <time class="text-xs text-muted-foreground" datetime="{{ entry.date | date: '%Y-%m-%d' }}">{{ entry.date | date: '%b %-d, %Y' }}</time>
-      <p class="font-medium">{{ entry.title | escape }}</p>
+      <time class="text-xs text-muted-foreground" datetime="{{ entry.date | date: '%Y-%m-%d' }}">{{ entry.date | date: '%b %-d, %Y' }}</time>
+      <p class="font-medium" data-blog-title>{{ entry.title | escape }}</p>
       {% if include.summary and entry.description %}
-        <p class="text-sm text-muted-foreground">{{ entry.description | escape }}</p>
+        <p class="text-sm text-muted-foreground" data-blog-description>{{ entry.description | escape }}</p>
       {% endif %}
     </div>
     <span class="shrink-0 text-muted-foreground" aria-hidden="true">↗</span>

@@ -1,20 +1,14 @@
-{%- assign path = include.path -%}
-
 <figure>
-
-  <!-- <img {% if include.class %}class="{{ include.class }}"{% endif %} src="{{ include.path | relative_url }}" {% if include.alt %}alt="{{ include.alt }}"{% endif %} {% if include.title %}title="{{ include.title }}"{% endif %} {% if include.zoomable %}data-zoomable{% endif %} /> -->
-
-  <div class="row mt-3" class="center-role-form">
-    <div class="col-12">
-      <iframe src="{{ include.path | relative_url }}" 
-        height="{{ include.height | default: 900}}"
-        width="{{ include.width | default: 1200}}" 
-        allow="camera" 
-        allowfullscreen 
-        frameborder="0" 
-        style="{{ include.style }}"></iframe>
-    </div>
-  </div>
-
-  {%- if include.caption -%}<figcaption class="caption">{{ include.caption }}</figcaption>{%- endif %}
+  <iframe
+    class="w-full max-w-full rounded-lg border"
+    src="{{ include.path | relative_url }}"
+    title="{{ include.title | default: page.title | escape }}"
+    height="{{ include.height | default: 900 }}"
+    width="{{ include.width | default: '100%' }}"
+    loading="lazy"
+    allow="camera"
+    allowfullscreen
+    {% if include.style %}style="{{ include.style }}"{% endif %}>
+  </iframe>
+  {% if include.caption %}<figcaption class="text-center">{{ include.caption }}</figcaption>{% endif %}
 </figure>

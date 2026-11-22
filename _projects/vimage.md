@@ -8,9 +8,9 @@ category: large projects
 ---
 
 <figure>
-  <div class="row" class="center-role-form">
-    <div class="col">
-      <video loop="loop" autoplay playsinline muted id="mejs_6833802707345928_html5" preload="none" src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-cropped-tiny.webm" style="margin: 0px; width: 100%; height: 100%;">
+  <div class="mx-auto max-w-full">
+    <div class="min-w-0 sm:col-span-full">
+      <video class="mx-auto max-w-full rounded-lg" controls loop="loop" autoplay playsinline muted id="mejs_6833802707345928_html5" preload="none" src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-cropped-tiny.webm" style="margin: 0px; width: 100%; height: 100%;">
       </video>
     </div>
   </div>
@@ -18,7 +18,7 @@ category: large projects
 
 [VIMAGE](https://play.google.com/store/apps/details?id=com.vimage.android&hl=en&gl=US) is an early image-to-video AI application, with over **10 million** total downloads on Google Play. It is primarily built by a group of just 5 people (as of March 6, 2023). An overview of the app's capabilities is shown in this promotional video:
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU?si=7DdMSeO9z32Bgg9l" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe class="aspect-video w-full rounded-lg" width="560" height="315" src="https://www.youtube-nocookie.com/embed/whD3l0YXIEU?si=7DdMSeO9z32Bgg9l" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 The app works by decomposing an uploaded image into two parts: foreground and background, and manipulating the two parts to add effects like a parallax. Even though the technology behind this is simple, the results (as seen above) look quite impressive.
 
@@ -29,12 +29,12 @@ The core of the project consists of the following three parts:
 - Creating an accurate depth map of the input RGB image  
 - Deciding which pixels fall within the background and which within the foreground
 
-<div class="row">
-    <div class="col" >
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-full" >
         {% include image_comparison.html style="width: 500px;" src_before="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/4r6AxEC.png" label_before="Depth map" src_after="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Z78wJUV.png" label_after="Raw image" %}
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     Creating an accurate depth map from an RGB image is a very important step in background separation.
 </div>
 

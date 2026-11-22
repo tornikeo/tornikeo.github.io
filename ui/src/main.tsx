@@ -4,6 +4,8 @@ import { SiteNavigation } from "@/navigation"
 import { Profile } from "@/profile"
 import type { SiteLink } from "@/profile"
 import type { ProfilePhoto } from "@/portrait-gallery"
+import { enhanceProjectMedia } from "@/project-media"
+import { enhanceSiteContent } from "@/site-content"
 import "./index.css"
 
 function readLinks(container: Element | null): SiteLink[] {
@@ -48,3 +50,6 @@ if (profile && bio) {
     )
   }
 }
+
+enhanceSiteContent()
+enhanceProjectMedia()

@@ -26,7 +26,7 @@ With SAM2, it is now possible to reliably track objects and people in a video.
 
 Suppose we want to highlight a group of three people for a presentation.
 
-{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/airport_selection.png" class="img-fluid rounded z-depth-1" zoomable=false caption="Example initial frame with the selection of three highlighted people." %}
+{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/airport_selection.png" zoomable=false caption="Example initial frame with the selection of three highlighted people." %}
 
 The tool allows automatic tracking of selected objects and is robust against occlusion (occlusion is when an object is temporarily hidden from sight). For instance, the above airport scene, in a few simple clicks, can become this:
 
@@ -42,4 +42,4 @@ With just a few clicks, we select three guards and proceed with tracking. We rem
 
 Using this video editing tool is easy. Selecting a face and tracking it can be done with just a few mouse clicks. A button allows for the selection of all items of interest. For the above video, we only needed 12 clicks (marked on the timeline as blue, orange, and cyan dots) to select the three guards. The interface allows for easy visualization and correction of the marks.
 
-{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/trump_tower_gui.png" class="img-fluid rounded z-depth-1" zoomable=false caption="Example of the graphical application that allows tracking objects inside a video—in this case, we needed only 12 clicks for the three guards." %}
+{% include figure.html path="https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/trump_tower_gui.png" zoomable=false caption="Example of the graphical application that allows tracking objects inside a video—in this case, we needed only 12 clicks for the three guards." %}

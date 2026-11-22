@@ -10,12 +10,12 @@ category: personal
 Well, since I'm working on making attentional style transfer [model](https://github.com/GlebSBrykin/SANET/tree/master/style) smaller and faster by replacing the VGGs with much faster MobileNets, I thought it would make it easier to avoid potential bugs by first doing a similar replacement in a much easier task - deep dream.
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-8 mt-3 mt-md-0" >
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-4 sm:col-start-2" >
         <iframe src="https://tornikeo.com/embed-deepdream" height="805px" width="550px" frameborder="0" allowfullscreen></iframe>
     </div>
 </div>
-<div class="caption" >
+<div class="text-center text-sm text-muted-foreground" >
     Interactive deepdream (Based on MobileNetV2's deep features)
 </div>
 
@@ -35,20 +35,20 @@ for i in range(100):
 The end-result is a `1,512,512,3` tensor that excites `VGG19` `relu4_1` and `relu5_1` layers the most. But that's not interesting. What's mind-blowing though, is that the end-result looks like a surreal dream:
 
 
-<div class="row mt-3" style="justify-content:center;">
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6.png" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+<div class="grid gap-4 sm:grid-cols-6">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/Vv9MkE6.png" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             Original image
         </div>
     </div>
-    <div class="col-sm-6 mt-3 mt-md-0" >
-        {% include figure.html path="assets/img/deepdream-monke.png" class="img-fluid rounded z-depth-1" zoomable=true %}
-        <div class="caption">
+    <div class="min-w-0 sm:col-span-3" >
+        {% include figure.html path="assets/img/deepdream-monke.png" zoomable=true %}
+        <div class="text-center text-sm text-muted-foreground">
             Resulting image
         </div>
     </div>
-    <div class="caption" >
+    <div class="text-center text-sm text-muted-foreground" >
         Images from pytorch <a href="https://www.kaggle.com/paultimothymooney/pre-trained-pytorch-monkeys-a-deep-dream">implementation</a>
     </div>
 </div>
