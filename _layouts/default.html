@@ -26,10 +26,12 @@ layout: parse
 <body class="personal-site">
   <a class="skip-link" href="#main">Skip to content</a>
   {% include site-header.html %}
-  <main id="main" class="site-width{% unless page.modern %} reading-width{% endunless %}" tabindex="-1">
+  <main id="main" class="site-width" tabindex="-1">
     {{ content }}
   </main>
-  {% include site-footer.html %}
+  {%- unless page.url == '/' -%}
+    {% include site-footer.html %}
+  {%- endunless -%}
 
   {%- unless page.layout == 'post' or page.modern -%}
     {% include scripts/jquery.html %}

@@ -94,7 +94,7 @@ module Tornikeo
         "-size", "#{WIDTH}x#{HEIGHT}", "xc:#f7f6f2",
         "-fill", "#d9d8d3", "-stroke", "none", "-draw", "roundrectangle 72,58 1144,590 30,30",
         "-fill", "#ffffff", "-draw", "roundrectangle 56,42 1128,574 30,30",
-        "-fill", "#2a46c7", "-draw", "circle 96,92 108,92",
+        "-fill", "#3c5c4f", "-draw", "circle 96,92 108,92",
         "-fill", "#171a24", "-font", "Arimo-Bold", "-pointsize", "22", "-draw", "text 124,101 'TORNIKEO.COM'",
         "-fill", "#535665", "-font", "Arimo-Regular", "-pointsize", "19", "-draw", "text 970,100 'WRITING'",
         "-fill", "#d9d8d3", "-draw", "rectangle 88,132 1096,134",

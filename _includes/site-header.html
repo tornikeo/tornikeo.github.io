@@ -1,12 +1,9 @@
 <header class="site-header">
   <div class="site-width header-inner">
-    <a class="wordmark" href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>
-      <span class="wordmark-mark" aria-hidden="true"></span>tornikeo
-    </a>
+    <a class="wordmark" href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>tornikeo.com</a>
     <nav class="site-nav" aria-label="Main">
-      <a href="{{ '/' | relative_url }}#work">Work</a>
+      <a href="{{ '/projects/' | relative_url }}"{% if page.url == '/projects/' %} aria-current="page"{% elsif page.url contains '/projects/' %} aria-current="location"{% endif %}>Projects</a>
       <a href="{{ '/blog/' | relative_url }}"{% if page.url == '/blog/' or page.url == '/blog/index.html' %} aria-current="page"{% elsif page.url contains '/blog/' or page.layout == 'post' %} aria-current="location"{% endif %}>Writing</a>
-      <a href="{{ '/' | relative_url }}#contact">Contact</a>
     </nav>
     {% if site.enable_darkmode %}
       <button type="button" id="light-toggle" class="theme-toggle" aria-label="Dark mode" aria-pressed="false">
