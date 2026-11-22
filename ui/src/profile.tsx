@@ -83,7 +83,6 @@ function Name({ name, pronunciation }: Pick<ProfileProps, "name" | "pronunciatio
           variant="ghost"
           className="h-auto justify-start px-2 py-1 text-left text-2xl font-semibold tracking-tight whitespace-normal sm:text-3xl"
           onClick={play}
-          onPointerEnter={(event) => { if (event.pointerType === "mouse") play() }}
           aria-label={`${name}: play pronunciation`}
         >
           {name}
