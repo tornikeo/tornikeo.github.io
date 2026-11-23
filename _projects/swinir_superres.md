@@ -3,6 +3,7 @@ layout: page
 title: Image Super-Resolution
 description: 4x image upscaling with SwinIR.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/ahwKchR.mp4
+preview: /assets/img/project-previews/swinir_superres.webp
 importance: 3
 category: personal
 ---

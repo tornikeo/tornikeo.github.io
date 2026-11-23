@@ -16,3 +16,5 @@ store/
 
 /assets/shadcn/
 /_data/shadcn_assets.json
+
+/ui/dist/

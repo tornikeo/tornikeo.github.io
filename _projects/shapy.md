@@ -3,6 +3,7 @@ layout: page
 title: 3D Body Shape Estimation from Video
 description: Estimate body shape from video with your phone.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/eLcAtDA.mp4
+preview: /assets/img/project-previews/shapy.webp
 importance: 5
 category: projects
 ---

@@ -3,6 +3,7 @@ layout: page
 title: 2D Material Detection for Robotic Control
 description: Automate 2D material detection for robotics.
 video: https://raw.githubusercontent.com/tornikeo/cdn/master/assets/atomic_arch/atomic-arch-thum.svg
+preview: /assets/img/project-previews/atomic_arch.svg
 importance: 2
 category: large projects
 ---

@@ -1,15 +1,15 @@
-import { createRoot } from "react-dom/client"
+import { renderToStaticMarkup } from "react-dom/server"
 import { ArrowUpRightIcon, ChevronDownIcon } from "lucide-react"
 
-import { Button, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { cn } from "cn"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
 import {
   Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export function enhanceSiteContent() {
+export function renderSiteContent(document: Document) {
   for (const article of document.querySelectorAll("[data-resource-card]")) {
     // Preserve the HTML Jekyll rendered from project and bibliography sources.
     const title = article.querySelector("[data-resource-title]")?.innerHTML ?? ""
@@ -21,7 +21,7 @@ export function enhanceSiteContent() {
       html: detail.querySelector("[data-details-content]")?.innerHTML ?? "",
     }))
 
-    createRoot(article).render(
+    article.innerHTML = renderToStaticMarkup(
       <Card className={media ? "h-full pt-0" : "h-full"}>
         {media && <div dangerouslySetInnerHTML={{ __html: media }} />}
         <CardHeader>
@@ -33,14 +33,12 @@ export function enhanceSiteContent() {
         {details.length > 0 && (
           <CardContent className="space-y-1">
             {details.map(({ label, html }) => (
-              <Collapsible key={label}>
-                <CollapsibleTrigger render={<Button variant="ghost" size="sm" className="group/trigger" />}>
-                  {label}<ChevronDownIcon className="group-data-panel-open/trigger:rotate-180" />
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <div className="prose prose-neutral mt-2 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: html }} />
-                </CollapsibleContent>
-              </Collapsible>
+              <details key={label} className="group/disclosure">
+                <summary className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "cursor-pointer list-none [&::-webkit-details-marker]:hidden")}>
+                  {label}<ChevronDownIcon className="group-open/disclosure:rotate-180" aria-hidden="true" />
+                </summary>
+                <div className="prose prose-neutral mt-2 max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: html }} />
+              </details>
             ))}
           </CardContent>
         )}
@@ -49,10 +47,10 @@ export function enhanceSiteContent() {
             {links.map((link) => (
               <a
                 key={link.textContent}
-                href={link.href}
+                href={link.getAttribute("href") ?? ""}
                 target={link.target || undefined}
                 rel={link.rel || undefined}
-                className={buttonVariants({ variant: "outline", size: "sm" })}
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
               >
                 {link.textContent}
               </a>
@@ -72,7 +70,7 @@ export function enhanceSiteContent() {
       dateTime: entry.querySelector("time")?.dateTime,
     }))
 
-    createRoot(list).render(posts.map((post) => (
+    list.innerHTML = renderToStaticMarkup(posts.map((post) => (
       <li key={post.href}>
         <Item variant="outline" render={<a href={post.href} />}>
           <ItemContent className="min-w-0">
@@ -88,13 +86,13 @@ export function enhanceSiteContent() {
 
   for (const container of document.querySelectorAll("[data-blog-pagination]")) {
     const links = Array.from(container.querySelectorAll("a, [aria-current=page]"), (link) => ({
-      href: link.getAttribute("href") ?? window.location.pathname,
+      href: link.getAttribute("href") ?? container.getAttribute("data-current-url") ?? "",
       rel: link.getAttribute("rel"),
       label: link.textContent.trim(),
       current: link.hasAttribute("aria-current"),
     }))
 
-    createRoot(container).render(
+    container.innerHTML = renderToStaticMarkup(
       <Pagination aria-label="Blog pages">
         <PaginationContent className="flex-wrap justify-center">
           {links.map((link) => (

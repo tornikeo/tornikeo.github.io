@@ -12,6 +12,9 @@ layout: parse
   <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
   <link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/favicon/apple-touch-icon.png' | relative_url }}">
+  {% if site.data.shadcn_assets.font %}
+    <link rel="preload" href="{{ site.data.shadcn_assets.font | relative_url }}" as="font" type="font/woff2" crossorigin>
+  {% endif %}
   {% for css in site.data.shadcn_assets.styles %}
     <link rel="stylesheet" href="{{ css | relative_url }}">
   {% endfor %}
@@ -21,17 +24,23 @@ layout: parse
   <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_light | append: '.css' | relative_url }}" id="highlight_theme_light">
   {% if site.enable_darkmode %}
     <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_dark | append: '.css' | relative_url }}" media="none" id="highlight_theme_dark">
-    <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
-    <script>
-      const syncShadcnTheme = () => {
+    <script id="site-theme">
+      (() => {
         const root = document.documentElement;
-        root.classList.toggle("dark", root.dataset.theme === "dark");
-      };
-      syncShadcnTheme();
-      window.toggleSiteTheme = () => {
-        toggleTheme(document.documentElement.dataset.theme);
-        syncShadcnTheme();
-      };
+        const apply = (dark) => {
+          root.classList.toggle("dark", dark);
+          document.getElementById("highlight_theme_light").media = dark ? "none" : "all";
+          document.getElementById("highlight_theme_dark").media = dark ? "all" : "none";
+        };
+        let saved;
+        try { saved = localStorage.getItem("theme"); } catch {}
+        apply(saved === "dark" || (saved !== "light" && matchMedia("(prefers-color-scheme: dark)").matches));
+        window.toggleSiteTheme = () => {
+          const dark = !root.classList.contains("dark");
+          apply(dark);
+          try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch {}
+        };
+      })();
     </script>
   {% endif %}
 </head>
@@ -42,7 +51,7 @@ layout: parse
     {{ content }}
   </main>
   {% include site-footer.html %}
-  {% if page.layout == 'post' or page.collection == 'projects' %}
+  {% if content contains '\[' or content contains '\(' or content contains 'math/tex' %}
     {% include scripts/mathjax.html %}
   {% endif %}
   {% include scripts/analytics.html %}

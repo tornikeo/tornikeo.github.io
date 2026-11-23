@@ -3,6 +3,7 @@ layout: page
 title: 3D Mesh Segmentation
 description: Segment indoor 3D spaces with transformers.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/TV10o0g.mp4
+preview: /assets/img/project-previews/cloudseg.webp
 importance: 5
 category: large projects
 ---

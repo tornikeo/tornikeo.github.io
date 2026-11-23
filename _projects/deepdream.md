@@ -3,6 +3,7 @@ layout: page
 title: Deep Dream with TFJS
 description: Deepdream images in your browser for free.
 img: assets/img/deepdream-monke.png
+preview: /assets/img/project-previews/deepdream.webp
 importance: 20
 category: personal
 ---

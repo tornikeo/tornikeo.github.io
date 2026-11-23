@@ -1,6 +1,6 @@
 # tornikeo.com
 
-The shadcn interface uses the stock Nova preset with Base UI. Jekyll renders the pages and archives. Vite builds the interface assets from `ui/`.
+The shadcn interface uses the stock Nova preset with Base UI. Jekyll renders the pages and archives. Vite builds the interface assets and the build-time shadcn renderer from `ui/`. The published HTML already contains the shadcn layout, and the browser loads the interactive gallery and image tools on demand.
 
 With Node.js 22 and the site’s Ruby gems installed, run:
 

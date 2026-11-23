@@ -3,6 +3,7 @@ layout: page
 title: "SimMS: GPU-Accelerated Cosine Similarity"
 description: Fast chemical search with GPU cosine similarity.
 img: https://raw.githubusercontent.com/tornikeo/cdn/master/assets/cosine_greedy/cosine-batch-thum.svg
+preview: /assets/img/project-previews/cosine_greedy.svg
 importance: 1
 category: large projects
 ---

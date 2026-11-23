@@ -3,6 +3,7 @@ layout: page
 title: Lightweight Pose Estimation with Mediapipe
 description: Full-body pose estimation using Mediapipe.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/gvVCAmX.mp4
+preview: /assets/img/project-previews/pose_estim.webp
 importance: 1
 category: projects
 ---

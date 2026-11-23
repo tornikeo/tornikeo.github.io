@@ -4,9 +4,9 @@ title: "Time and risk"
 description: The shifting optimum for getting rich equation 
 ---
 
-$$
-Money = Time \times Risk
-$$
+<math display="block" class="my-6">
+  <mrow><mi>Money</mi><mo>=</mo><mi>Time</mi><mo>×</mo><mi>Risk</mi></mrow>
+</math>
 
 In other words, to get $100, you have two options: find a job and work or buy a lottery ticket. The latter requires less time and is very likely to fail (fast, high risk), whereas the former is much more likely to get you to $100 by the end of the month (slow, low risk).
 

@@ -1,8 +1,8 @@
 {% assign extension = include.path | split: '.' | last | downcase %}
 <div class="relative aspect-video overflow-hidden bg-muted">
   {% if extension == "mp4" or extension == "webm" or extension == "ogg" %}
-    <video class="absolute inset-0 size-full object-contain" src="{{ include.path | relative_url }}" muted playsinline controls preload="metadata" aria-label="{{ include.alt | escape }}"></video>
+    <video class="absolute inset-0 size-full object-contain" src="{{ include.path | relative_url }}" {% if include.preview %}poster="{{ include.preview | relative_url }}"{% endif %} muted playsinline controls preload="none" aria-label="{{ include.alt | escape }}"></video>
   {% else %}
-    <img class="absolute inset-0 size-full object-contain" src="{{ include.path | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
+    <img class="absolute inset-0 size-full object-contain" src="{{ include.preview | default: include.path | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
   {% endif %}
 </div>

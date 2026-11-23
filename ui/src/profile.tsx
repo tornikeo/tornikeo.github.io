@@ -1,21 +1,15 @@
-import { useRef, useState } from "react"
 import { ArrowUpRightIcon, Volume2Icon } from "lucide-react"
+import { cn } from "cn"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-import {
-  Dialog, DialogContent, DialogDescription, DialogHeader,
-  DialogTitle, DialogTrigger,
-} from "@/components/ui/dialog"
-import { PortraitGallery, type ProfilePhoto } from "@/portrait-gallery"
 
 export type SiteLink = { label: string; href: string; current?: "page" | "location" }
-
 type ProfileProps = {
   name: string
   avatar: string
-  photos: ProfilePhoto[]
+  firstPhoto: string
   caption: string
   date: string
   dateLabel: string
@@ -24,26 +18,20 @@ type ProfileProps = {
   contacts: SiteLink[]
 }
 
-function Portrait({ name, avatar, photos, caption, date, dateLabel }: ProfileProps) {
-  const title = useRef<HTMLHeadingElement>(null)
-
+function Portrait({ name, avatar, firstPhoto, caption, date, dateLabel }: ProfileProps) {
   return (
     <figure className="shrink-0">
-      <Dialog>
-        <DialogTrigger aria-label={`View profile photos of ${name}`} className="rounded-full focus-visible:outline-2">
-          <Avatar className="size-16">
-            <AvatarImage src={avatar} alt="" className="object-[center_64%]" />
-            <AvatarFallback>TO</AvatarFallback>
-          </Avatar>
-        </DialogTrigger>
-        <DialogContent initialFocus={title} className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-2xl">
-          <DialogHeader className="pr-8">
-            <DialogTitle ref={title} tabIndex={-1}>Profile photos</DialogTitle>
-            <DialogDescription className="sr-only">Photos of {name}, with a story for each.</DialogDescription>
-          </DialogHeader>
-          <PortraitGallery photos={photos} />
-        </DialogContent>
-      </Dialog>
+      <a
+        href={firstPhoto}
+        aria-label={`View profile photos of ${name}`}
+        aria-haspopup="dialog"
+        className="inline-flex align-top rounded-full focus-visible:outline-2"
+        data-open-gallery
+      >
+        <Avatar className="size-16">
+          <img src={avatar} width={64} height={64} alt="" className="size-full rounded-full object-cover object-[center_64%]" />
+        </Avatar>
+      </a>
       <figcaption className="mt-2 text-xs text-muted-foreground">
         {caption}<time className="block" dateTime={date}>{dateLabel}</time>
       </figcaption>
@@ -52,16 +40,6 @@ function Portrait({ name, avatar, photos, caption, date, dateLabel }: ProfilePro
 }
 
 function Name({ name, pronunciation }: Pick<ProfileProps, "name" | "pronunciation">) {
-  const player = useRef<HTMLAudioElement>(null)
-  const [playing, setPlaying] = useState(false)
-
-  function play() {
-    const audio = player.current
-    if (!audio?.paused) return
-    audio.currentTime = 0
-    audio.play().catch(() => {})
-  }
-
   if (!pronunciation) return <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{name}</h1>
 
   return (
@@ -69,23 +47,15 @@ function Name({ name, pronunciation }: Pick<ProfileProps, "name" | "pronunciatio
       <h1>
         <Button
           variant="ghost"
-          className="h-auto justify-start px-2 py-1 text-left text-2xl font-semibold tracking-tight whitespace-normal sm:text-3xl"
-          onClick={play}
+          className="group/name h-auto justify-start px-2 py-1 text-left text-2xl font-semibold tracking-tight whitespace-normal sm:text-3xl"
+          data-play-name
           aria-label={`${name}: play pronunciation`}
         >
           {name}
-          <Volume2Icon aria-hidden="true" className={playing ? "motion-safe:animate-pulse" : undefined} />
+          <Volume2Icon className="motion-safe:group-data-playing/name:animate-pulse" aria-hidden="true" />
         </Button>
       </h1>
-      <audio
-        ref={player}
-        src={pronunciation}
-        preload="none"
-        onPlaying={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onEnded={() => setPlaying(false)}
-        onError={() => setPlaying(false)}
-      />
+      <audio src={pronunciation} preload="none" />
     </>
   )
 }
@@ -100,13 +70,13 @@ export function Profile(props: ProfileProps) {
         </div>
       </CardHeader>
       <CardContent>
-        {/* The bio is the same trusted HTML Jekyll rendered in the fallback. */}
+        {/* Only HTML produced by Jekyll at build time is inserted here. */}
         <div className="prose prose-neutral max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: props.bioHtml }} />
       </CardContent>
       <CardFooter>
         <nav className="flex flex-wrap gap-2" aria-label="Contact">
           {props.contacts.map((contact) => (
-            <a key={contact.href} href={contact.href} className={buttonVariants({ variant: "outline" })}>
+            <a key={contact.href} href={contact.href} className={cn(buttonVariants({ variant: "outline" }))}>
               {contact.label}<ArrowUpRightIcon aria-hidden="true" />
             </a>
           ))}

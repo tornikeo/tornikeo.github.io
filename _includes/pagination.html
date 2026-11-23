@@ -1,5 +1,5 @@
 {% if paginator.total_pages > 1 %}
-<div data-blog-pagination>
+<div data-blog-pagination data-current-url="{{ page.url | replace: 'index.html', '' | relative_url }}">
   <nav class="flex flex-wrap items-center justify-center gap-1 text-sm [&_a]:rounded-md [&_a]:px-3 [&_a]:py-2 [&_a:hover]:bg-muted" aria-label="Blog pages">
     {% if paginator.previous_page %}
       <a href="{{ paginator.previous_page_path | relative_url }}" rel="prev">← Newer</a>

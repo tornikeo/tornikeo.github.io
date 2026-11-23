@@ -3,6 +3,7 @@ layout: page
 title: Stable Diffusion in Serverless Mode
 description: Run diffusion models on serverless GPUs.
 video: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/07ylZV6.mp4
+preview: /assets/img/project-previews/serverless_diffusion.webp
 importance: 3
 category: personal
 ---

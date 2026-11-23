@@ -3,6 +3,7 @@ layout: page
 title: Repetition Counting for Fitness
 description: Automatically count reps and sets from video.
 img: https://storage.googleapis.com/tornikeo-portfolio-cdn/imgur/N9opu9d.gif
+preview: /assets/img/project-previews/repnet.webp
 importance: 6
 category: projects
 ---

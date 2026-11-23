@@ -1,11 +1,11 @@
 <div data-image-comparison class="not-prose mx-auto max-w-full" {% if include.style %}style="{{ include.style }}"{% endif %}>
   <figure class="grid grid-cols-2 gap-2">
     <div>
-      <img class="rounded-md" src="{{ include.src_before | relative_url }}" alt="{{ include.label_before | escape }}" loading="lazy">
+      <img class="rounded-md" data-before src="{{ include.src_before | relative_url }}" alt="{{ include.label_before | escape }}" loading="lazy"{% if include.width and include.height %} width="{{ include.width }}" height="{{ include.height }}"{% endif %}>
       <p class="mt-2 text-sm text-muted-foreground">{{ include.label_before | escape }}</p>
     </div>
     <div>
-      <img class="rounded-md" src="{{ include.src_after | relative_url }}" alt="{{ include.label_after | escape }}" loading="lazy">
+      <img class="rounded-md" data-after src="{{ include.src_after | relative_url }}" alt="{{ include.label_after | escape }}" loading="lazy"{% if include.width and include.height %} width="{{ include.width }}" height="{{ include.height }}"{% endif %}>
       <p class="mt-2 text-sm text-muted-foreground">{{ include.label_after | escape }}</p>
     </div>
   </figure>

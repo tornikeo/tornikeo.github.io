@@ -3,6 +3,7 @@ layout: page
 title: Style Attentional Networks in JS
 description: Image stylization with attention in the browser.
 img: assets/img/sanet.jpg
+preview: /assets/img/project-previews/sanet.webp
 importance: 20
 category: personal
 ---

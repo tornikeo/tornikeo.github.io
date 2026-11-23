@@ -7,7 +7,7 @@
         <div class="h-full overflow-hidden rounded-xl border">
           {% if thumbnail %}
             <div data-resource-media>
-              {% include media-thumb.html path=thumbnail alt=project.title %}
+              {% include media-thumb.html path=thumbnail preview=project.preview alt=project.title %}
             </div>
           {% endif %}
           <div class="space-y-2 p-4">

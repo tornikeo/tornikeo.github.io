@@ -4,16 +4,18 @@ import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   base: "./",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: { "@": resolve(import.meta.dirname, "./src") },
   },
-  build: {
+  build: isSsrBuild ? {
+    outDir: "dist/prerender",
+  } : {
     outDir: "../assets/shadcn",
     emptyOutDir: true,
     manifest: true,
-    rolldownOptions: { input: resolve(import.meta.dirname, "src/main.tsx") },
+    rolldownOptions: { input: resolve(import.meta.dirname, "src/runtime.ts") },
   },
-})
+}))

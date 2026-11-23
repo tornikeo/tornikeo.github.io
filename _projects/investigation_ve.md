@@ -3,6 +3,7 @@ layout: page
 title: Investigative Video Editor Powered by Meta SAM2
 description: Blur, track, and edit objects in video.
 video: https://github.com/tornikeo/cdn/raw/master/assets/investigative_ve/thumbnail.webm
+preview: /assets/img/project-previews/investigation_ve.webp
 importance: 2
 category: large projects
 ---
