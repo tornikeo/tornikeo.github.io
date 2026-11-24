@@ -28,7 +28,7 @@ This is what it looks like to run Inkling on an old phone like this.
 
 Prefill, which means the AI is reading the text, is quite slow at about 17.3 seconds for the first prompt, which means 2.08 tokens per second for prefill. And generation peaks at around 0.78 tokens per second in the recording. My guess is that two to three times this speed would be possible on hardware like this.
 
-The phone’s surface temperature peaked at 46.7°C during the chat. The next day, with Inkling off, it was 31.25°C. Toasty!
+The phone’s surface temperature rose from 31.25°C to 46.7°C. Toasty!
 
 What is also interesting is how much context can be saved on the device currently. Inkling supports a [one-million-token context window](https://huggingface.co/thinkingmachines/Inkling-2-Mini/blob/main/config.json). However, with the current setup, filling up all one million tokens would cost around 41.5 GB for the model and its context, which is more RAM than this 12 GB phone has.
 
