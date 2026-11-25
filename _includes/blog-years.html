@@ -1,0 +1,18 @@
+{% assign years = include.posts | group_by_exp: 'post', 'post.date | date: "%Y"' %}
+{% if years.size > 1 %}
+  <nav aria-label="Jump to year" class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-1 border-b pb-4 text-sm tabular-nums">
+    {% for group in years %}
+      <a class="rounded-sm py-1 text-muted-foreground underline-offset-4 hover:text-foreground hover:underline focus-visible:outline-2" href="#year-{{ group.name }}">{{ group.name }}</a>
+    {% endfor %}
+  </nav>
+{% endif %}
+{% for group in years %}
+  <section id="year-{{ group.name }}" aria-labelledby="heading-{{ group.name }}" class="mt-8 grid scroll-mt-6 gap-2 sm:grid-cols-[5rem_minmax(0,1fr)] sm:gap-6">
+    <h2 id="heading-{{ group.name }}" class="text-xl font-semibold tracking-tight tabular-nums sm:pt-3">{{ group.name }}</h2>
+    <ul>
+      {% for post in group.items %}
+        {% include writing-entry.html post=post %}
+      {% endfor %}
+    </ul>
+  </section>
+{% endfor %}

@@ -3,6 +3,8 @@ layout: page
 title: "VIMAGE: Accelerate, Simplify, Deploy"
 description: Scalable GPU-backed solution on Google Cloud.
 video: https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-thumb.webm
+preview_clip: /assets/img/project-previews/vimage.mp4
+preview_ratio: "480/270"
 preview: /assets/img/project-previews/vimage.webp
 importance: 4
 category: large projects
@@ -11,7 +13,7 @@ category: large projects
 <figure>
   <div class="mx-auto max-w-full">
     <div class="min-w-0 sm:col-span-full">
-      <video class="aspect-video w-full rounded-lg bg-muted object-contain" controls loop playsinline muted preload="none" poster="{{ page.preview | relative_url }}" src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-cropped-tiny.webm">
+      <video class="mx-auto block h-auto max-h-[80svh] w-auto max-w-full rounded-lg" controls loop playsinline muted preload="none" poster="{{ page.preview | relative_url }}" src="https://raw.githubusercontent.com/tornikeo/cdn/master/assets/vimage/diffloop-cropped-tiny.webm">
       </video>
     </div>
   </div>

@@ -1,9 +1,7 @@
 <figure>
   <video
-    class="mx-auto max-w-full rounded-lg"
+    class="mx-auto block h-auto max-h-[80svh] w-auto max-w-full rounded-lg"
     src="{{ include.path | relative_url }}"
-    width="{{ include.width | default: '100%' }}"
-    {% if include.height %}height="{{ include.height }}"{% endif %}
     controls loop muted playsinline preload="metadata"
     aria-label="{{ include.caption | default: page.title | strip_html | escape }}">
   </video>

@@ -20,10 +20,12 @@ if (themeButton) {
 const audio = document.querySelector<HTMLAudioElement>("[data-site-profile] audio")
 const name = document.querySelector<HTMLButtonElement>("[data-play-name]")
 if (audio && name) {
+  const error = document.querySelector<HTMLElement>("[data-audio-error]")
   name.addEventListener("click", () => {
     if (!audio.paused) return
     audio.currentTime = 0
-    void audio.play().catch(() => {})
+    if (error) error.hidden = true
+    void audio.play().catch(() => { if (error) error.hidden = false })
   })
   audio.addEventListener("playing", () => { name.dataset.playing = "" })
   for (const event of ["ended", "pause", "error"]) {
@@ -68,4 +70,31 @@ if (document.querySelector("[data-comparison-id]")) {
     }
   }, { rootMargin: "200px" })
   document.querySelectorAll("[data-comparison-id]").forEach((element) => observer.observe(element))
+}
+
+const previews = document.querySelectorAll<HTMLVideoElement>("video[data-preview-src]")
+if (previews.length) {
+  const visible = new Set<HTMLVideoElement>()
+  const motion = matchMedia("(prefers-reduced-motion: reduce)")
+  function syncPlayback() {
+    for (const video of previews) {
+      if (!visible.has(video) || document.hidden || motion.matches) {
+        video.pause()
+        continue
+      }
+      if (!video.hasAttribute("src")) video.src = video.dataset.previewSrc!
+      void video.play().catch(() => {})
+    }
+  }
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const video = entry.target as HTMLVideoElement
+      if (entry.intersectionRatio >= 0.2) visible.add(video)
+      else visible.delete(video)
+    }
+    syncPlayback()
+  }, { threshold: [0, 0.2] })
+  previews.forEach(video => observer.observe(video))
+  document.addEventListener("visibilitychange", syncPlayback)
+  motion.addEventListener("change", syncPlayback)
 }

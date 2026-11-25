@@ -8,7 +8,6 @@ layout: parse
     <meta http-equiv="refresh" content="3; url={{ '/' | relative_url }}">
   {%- endif -%}
   {% include metadata.html %}
-  {% feed_meta %}
   <link rel="canonical" href="{{ page.url | replace: 'index.html', '' | absolute_url }}">
   <link rel="icon" href="{{ '/assets/favicon/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/assets/favicon/apple-touch-icon.png' | relative_url }}">
@@ -21,16 +20,12 @@ layout: parse
   {% if site.data.shadcn_assets.script %}
     <script type="module" src="{{ site.data.shadcn_assets.script | relative_url }}"></script>
   {% endif %}
-  <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_light | append: '.css' | relative_url }}" id="highlight_theme_light">
   {% if site.enable_darkmode %}
-    <link rel="stylesheet" href="{{ '/assets/vendor/pygments/' | append: site.highlight_theme_dark | append: '.css' | relative_url }}" media="none" id="highlight_theme_dark">
     <script id="site-theme">
       (() => {
         const root = document.documentElement;
         const apply = (dark) => {
           root.classList.toggle("dark", dark);
-          document.getElementById("highlight_theme_light").media = dark ? "none" : "all";
-          document.getElementById("highlight_theme_dark").media = dark ? "all" : "none";
         };
         let saved;
         try { saved = localStorage.getItem("theme"); } catch {}
@@ -50,7 +45,6 @@ layout: parse
   <main id="main" class="mx-auto w-full max-w-3xl flex-1 px-4 py-8 sm:px-6 sm:py-12" tabindex="-1">
     {{ content }}
   </main>
-  {% include site-footer.html %}
   {% if content contains '\[' or content contains '\(' or content contains 'math/tex' %}
     {% include scripts/mathjax.html %}
   {% endif %}

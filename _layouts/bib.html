@@ -2,6 +2,15 @@
 ---
 <article id="{{ entry.key }}" data-resource-card>
 <div class="space-y-3 rounded-xl border p-4">
+  {% assign figure = site.data.publication_figures[entry.key] %}
+  {% if figure %}
+    {% assign figure_url = figure.image | prepend: '/assets/img/' | relative_url %}
+    <div data-resource-figure data-image-zoom>
+      <a href="{{ figure_url }}" class="block rounded-md focus-visible:outline-2" aria-label="Enlarge figure for {{ entry.title | escape }}">
+        <img src="{{ figure_url }}" alt="{{ figure.alt | escape }}" width="128" height="96" loading="lazy" decoding="async" class="h-20 w-20 rounded-md border bg-white object-contain p-1 sm:h-24 sm:w-32">
+      </a>
+    </div>
+  {% endif %}
   <h3 class="font-medium" data-resource-title>{{ entry.title }}</h3>
   <div data-resource-description class="space-y-1 text-sm text-muted-foreground">
         <!-- Author -->

@@ -146,3 +146,43 @@
     @apply font-sans;
     }
 }
+
+/* Keep Rouge tokens and the surface behind them in the same theme. */
+:root {
+  --code-surface: #f5f5f4;
+  --code-text: #292524;
+  --code-comment: #57534e;
+  --code-keyword: #65349a;
+  --code-string: #17603e;
+  --code-number: #075985;
+  --code-function: #913e1c;
+}
+.dark {
+  --code-surface: #202124;
+  --code-text: #ecebea;
+  --code-comment: #b0ada9;
+  --code-keyword: #d8b4fe;
+  --code-string: #86dfb2;
+  --code-number: #90d5ff;
+  --code-function: #ffbd99;
+}
+.prose pre {
+  max-width: 100%;
+  overflow-x: auto;
+  background: var(--code-surface);
+  color: var(--code-text);
+  border: 1px solid var(--border);
+  tab-size: 4;
+}
+.prose pre code { color: inherit; }
+.highlight :is(.c, .c1, .cm, .cp, .cs, .ch, .cd) { color: var(--code-comment); font-style: italic; }
+.highlight :is(.k, .kc, .kd, .kn, .kp, .kr, .kt, .ow, .nt) { color: var(--code-keyword); font-weight: 600; }
+.highlight :is(.s, .s1, .s2, .sb, .sc, .sd, .se, .sh, .si, .sr, .ss, .sx) { color: var(--code-string); }
+.highlight :is(.m, .mf, .mh, .mi, .il, .mo, .mb, .bp) { color: var(--code-number); }
+.highlight :is(.nf, .fm, .nb, .nc, .nd) { color: var(--code-function); }
+
+.prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}

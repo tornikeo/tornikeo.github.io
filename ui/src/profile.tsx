@@ -11,8 +11,8 @@ type ProfileProps = {
   avatar: string
   firstPhoto: string
   caption: string
-  date: string
-  dateLabel: string
+  date?: string
+  dateLabel?: string
   pronunciation?: string
   bioHtml: string
   contacts: SiteLink[]
@@ -33,7 +33,7 @@ function Portrait({ name, avatar, firstPhoto, caption, date, dateLabel }: Profil
         </Avatar>
       </a>
       <figcaption className="mt-2 text-xs text-muted-foreground">
-        {caption}<time className="block" dateTime={date}>{dateLabel}</time>
+        {caption}{date && dateLabel && <time className="block" dateTime={date}>{dateLabel}</time>}
       </figcaption>
     </figure>
   )
@@ -56,6 +56,9 @@ function Name({ name, pronunciation }: Pick<ProfileProps, "name" | "pronunciatio
         </Button>
       </h1>
       <audio src={pronunciation} preload="none" />
+      <p hidden data-audio-error role="status" className="text-sm">
+        Playback failed. <a className="underline" href={pronunciation}>Open the recording</a>
+      </p>
     </>
   )
 }

@@ -16,26 +16,21 @@ permalink: /
   data-caption="{{ portrait_caption }}"
   data-date="{{ portrait_date }}"
   data-date-label="{{ portrait_date_label }}"
-  data-pronunciation="{{ '/assets/audio/tornike-onoprishvili.mp3' | relative_url }}">
+  data-pronunciation="{{ '/assets/audio/tornike-onoprishvili.wav' | relative_url }}">
   <header class="mb-5 flex gap-4">
     <figure>
       <a href="{{ cover_photo.image | prepend: '/assets/img/' | relative_url }}" aria-label="Enlarge portrait of {{ page.title }}">
         <img class="size-16 rounded-full object-cover object-[center_64%]" src="{{ '/assets/img/portrait.webp' | relative_url }}" width="64" height="64" alt="">
       </a>
-      <figcaption class="mt-2 text-xs text-muted-foreground">{{ portrait_caption }} <time class="block" datetime="{{ portrait_date }}">{{ portrait_date_label }}</time></figcaption>
+      <figcaption class="mt-2 text-xs text-muted-foreground">{{ portrait_caption }}{% if portrait_date %} <time class="block" datetime="{{ portrait_date }}">{{ portrait_date_label }}</time>{% endif %}</figcaption>
     </figure>
     <h1 class="text-2xl font-semibold tracking-tight sm:text-3xl">{{ page.title }}</h1>
   </header>
 
   <div class="prose prose-neutral max-w-none dark:prose-invert" data-profile-bio>
-    <p>I’m a cofounder of <a href="https://launchsingularity.com/">Singularity</a>. We’re building AI teams that can launch a product, find its first customers, and improve it with their feedback. Before that, I cofounded <a href="https://tegy.io/">Tegy</a>, an AI tool for business strategy.</p>
-    <p>
-      Previously, I founded <a href="https://peachjam.dev/">peachjam.dev</a>, a vibe-coding website, and <a href="https://mothershipx.dev/">mothershipx.dev</a>, a site for browsing startup ideas.
-      I <a href="https://peachjam.dev/blog/sunset/">pivoted away from PeachJam</a> after four months.
-      <a href="{{ '/why-mothershipx-failed/' | relative_url }}">MothershipX failed</a> after three months of work.
-      I also <a href="{{ '/what-i-learned-at-changewiser/' | relative_url }}">worked on the founding team</a> at <a href="https://changewiser.ai/">changewiser.ai</a>.
-    </p>
-    <p>I wrote the CUDA kernels for <a href="{{ '/projects/cosine_greedy/' | relative_url }}">SimMS</a>, which matched mass spectra about 1,000× faster than the MatchMS reference implementation in our benchmarks. Before that, I built <a href="{{ '/projects/vimage/' | relative_url }}">VIMAGE’s GPU backend</a>. I started out simulating optical circuits.</p>
+    <p>Hi. These days I’m building <a href="https://launchsingularity.com/">Singularity</a> with <a href="https://anitalakhadze.dev/">Ani Talakhadze</a>. Today we work around a network of computers. I believe every future company will start with a network of AI agents at its core, and people will build the company around it. With Singularity, you can start a company that way in a few clicks.</p>
+    <p>Before Singularity, I was a technical cofounder at four startups: <a href="https://tegy.io/">Tegy</a>, <a href="https://peachjam.dev/blog/sunset/">PeachJam</a>, <a href="{{ '/why-mothershipx-failed/' | relative_url }}">MothershipX</a>, and <a href="{{ '/what-i-learned-at-changewiser/' | relative_url }}">ChangeWiser</a>. Watching startups take off and fail convinced me that “the startup problem” is the one problem AI still can’t solve: how do you build something people will pay for and turn it into a company? That’s what I’m working on with Singularity.</p>
+    <p>In pre-AI days, I helped startups optimize GPU kernels for <a href="{{ '/projects/vimage/' | relative_url }}">AI</a> and <a href="{{ '/projects/cosine_greedy/' | relative_url }}">biology</a>. I started out writing simulations of photonic circuits. I love AI and tech, and I regularly share AI news and what I’m learning from building startups. Follow me on <a href="https://x.com/{{ site.twitter_username }}">X</a>, <a href="https://www.threads.com/@realtornikeo">Threads</a>, or <a href="https://www.linkedin.com/in/{{ site.linkedin_username }}/">LinkedIn</a>.</p>
   </div>
   <nav class="mt-6 flex flex-wrap gap-3 text-sm [&_a]:underline" aria-label="Contact" data-profile-contacts>
     <a href="https://x.com/messages/compose?recipient_id={{ site.twitter_user_id }}">DM on X</a>

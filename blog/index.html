@@ -2,26 +2,9 @@
 layout: default
 title: Blogs
 description: Essays on AI, engineering, and building companies.
-pagination:
-  enabled: true
-  collection: posts
-  permalink: /page/:num/
-  per_page: 3
-  sort_field: date
-  sort_reverse: true
-  trail:
-    before: 1
-    after: 3
 ---
-<section class="space-y-6" aria-labelledby="writing-title">
-  <header class="space-y-2">
-    <h1 class="text-3xl font-semibold tracking-tight" id="writing-title">Blogs</h1>
-    <p class="text-muted-foreground">{{ page.description }}</p>
-  </header>
-  <ul data-blog-list class="space-y-2">
-    {% for post in paginator.posts %}
-      {% include writing-entry.html post=post summary=true %}
-    {% endfor %}
-  </ul>
-  {% include pagination.html %}
-</section>
+<header class="space-y-2">
+  <h1 class="text-3xl font-semibold tracking-tight">Blogs</h1>
+  <p class="text-muted-foreground">{{ page.description }}</p>
+</header>
+{% include blog-years.html posts=site.posts %}

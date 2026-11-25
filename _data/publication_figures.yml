@@ -1,0 +1,12 @@
+onoprishvili2025graphics:
+  image: research/hamiltonian.webp
+  alt: "Figure 15. How GPU blocks and threads share the effective Hamiltonian calculation."
+onoprishvili2025simms:
+  image: project-previews/cosine_greedy.svg
+  alt: "SimMS project diagram showing how the GPU compares pairs of mass spectra."
+jandieri2020functional:
+  image: research/waveguides.webp
+  alt: "Figure 1. Three symmetric photonic crystal waveguides used to build optical logic gates."
+jandieri2019digital:
+  image: research/and-gate.webp
+  alt: "Figure 1. Coupled guiding regions in the photonic crystal used for the optical AND gate."

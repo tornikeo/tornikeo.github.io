@@ -3,9 +3,5 @@
     <h1 class="text-3xl font-semibold tracking-tight">{{ include.title | escape }}</h1>
     <p class="text-muted-foreground">{{ include.description | escape }}</p>
   </header>
-  <ul data-blog-list class="space-y-2">
-    {% for post in page.posts %}
-      {% include writing-entry.html post=post summary=true %}
-    {% endfor %}
-  </ul>
+  {% include blog-years.html posts=page.posts %}
 </section>

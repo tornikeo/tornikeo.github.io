@@ -25,7 +25,7 @@ function renderPage(document: Document) {
   if (!navigation) return false
 
   navigation.innerHTML = renderToStaticMarkup(
-    <SiteNavigation links={readLinks(navigation)} hasTheme={Boolean(document.getElementById("highlight_theme_dark"))} />,
+    <SiteNavigation links={readLinks(navigation)} hasTheme={Boolean(document.getElementById("site-theme"))} />,
   )
 
   const profile = document.querySelector<HTMLElement>("[data-site-profile]")
@@ -33,7 +33,7 @@ function renderPage(document: Document) {
   const firstPhoto = profile?.querySelector("figure a")?.getAttribute("href")
   if (profile && bio && firstPhoto) {
     const { name, avatar, caption, date, dateLabel, pronunciation } = profile.dataset
-    if (name && avatar && caption && date && dateLabel) {
+    if (name && avatar && caption) {
       profile.innerHTML = renderToStaticMarkup(
         <Profile
           name={name}

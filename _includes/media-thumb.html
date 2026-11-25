@@ -1,8 +1,7 @@
 {% assign extension = include.path | split: '.' | last | downcase %}
-<div class="relative aspect-video overflow-hidden bg-muted">
-  {% if extension == "mp4" or extension == "webm" or extension == "ogg" %}
-    <video class="absolute inset-0 size-full object-contain" src="{{ include.path | relative_url }}" {% if include.preview %}poster="{{ include.preview | relative_url }}"{% endif %} muted playsinline controls preload="none" aria-label="{{ include.alt | escape }}"></video>
-  {% else %}
-    <img class="absolute inset-0 size-full object-contain" src="{{ include.preview | default: include.path | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
-  {% endif %}
-</div>
+{% if extension == "mp4" or extension == "webm" or extension == "ogg" %}
+  <video class="block w-full object-contain" style="aspect-ratio: {{ include.ratio | default: '16/9' }}" data-preview-src="{{ include.clip | default: include.path | relative_url }}" {% if include.preview %}poster="{{ include.preview | relative_url }}"{% endif %} muted playsinline loop preload="none" aria-label="{{ include.alt | escape }}"></video>
+{% else %}
+  {% assign image = include.preview | default: include.path %}
+  <img class="block aspect-video w-full {% if image contains '.svg' %}bg-white object-contain{% else %}object-cover{% endif %}" src="{{ image | relative_url }}" alt="{{ include.alt | escape }}" loading="lazy">
+{% endif %}
